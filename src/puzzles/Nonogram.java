@@ -1,4 +1,19 @@
-package nonogram;
+/*
+ * Copyright 2016 Sander Verdonschot <sander.verdonschot at gmail.com>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package puzzles;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,13 +31,17 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import puzzles.tools.FontDimensions;
 
 /**
  * TODO: Add margin to the right and bottom
+ *
  * @author Sander Verdonschot <sander.verdonschot at gmail.com>
  */
 public class Nonogram {
@@ -30,19 +49,19 @@ public class Nonogram {
     private static final String inputFile = "in.txt";
     private static final String outputFile = "out.png";
     private static final String fontName = "Roboto";
-    
+
     private static final int SQUARE_SIZE = 24;
     private static final int OUTER_PADDING = 5;
     private static final int VERTICAL_PADDING = 5;
     private static final int HORIZONTAL_PADDING = 5;
-    
+
     private static final Set<Character> filledChars;
-    
+
     static {
         filledChars = new HashSet<>();
         filledChars.add('X');
     }
-    
+
     private static Font font = null;
 
     /**
@@ -226,18 +245,12 @@ public class Nonogram {
     }
 
     private static Rectangle2D computeMaxTextDimension(List<List<Integer>> numbers, FontRenderContext frc) {
-        double maxTextHeight = 0;
-        double maxTextWidth = 0;
-
-        for (List<Integer> column : numbers) {
-            for (Integer n : column) {
-                TextLayout text = new TextLayout(n.toString(), font, frc);
-                maxTextHeight = Math.max(text.getBounds().getHeight(), maxTextHeight);
-                maxTextWidth = Math.max(text.getBounds().getWidth(), maxTextWidth);
-            }
-        }
-
-        return new Rectangle2D.Double(0, 0, maxTextWidth, maxTextHeight);
+        List<String> numbersAsText = numbers.stream()
+                .flatMap(Collection::stream)
+                .map(i -> i.toString())
+                .collect(Collectors.toList());
+        
+        return FontDimensions.computeMaxTextDimension(numbersAsText, frc, font);
     }
 
     private static int getMaxNumbers(List<List<Integer>> numbers) {
