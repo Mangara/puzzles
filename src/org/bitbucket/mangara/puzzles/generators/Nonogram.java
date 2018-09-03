@@ -48,10 +48,10 @@ public class Nonogram {
     private static final String outputFile = "out.png";
     private static final String fontName = "Roboto";
 
-    private static final int SQUARE_SIZE = 28;
-    private static final int OUTER_PADDING = 5;
-    private static final int VERTICAL_PADDING = 5;
-    private static final int HORIZONTAL_PADDING = 5;
+    public static final int SQUARE_SIZE = 28;
+    public static final int OUTER_PADDING = 5;
+    public static final int VERTICAL_PADDING = 5;
+    public static final int HORIZONTAL_PADDING = 5;
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
     private static final Color FOREGROUND_COLOR = Color.BLACK;
 
@@ -64,10 +64,7 @@ public class Nonogram {
 
     private static Font font = null;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException {
+    static {
         // Load the correct font
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Font[] fonts = ge.getAllFonts();
@@ -77,7 +74,13 @@ public class Nonogram {
                 font = f.deriveFont(22f);
             }
         }
-
+    }
+    
+    /**
+     * @param args the command line arguments
+     * @throws java.io.IOException
+     */
+    public static void main(String[] args) throws IOException {
         // Create the nonogram
         boolean[][] drawing = readFile(inputFile);
         List<List<Integer>> side = computeSideNumbers(drawing);
@@ -104,7 +107,7 @@ public class Nonogram {
         return result.toArray(new boolean[result.size()][result.get(0).length]);
     }
 
-    private static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {
+    public static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
         for (boolean[] row : drawing) {
@@ -132,7 +135,7 @@ public class Nonogram {
         return result;
     }
 
-    private static List<List<Integer>> computeTopNumbers(boolean[][] drawing) {
+    public static List<List<Integer>> computeTopNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
         for (int i = 0; i < drawing[0].length; i++) {
@@ -160,7 +163,7 @@ public class Nonogram {
         return result;
     }
 
-    private static BufferedImage drawNonogram(List<List<Integer>> side, List<List<Integer>> top) {
+    public static BufferedImage drawNonogram(List<List<Integer>> side, List<List<Integer>> top) {
         int gridWidth = top.size();
         int gridHeight = side.size();
 
