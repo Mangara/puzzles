@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package puzzles.generators;
+package org.bitbucket.mangara.puzzles.generators;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import puzzles.tools.FontDimensions;
+import org.bitbucket.mangara.puzzles.tools.FontDimensions;
 
 /**
  * @author Sander Verdonschot <sander.verdonschot at gmail.com>
