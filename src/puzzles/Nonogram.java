@@ -40,8 +40,6 @@ import javax.imageio.ImageIO;
 import puzzles.tools.FontDimensions;
 
 /**
- * TODO: Add margin to the right and bottom
- *
  * @author Sander Verdonschot <sander.verdonschot at gmail.com>
  */
 public class Nonogram {
@@ -50,10 +48,12 @@ public class Nonogram {
     private static final String outputFile = "out.png";
     private static final String fontName = "Roboto";
 
-    private static final int SQUARE_SIZE = 24;
+    private static final int SQUARE_SIZE = 28;
     private static final int OUTER_PADDING = 5;
     private static final int VERTICAL_PADDING = 5;
     private static final int HORIZONTAL_PADDING = 5;
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
+    private static final Color FOREGROUND_COLOR = Color.BLACK;
 
     private static final Set<Character> filledChars;
 
@@ -191,11 +191,11 @@ public class Nonogram {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // Fill background
-        g.setColor(Color.white);
+        g.setColor(BACKGROUND_COLOR);
         g.fillRect(0, 0, gridRight, gridBottom);
 
         // Draw grid lines
-        g.setColor(Color.black);
+        g.setColor(FOREGROUND_COLOR);
 
         for (int i = 0; i < gridWidth + 1; i++) {
             g.drawLine(gridLeft + i * SQUARE_SIZE, OUTER_PADDING, gridLeft + i * SQUARE_SIZE, gridBottom);
