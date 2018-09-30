@@ -26,27 +26,37 @@ import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 import org.bitbucket.mangara.puzzles.generators.Nonogram;
-import static org.bitbucket.mangara.puzzles.generators.Nonogram.computeSideNumbers;
-import static org.bitbucket.mangara.puzzles.generators.Nonogram.computeTopNumbers;
-import static org.bitbucket.mangara.puzzles.generators.Nonogram.drawNonogram;
 
 public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
+    private static final Color FILLED_COLOUR = new Color(16, 16, 16);
+    private static final Color EMPTY_COLOUR = Color.white;
+    private static final Color UNKNOWN_COLOUR = Color.lightGray;
+
+    private enum PuzzleState {
+        UNKNOWN, EMPTY, FILLED;
+    }
+
     private boolean building = true;
     private boolean[][] nonogramResult = new boolean[8][12];
-    private boolean[][] puzzle = new boolean[8][12];
+    private PuzzleState[][] puzzle = new PuzzleState[8][12];
     private int gridLeftX, gridTopY;
 
     public NonogramDrawPanel() {
         setPreferredSize(new Dimension(1200, 800));
         addMouseListener(this);
         addMouseMotionListener(this);
-        
+
         nonogramResult[1][2] = true;
         nonogramResult[1][3] = true;
         nonogramResult[3][2] = true;
+        
+        for (PuzzleState[] row : puzzle) {
+            Arrays.fill(row, PuzzleState.UNKNOWN);
+        }
     }
 
     public int getNonogramWidth() {
@@ -68,10 +78,13 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
     public void newNonogram(int width, int height) {
         nonogramResult = new boolean[height][width];
-        puzzle = new boolean[height][width];
+        puzzle = new PuzzleState[height][width];
+        for (PuzzleState[] row : puzzle) {
+            Arrays.fill(row, PuzzleState.UNKNOWN);
+        }
         repaint();
     }
-    
+
     public void saveNonogram(File outputFile) throws IOException {
         List<List<Integer>> side = Nonogram.computeSideNumbers(nonogramResult);
         List<List<Integer>> top = Nonogram.computeTopNumbers(nonogramResult);
@@ -85,8 +98,8 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
                 Arrays.fill(row, false);
             }
         } else {
-            for (boolean[] row : puzzle) {
-                Arrays.fill(row, false);
+            for (PuzzleState[] row : puzzle) {
+                Arrays.fill(row, PuzzleState.UNKNOWN);
             }
         }
         repaint();
@@ -97,49 +110,78 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight());
 
+        // Fill squares
+        gridLeftX = getWidth() - Nonogram.OUTER_PADDING - getNonogramWidth() * Nonogram.SQUARE_SIZE;
+        gridTopY = getHeight() - Nonogram.OUTER_PADDING - getNonogramHeight() * Nonogram.SQUARE_SIZE;
+
+        for (int i = 0; i < nonogramResult.length; i++) {
+            for (int j = 0; j < nonogramResult[i].length; j++) {
+                int gridX = gridLeftX + j * Nonogram.SQUARE_SIZE;
+                int gridY = gridTopY + i * Nonogram.SQUARE_SIZE;
+
+                g.setColor(getColorForSquare(i, j));
+
+                g.fillRect(gridX, gridY, Nonogram.SQUARE_SIZE, Nonogram.SQUARE_SIZE);
+            }
+        }
+
+        // Draw grid and numbers
         List<List<Integer>> sideNumbers = Nonogram.computeSideNumbers(nonogramResult);
         List<List<Integer>> topNumbers = Nonogram.computeTopNumbers(nonogramResult);
         BufferedImage drawing = Nonogram.drawNonogram(sideNumbers, topNumbers);
 
         int x = getWidth() - drawing.getWidth();
         int y = getHeight() - drawing.getHeight();
-
         g.drawImage(drawing, x, y, this);
-        
-        g.setColor(Color.black);
-        gridLeftX = getWidth() - Nonogram.OUTER_PADDING - getNonogramWidth() * Nonogram.SQUARE_SIZE;
-        gridTopY = getHeight() - Nonogram.OUTER_PADDING - getNonogramHeight() * Nonogram.SQUARE_SIZE;
-        fillSquares(g, building ? nonogramResult : puzzle);
     }
-    
-    private void fillSquares(Graphics g, boolean[][] grid) {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j]) {
-                    int x = gridLeftX + j * Nonogram.SQUARE_SIZE;
-                    int y = gridTopY + i * Nonogram.SQUARE_SIZE;
-                    g.fillRect(x, y, Nonogram.SQUARE_SIZE, Nonogram.SQUARE_SIZE);
-                }
+
+    private Color getColorForSquare(int i, int j) {
+        if (building) {
+            return nonogramResult[i][j] ? FILLED_COLOUR : EMPTY_COLOUR;
+        } else {
+            switch (puzzle[i][j]) {
+                case EMPTY:
+                    return EMPTY_COLOUR;
+                case FILLED:
+                    return FILLED_COLOUR;
+                default:
+                    return UNKNOWN_COLOUR;
             }
         }
     }
 
-    private boolean fillOnDrag = true;
-    
+    private PuzzleState paintState = null;
+
     @Override
     public void mousePressed(MouseEvent e) {
         int i = getGridRow(e.getY());
         int j = getGridCol(e.getX());
-        
+
         if (i < 0 || i > getNonogramHeight() || j < 0 || j > getNonogramWidth()) {
             return;
         }
-        
-        boolean[][] grid = building ? nonogramResult : puzzle;
-        
-        fillOnDrag = !grid[i][j];
-        grid[i][j] = fillOnDrag;
-        
+
+        if (building) {
+            paintState = nonogramResult[i][j] ? PuzzleState.EMPTY : PuzzleState.FILLED;
+            nonogramResult[i][j] = (paintState == PuzzleState.FILLED);
+        } else {
+            boolean rightClick = SwingUtilities.isRightMouseButton(e);
+
+            switch (puzzle[i][j]) {
+                case EMPTY:
+                    paintState = rightClick ? PuzzleState.FILLED : PuzzleState.UNKNOWN;
+                    break;
+                case UNKNOWN:
+                    paintState = rightClick ? PuzzleState.EMPTY : PuzzleState.FILLED;
+                    break;
+                case FILLED:
+                    paintState = rightClick ? PuzzleState.UNKNOWN : PuzzleState.EMPTY;
+                    break;
+            }
+
+            puzzle[i][j] = paintState;
+        }
+
         repaint();
     }
 
@@ -147,21 +189,24 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     public void mouseDragged(MouseEvent e) {
         int i = getGridRow(e.getY());
         int j = getGridCol(e.getX());
-        
+
         if (i < 0 || i > getNonogramHeight() || j < 0 || j > getNonogramWidth()) {
             return;
         }
-        
-        boolean[][] grid = building ? nonogramResult : puzzle;
-        grid[i][j] = fillOnDrag;
-        
+
+        if (building) {
+            nonogramResult[i][j] = (paintState == PuzzleState.FILLED);
+        } else {
+            puzzle[i][j] = paintState;
+        }
+
         repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
     }
-    
+
     @Override
     public void mouseReleased(MouseEvent e) {
     }
@@ -177,11 +222,11 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     @Override
     public void mouseMoved(MouseEvent e) {
     }
-    
+
     private int getGridRow(int y) {
         return (y - gridTopY) / Nonogram.SQUARE_SIZE;
     }
-    
+
     private int getGridCol(int x) {
         return (x - gridLeftX) / Nonogram.SQUARE_SIZE;
     }
