@@ -51,7 +51,7 @@ public class Nonogram {
     public static final int SQUARE_SIZE = 28;
     public static final int OUTER_PADDING = 5;
     public static final int VERTICAL_PADDING = 5;
-    public static final int HORIZONTAL_PADDING = 5;
+    public static final int HORIZONTAL_PADDING = 10;
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 0, 0);
     private static final Color FOREGROUND_COLOR = Color.BLACK;
 
