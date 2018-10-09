@@ -15,57 +15,11 @@
  */
 package org.bitbucket.mangara.puzzles.generators;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
-import org.bitbucket.mangara.puzzles.io.NonogramPrinter;
 
 public class NonogramGenerator {
-
-    private static final String inputFile = "in.txt";
-    private static final String outputFile = "out.png";
-
-    private static final Set<Character> filledChars;
-
-    static {
-        filledChars = new HashSet<>();
-        filledChars.add('X');
-    }
-
-    /**
-     * @param args the command line arguments
-     * @throws java.io.IOException
-     */
-    public static void main(String[] args) throws IOException {
-        boolean[][] drawing = readFile(inputFile);
-        Nonogram puzzle = generateNonogram(drawing);
-        NonogramPrinter.printNonogram(puzzle, Paths.get(outputFile));
-    }
-
-    private static boolean[][] readFile(String inputFile) throws IOException {
-        List<boolean[]> result = new ArrayList<>();
-
-        try (BufferedReader in = Files.newBufferedReader(Paths.get(inputFile), StandardCharsets.UTF_8)) {
-            for (String line = in.readLine(); line != null; line = in.readLine()) {
-                boolean[] drawingLine = new boolean[line.length()];
-
-                for (int i = 0; i < line.length(); i++) {
-                    drawingLine[i] = filledChars.contains(line.charAt(i));
-                }
-
-                result.add(drawingLine);
-            }
-        }
-
-        return result.toArray(new boolean[result.size()][result.get(0).length]);
-    }
 
     public static Nonogram generateNonogram(boolean[][] drawing) {
         List<List<Integer>> side = computeSideNumbers(drawing);
@@ -73,7 +27,7 @@ public class NonogramGenerator {
         return new Nonogram(side, top);
     }
 
-    public static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {
+    private static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
         for (boolean[] row : drawing) {
@@ -101,7 +55,7 @@ public class NonogramGenerator {
         return result;
     }
 
-    public static List<List<Integer>> computeTopNumbers(boolean[][] drawing) {
+    private static List<List<Integer>> computeTopNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
         for (int i = 0; i < drawing[0].length; i++) {
