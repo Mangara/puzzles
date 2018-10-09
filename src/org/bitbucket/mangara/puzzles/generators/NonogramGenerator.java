@@ -42,7 +42,7 @@ import org.bitbucket.mangara.puzzles.tools.FontDimensions;
 /**
  * @author Sander Verdonschot <sander.verdonschot at gmail.com>
  */
-public class Nonogram {
+public class NonogramGenerator {
 
     private static final String inputFile = "in.txt";
     private static final String outputFile = "out.png";

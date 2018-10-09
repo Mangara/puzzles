@@ -28,7 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
-import org.bitbucket.mangara.puzzles.generators.Nonogram;
+import org.bitbucket.mangara.puzzles.generators.NonogramGenerator;
 
 public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
@@ -86,9 +86,9 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     }
 
     public void saveNonogram(File outputFile) throws IOException {
-        List<List<Integer>> side = Nonogram.computeSideNumbers(nonogramResult);
-        List<List<Integer>> top = Nonogram.computeTopNumbers(nonogramResult);
-        BufferedImage image = Nonogram.drawNonogram(side, top);
+        List<List<Integer>> side = NonogramGenerator.computeSideNumbers(nonogramResult);
+        List<List<Integer>> top = NonogramGenerator.computeTopNumbers(nonogramResult);
+        BufferedImage image = NonogramGenerator.drawNonogram(side, top);
         ImageIO.write(image, "png", outputFile);
     }
 
@@ -111,24 +111,24 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         // Fill squares
-        gridLeftX = getWidth() - Nonogram.OUTER_PADDING - getNonogramWidth() * Nonogram.SQUARE_SIZE;
-        gridTopY = getHeight() - Nonogram.OUTER_PADDING - getNonogramHeight() * Nonogram.SQUARE_SIZE;
+        gridLeftX = getWidth() - NonogramGenerator.OUTER_PADDING - getNonogramWidth() * NonogramGenerator.SQUARE_SIZE;
+        gridTopY = getHeight() - NonogramGenerator.OUTER_PADDING - getNonogramHeight() * NonogramGenerator.SQUARE_SIZE;
 
         for (int i = 0; i < nonogramResult.length; i++) {
             for (int j = 0; j < nonogramResult[i].length; j++) {
-                int gridX = gridLeftX + j * Nonogram.SQUARE_SIZE;
-                int gridY = gridTopY + i * Nonogram.SQUARE_SIZE;
+                int gridX = gridLeftX + j * NonogramGenerator.SQUARE_SIZE;
+                int gridY = gridTopY + i * NonogramGenerator.SQUARE_SIZE;
 
                 g.setColor(getColorForSquare(i, j));
 
-                g.fillRect(gridX, gridY, Nonogram.SQUARE_SIZE, Nonogram.SQUARE_SIZE);
+                g.fillRect(gridX, gridY, NonogramGenerator.SQUARE_SIZE, NonogramGenerator.SQUARE_SIZE);
             }
         }
 
         // Draw grid and numbers
-        List<List<Integer>> sideNumbers = Nonogram.computeSideNumbers(nonogramResult);
-        List<List<Integer>> topNumbers = Nonogram.computeTopNumbers(nonogramResult);
-        BufferedImage drawing = Nonogram.drawNonogram(sideNumbers, topNumbers);
+        List<List<Integer>> sideNumbers = NonogramGenerator.computeSideNumbers(nonogramResult);
+        List<List<Integer>> topNumbers = NonogramGenerator.computeTopNumbers(nonogramResult);
+        BufferedImage drawing = NonogramGenerator.drawNonogram(sideNumbers, topNumbers);
 
         int x = getWidth() - drawing.getWidth();
         int y = getHeight() - drawing.getHeight();
@@ -224,10 +224,10 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     }
 
     private int getGridRow(int y) {
-        return (y - gridTopY) / Nonogram.SQUARE_SIZE;
+        return (y - gridTopY) / NonogramGenerator.SQUARE_SIZE;
     }
 
     private int getGridCol(int x) {
-        return (x - gridLeftX) / Nonogram.SQUARE_SIZE;
+        return (x - gridLeftX) / NonogramGenerator.SQUARE_SIZE;
     }
 }
