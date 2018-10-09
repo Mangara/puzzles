@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
-import org.bitbucket.mangara.puzzles.tools.FontDimensions;
+import org.bitbucket.mangara.puzzles.io.FontDimensions;
 
 public class LogiquizGenerator {
     private static final String inputFile = "logiquiz.txt";
