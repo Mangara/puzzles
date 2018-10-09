@@ -36,7 +36,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.bitbucket.mangara.puzzles.tools.FontDimensions;
 
-public class Logiquiz {
+public class LogiquizGenerator {
     private static final String inputFile = "logiquiz.txt";
     private static final String outputFile = "logiquiz.png";
     private static final String fontName = "Roboto";
