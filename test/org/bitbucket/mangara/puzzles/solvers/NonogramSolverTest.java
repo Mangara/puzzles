@@ -15,7 +15,9 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import java.util.Arrays;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
+import org.bitbucket.mangara.puzzles.generators.NonogramGenerator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,6 +30,12 @@ import static org.junit.Assert.*;
  * @author Sander
  */
 public class NonogramSolverTest {
+
+    public static Nonogram[] puzzles = new Nonogram[]{
+        new Nonogram(Arrays.asList(Arrays.asList(1), Arrays.asList(1)), Arrays.asList(Arrays.asList(1), Arrays.asList(1))), // Non-unique solution
+        new Nonogram(Arrays.asList(Arrays.asList(2), Arrays.asList(1)), Arrays.asList(Arrays.asList(2), Arrays.asList(1))), // Unique solution
+        new Nonogram(Arrays.asList(Arrays.asList(2), Arrays.asList(1)), Arrays.asList(Arrays.asList(1), Arrays.asList(1))), // No solution
+    };
 
     public NonogramSolverTest() {
     }
@@ -54,12 +62,21 @@ public class NonogramSolverTest {
     @Test
     public void testHasUniqueSolution() {
         System.out.println("hasUniqueSolution");
-        Nonogram puzzle = null;
-        boolean expResult = false;
-        boolean result = NonogramSolver.hasUniqueSolution(puzzle);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        boolean[] expected = new boolean[]{
+            false,
+            true,
+            false
+        };
+
+        for (NonogramSolver.Algorithm alg : NonogramSolver.Algorithm.values()) {
+            System.out.println(alg);
+
+            for (int i = 0; i < puzzles.length; i++) {
+                boolean result = NonogramSolver.hasUniqueSolution(puzzles[i], alg);
+                assertEquals(expected[i], result);
+            }
+        }
     }
 
     /**
@@ -68,12 +85,32 @@ public class NonogramSolverTest {
     @Test
     public void testFindAnySolution() {
         System.out.println("findAnySolution");
-        Nonogram puzzle = null;
-        boolean[][] expResult = null;
-        boolean[][] result = NonogramSolver.findAnySolution(puzzle);
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        boolean[] hasSolution = new boolean[]{
+            true,
+            true,
+            false
+        };
+
+        for (NonogramSolver.Algorithm alg : NonogramSolver.Algorithm.values()) {
+            System.out.println(alg);
+            
+            for (int i = 0; i < puzzles.length; i++) {
+                boolean[][] solution = NonogramSolver.findAnySolution(puzzles[i], alg);
+
+                if (hasSolution[i]) {
+                    testSolution(solution, puzzles[i]);
+                } else {
+                    assertNull(solution);
+                }
+            }
+        }
     }
 
+    private void testSolution(boolean[][] solution, Nonogram puzzle) {
+        assertNotNull(solution);
+        Nonogram puzzleFromSolution = NonogramGenerator.generateNonogram(solution);
+        assertEquals(puzzle.getSideNumbers(), puzzleFromSolution.getSideNumbers());
+        assertEquals(puzzle.getTopNumbers(), puzzleFromSolution.getTopNumbers());
+    }
 }

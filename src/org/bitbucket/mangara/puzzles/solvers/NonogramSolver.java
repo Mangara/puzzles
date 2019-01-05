@@ -15,76 +15,37 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
-import java.util.Arrays;
-import java.util.List;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 
 public class NonogramSolver {
 
-    private enum Algorithm {
+    public enum Algorithm {
         BRUTE_FORCE
     }
 
     public static boolean hasUniqueSolution(Nonogram puzzle) {
-        return true; // TODO
+        return hasUniqueSolution(puzzle, Algorithm.BRUTE_FORCE);
+    }
+    
+    public static boolean hasUniqueSolution(Nonogram puzzle, Algorithm algo) {
+        switch (algo) {
+            case BRUTE_FORCE:
+                return BruteForceSolver.hasUniqueSolution(puzzle);
+            default:
+                throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
+        }
     }
 
     public static boolean[][] findAnySolution(Nonogram puzzle) {
         return findAnySolution(puzzle, Algorithm.BRUTE_FORCE);
     }
 
-    private static boolean[][] findAnySolution(Nonogram puzzle, Algorithm algo) {
+    public static boolean[][] findAnySolution(Nonogram puzzle, Algorithm algo) {
         switch (algo) {
             case BRUTE_FORCE:
-                return findBruteForceSolution(puzzle);
+                return BruteForceSolver.findAnySolution(puzzle);
             default:
                 throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
         }
     }
-
-    private static boolean[][] findBruteForceSolution(Nonogram puzzle) {
-        boolean[][] solution = new boolean[puzzle.getWidth()][puzzle.getHeight()];
-        boolean solved = findBruteForceSolution(puzzle, solution, 0);
-        return solved ? solution : null;
-    }
-
-    private static boolean findBruteForceSolution(Nonogram puzzle, boolean[][] partialSolution, int rowToSolve) {
-        System.out.println("Solving row " + rowToSolve);
-        
-        // Is each column of the partial solution valid?
-        for (int i = 0; i < puzzle.getWidth(); i++) {
-            System.out.println("Testing column " + i);
-            if (!NonogramSolverHelper.isValidPartial(partialSolution[i], rowToSolve, puzzle.getTopNumbers().get(i))) {
-                System.out.println("Wrong");
-                return false;
-            }
-        }
-        
-        // Are we done?
-        if (rowToSolve == puzzle.getHeight()) {
-            System.out.println("Done");
-            return true;
-        }
-
-        List<Integer> rowNumbers = puzzle.getSideNumbers().get(rowToSolve);
-
-        // Try each possible solution for this row
-        for (boolean[] possibleRowSolution : NonogramSolverHelper.getAllSolutions(rowNumbers, puzzle.getWidth())) {
-            System.out.println("Trying row " + rowToSolve + " solution " + Arrays.toString(possibleRowSolution));
-            
-            for (int i = 0; i < puzzle.getWidth(); i++) {
-                partialSolution[i][rowToSolve] = possibleRowSolution[i];
-            }
-
-            boolean solved = findBruteForceSolution(puzzle, partialSolution, rowToSolve + 1);
-
-            if (solved) {
-                System.out.println("Solved!");
-                return true;
-            }
-            System.out.println("Row " + rowToSolve + " not solved.");
-        }
-
-        return false;
-    }    
 }
