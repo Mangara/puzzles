@@ -15,6 +15,7 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import java.util.Arrays;
 import java.util.List;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 
@@ -42,28 +43,35 @@ public class NonogramSolver {
     }
 
     private static boolean[][] findBruteForceSolution(Nonogram puzzle) {
-        boolean[][] solution = new boolean[puzzle.getWidth()][puzzle.getHeight()]; // TODO: check if we should swap width and height
+        boolean[][] solution = new boolean[puzzle.getWidth()][puzzle.getHeight()];
         boolean solved = findBruteForceSolution(puzzle, solution, 0);
         return solved ? solution : null;
     }
 
     private static boolean findBruteForceSolution(Nonogram puzzle, boolean[][] partialSolution, int rowToSolve) {
-        // Are we done?
-        if (rowToSolve == puzzle.getHeight()) {
-            return true;
-        }
-
+        System.out.println("Solving row " + rowToSolve);
+        
         // Is each column of the partial solution valid?
         for (int i = 0; i < puzzle.getWidth(); i++) {
-            if (!isValidPartial(partialSolution[i], rowToSolve, puzzle.getTopNumbers().get(i))) { // TODO: Make sure that partialSolution[i] is a column, with row 0 at the top
+            System.out.println("Testing column " + i);
+            if (!NonogramSolverHelper.isValidPartial(partialSolution[i], rowToSolve, puzzle.getTopNumbers().get(i))) {
+                System.out.println("Wrong");
                 return false;
             }
+        }
+        
+        // Are we done?
+        if (rowToSolve == puzzle.getHeight()) {
+            System.out.println("Done");
+            return true;
         }
 
         List<Integer> rowNumbers = puzzle.getSideNumbers().get(rowToSolve);
 
         // Try each possible solution for this row
-        for (boolean[] possibleRowSolution : getAllSolutions(rowNumbers, puzzle.getWidth())) {
+        for (boolean[] possibleRowSolution : NonogramSolverHelper.getAllSolutions(rowNumbers, puzzle.getWidth())) {
+            System.out.println("Trying row " + rowToSolve + " solution " + Arrays.toString(possibleRowSolution));
+            
             for (int i = 0; i < puzzle.getWidth(); i++) {
                 partialSolution[i][rowToSolve] = possibleRowSolution[i];
             }
@@ -71,17 +79,12 @@ public class NonogramSolver {
             boolean solved = findBruteForceSolution(puzzle, partialSolution, rowToSolve + 1);
 
             if (solved) {
+                System.out.println("Solved!");
                 return true;
             }
+            System.out.println("Row " + rowToSolve + " not solved.");
         }
 
         return false;
-    }
-
-    private static boolean isValidPartial(boolean[] partialColumn, int firstUnknown, List<Integer> numbers) {
-        // true if there exists an assignment of booleans to partialColumn[firstUnknown...] such that it matches the given numbers
-
-        // Does the completed part match?
-        // Do the remaining numbers fit?
-    }
+    }    
 }

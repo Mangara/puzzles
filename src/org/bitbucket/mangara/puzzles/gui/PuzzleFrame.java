@@ -17,9 +17,12 @@ package org.bitbucket.mangara.puzzles.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.bitbucket.mangara.puzzles.data.Nonogram;
+import org.bitbucket.mangara.puzzles.solvers.NonogramSolver;
 
 public class PuzzleFrame extends javax.swing.JFrame {
 
@@ -71,7 +74,9 @@ public class PuzzleFrame extends javax.swing.JFrame {
         newMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        editMenu = new javax.swing.JMenu();
+        solveMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Puzzles");
@@ -157,8 +162,20 @@ public class PuzzleFrame extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        jMenu2.setText("Edit");
-        menuBar.add(jMenu2);
+        editMenu.setText("Edit");
+        menuBar.add(editMenu);
+
+        solveMenu.setText("Solve");
+
+        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        solveMenu.add(jMenuItem1);
+
+        menuBar.add(solveMenu);
 
         setJMenuBar(menuBar);
 
@@ -206,6 +223,14 @@ public class PuzzleFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Nonogram puzzle = drawPanel.getPuzzle();
+        System.out.println("Puzzle: " + puzzle);
+        boolean[][] solution = NonogramSolver.findAnySolution(puzzle);
+        System.out.println("Solution: " + Arrays.deepToString(solution));
+        drawPanel.setSolution(solution);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -244,15 +269,17 @@ public class PuzzleFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton buildingModeRadioButton;
     private javax.swing.JButton clearButton;
+    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JLabel modeLabel;
     private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JMenu solveMenu;
     private javax.swing.JRadioButton solvingModeRadioButton;
     // End of variables declaration//GEN-END:variables
 }

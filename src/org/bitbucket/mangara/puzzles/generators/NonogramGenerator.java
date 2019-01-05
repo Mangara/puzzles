@@ -30,12 +30,12 @@ public class NonogramGenerator {
     private static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
-        for (boolean[] row : drawing) {
+        for (int i = 0; i < drawing[0].length; i++) {
             List<Integer> resultRow = new ArrayList<>();
             int filledCount = 0;
 
-            for (int i = 0; i < row.length; i++) {
-                if (row[i]) {
+            for (int j = 0; j < drawing.length; j++) {
+                if (drawing[j][i]) {
                     filledCount++;
                 } else if (filledCount > 0) {
                     resultRow.add(filledCount);
@@ -58,12 +58,12 @@ public class NonogramGenerator {
     private static List<List<Integer>> computeTopNumbers(boolean[][] drawing) {
         List<List<Integer>> result = new ArrayList<>();
 
-        for (int i = 0; i < drawing[0].length; i++) {
+        for (boolean[] column : drawing) {
             List<Integer> resultColumn = new ArrayList<>();
             int filledCount = 0;
 
-            for (int j = 0; j < drawing.length; j++) {
-                if (drawing[j][i]) {
+            for (int i = 0; i < column.length; i++) {
+                if (column[i]) {
                     filledCount++;
                 } else if (filledCount > 0) {
                     resultColumn.add(filledCount);
