@@ -76,7 +76,9 @@ public class PuzzleFrame extends javax.swing.JFrame {
         exportMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         solveMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        solveMenuItem = new javax.swing.JMenuItem();
+        checkMenuItem = new javax.swing.JMenuItem();
+        bruteForceStepsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Puzzles");
@@ -167,13 +169,24 @@ public class PuzzleFrame extends javax.swing.JFrame {
 
         solveMenu.setText("Solve");
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        solveMenuItem.setText("Find solution");
+        solveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                solveMenuItemActionPerformed(evt);
             }
         });
-        solveMenu.add(jMenuItem1);
+        solveMenu.add(solveMenuItem);
+
+        checkMenuItem.setText("Uniquely solvable?");
+        checkMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkMenuItemActionPerformed(evt);
+            }
+        });
+        solveMenu.add(checkMenuItem);
+
+        bruteForceStepsMenuItem.setText("Brute Force steps");
+        solveMenu.add(bruteForceStepsMenuItem);
 
         menuBar.add(solveMenu);
 
@@ -223,13 +236,22 @@ public class PuzzleFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void solveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveMenuItemActionPerformed
         Nonogram puzzle = drawPanel.getPuzzle();
         System.out.println("Puzzle: " + puzzle);
         boolean[][] solution = NonogramSolver.findAnySolution(puzzle);
         System.out.println("Solution: " + Arrays.deepToString(solution));
         drawPanel.setSolution(solution);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_solveMenuItemActionPerformed
+
+    private void checkMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMenuItemActionPerformed
+        Nonogram puzzle = drawPanel.getPuzzle();
+        boolean unique = NonogramSolver.hasUniqueSolution(puzzle);
+        
+        String message = unique ? "Unique solution!" : "No unique solution.";
+        int type = unique ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+        JOptionPane.showMessageDialog(this, message, "Unique solution?", type);
+    }//GEN-LAST:event_checkMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -267,19 +289,21 @@ public class PuzzleFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem bruteForceStepsMenuItem;
     private javax.swing.JRadioButton buildingModeRadioButton;
+    private javax.swing.JMenuItem checkMenuItem;
     private javax.swing.JButton clearButton;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JLabel modeLabel;
     private javax.swing.JMenuItem newMenuItem;
     private javax.swing.JMenu solveMenu;
+    private javax.swing.JMenuItem solveMenuItem;
     private javax.swing.JRadioButton solvingModeRadioButton;
     // End of variables declaration//GEN-END:variables
 }
