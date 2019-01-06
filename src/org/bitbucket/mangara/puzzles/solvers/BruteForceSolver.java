@@ -15,19 +15,52 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 
 public class BruteForceSolver {
 
+    public static boolean recordPartials = false;
+    private static List<boolean[][]> partialSolutionRecord;
+
+    private static void clearRecord() {
+        if (!recordPartials) {
+            return;
+        }
+
+        partialSolutionRecord = new ArrayList<>();
+    }
+
+    private static void recordPartialSolution(boolean[][] partialSolution, int upToRow) {
+        if (!recordPartials) {
+            return;
+        }
+
+        boolean[][] copy = new boolean[partialSolution.length][partialSolution[0].length];
+
+        for (int i = 0; i < partialSolution.length; i++) {
+            copy[i] = new boolean[partialSolution[i].length];
+            System.arraycopy(partialSolution[i], 0, copy[i], 0, upToRow);
+        }
+
+        partialSolutionRecord.add(copy);
+    }
+    
+    public static List<boolean[][]> getPartialSolutionRecord() {
+        return partialSolutionRecord;
+    }
+
     public static boolean[][] findAnySolution(Nonogram puzzle) {
+        clearRecord();
         boolean[][] solution = new boolean[puzzle.getWidth()][puzzle.getHeight()];
         boolean solved = findBruteForceSolution(puzzle, solution, 0);
         return solved ? solution : null;
     }
-    
+
     public static boolean hasUniqueSolution(Nonogram puzzle) {
+        clearRecord();
         return findUniqueBruteForceSolution(puzzle, false, new boolean[puzzle.getWidth()][puzzle.getHeight()], 0);
     }
 
@@ -42,6 +75,8 @@ public class BruteForceSolver {
                 return false;
             }
         }
+
+        recordPartialSolution(partialSolution, rowToSolve);
 
         // Are we done?
         if (rowToSolve == puzzle.getHeight()) {
@@ -64,13 +99,16 @@ public class BruteForceSolver {
             if (solved) {
                 System.out.println("Solved!");
                 return true;
+            } else {
+                recordPartialSolution(partialSolution, rowToSolve);
             }
+
             System.out.println("Row " + rowToSolve + " not solved.");
         }
 
         return false;
     }
-    
+
     private static boolean findUniqueBruteForceSolution(Nonogram puzzle, boolean solved, boolean[][] partialSolution, int rowToSolve) {
         System.out.println("Solving row " + rowToSolve);
 
@@ -90,7 +128,7 @@ public class BruteForceSolver {
         }
 
         List<Integer> rowNumbers = puzzle.getSideNumbers().get(rowToSolve);
-        
+
         boolean mySolved = solved;
 
         // Try each possible solution for this row
@@ -120,7 +158,7 @@ public class BruteForceSolver {
                     // Still okay, no solution yet
                 }
             }
-            
+
             System.out.println("Row " + rowToSolve + " not solved.");
         }
 
