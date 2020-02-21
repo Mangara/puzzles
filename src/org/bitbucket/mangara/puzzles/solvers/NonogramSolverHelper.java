@@ -103,28 +103,28 @@ public class NonogramSolverHelper {
                 firstFree = firstUnknown + numbers.get(i) - osp.blocks.get(i) + 1;
             }
         }
-        
+
         List<Integer> numbersLeft = numbers.subList(osp.blocks.size(), numbers.size());
         int spaceRequired = getSpaceRequired(numbersLeft);
         int spaceLeft = partial.length - firstFree;
-        
+
         return spaceLeft >= spaceRequired;
     }
 
     public static List<boolean[]> getAllSolutions(List<Integer> numbers, int width) {
         List<boolean[]> result = new ArrayList<>();
-        
+
         if (width == 0) {
             return result;
         }
-        
+
         if (numbers.isEmpty()) {
             result.add(new boolean[width]);
             return result;
         }
-        
+
         int n = numbers.get(0);
-        
+
         if (numbers.size() == 1) {
             for (int i = 0; i <= width - n; i++) {
                 boolean[] solution = new boolean[width];
@@ -133,11 +133,11 @@ public class NonogramSolverHelper {
             }
             return result;
         }
-        
+
         List<Integer> rest = numbers.subList(1, numbers.size());
         int spaceRequiredForRest = getSpaceRequired(rest);
         int lastStart = width - n - 1 - spaceRequiredForRest;
-        
+
         for (int i = 0; i <= lastStart; i++) {
             List<boolean[]> allSolutionsForRest = getAllSolutions(rest, width - n - 1 - i);
             for (boolean[] partial : allSolutionsForRest) {
@@ -145,6 +145,114 @@ public class NonogramSolverHelper {
                 Arrays.fill(solution, i, i + n, true);
                 System.arraycopy(partial, 0, solution, i + n + 1, width - n - 1 - i);
                 result.add(solution);
+            }
+        }
+
+        return result;
+    }
+
+    public static SolutionState[] readRow(SolutionState[][] solution, int row) {
+        SolutionState[] rowValues = new SolutionState[solution.length];
+        for (int i = 0; i < solution.length; i++) {
+            rowValues[i] = solution[i][row];
+        }
+        return rowValues;
+    }
+
+    public static SolutionState[] readColumn(SolutionState[][] solution, int col) {
+        return solution[col];
+    }
+
+    public static void writeRow(SolutionState[][] solution, int row, SolutionState[] values) {
+        for (int i = 0; i < solution.length; i++) {
+            solution[i][row] = values[i];
+        }
+    }
+
+    public static void writeColumn(SolutionState[][] solution, int col, SolutionState[] values) {
+        for (int i = 0; i < solution.length; i++) {
+            solution[col][i] = values[i];
+        }
+    }
+
+    public static boolean isSolved(SolutionState[][] solution) {
+        for (int i = 0; i < solution.length; i++) {
+            for (int j = 0; j < solution[i].length; j++) {
+                if (solution[i][j] == SolutionState.UNKNOWN) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @param solution
+     * @return A boolean array of the same size that is true when the solution
+     * is FILLED and false otherwise.
+     */
+    static boolean[][] convertToBooleanArray(SolutionState[][] solution) {
+        boolean[][] result = new boolean[solution.length][solution[0].length];
+
+        for (int i = 0; i < solution.length; i++) {
+            for (int j = 0; j < solution[i].length; j++) {
+                if (solution[i][j] == SolutionState.FILLED) {
+                    result[i][j] = true;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param numbers
+     * @param currentValues
+     * @return
+     */
+    public static SolutionState[] intersectAllMatchingSolutions(List<Integer> numbers, SolutionState[] currentValues) {
+        int width = currentValues.length;
+        SolutionState[] result = new SolutionState[width];
+
+        if (numbers.isEmpty()) {
+            for (int i = 0; i < width; i++) {
+                result[i] = SolutionState.EMPTY;
+            }
+        } else {
+            // Assume 1 segment
+            int length = numbers.get(0);
+            for (int i = 0; i <= width - length; i++) {
+                // Try placing at i
+                SolutionState[] placed = new SolutionState[width];
+                for (int j = 0; j < width; j++) {
+                    if (j < i || j >= i + length) {
+                        placed[j] = SolutionState.EMPTY;
+                    } else {
+                        placed[j] = SolutionState.FILLED;
+                    }
+                }
+                
+                // Does it match current values?
+                boolean match = true;
+                for (int j = 0; j < width; j++) {
+                    if (currentValues[j] != SolutionState.UNKNOWN && currentValues[j] != placed[j]) {
+                        match = false;
+                        break;
+                    }
+                }
+                
+                if (match) {
+                    // Intersect
+                    for (int j = 0; j < width; j++) {
+                        if (result[j] == null) {
+                            result[j] = placed[j];
+                        } else if (result[j] != SolutionState.UNKNOWN && result[j] != placed[j]) {
+                            result[j] = SolutionState.UNKNOWN;
+                        }
+                    }
+                }
             }
         }
         

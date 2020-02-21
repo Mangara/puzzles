@@ -20,7 +20,7 @@ import org.bitbucket.mangara.puzzles.data.Nonogram;
 public class NonogramSolver {
 
     public enum Algorithm {
-        BRUTE_FORCE
+        BRUTE_FORCE, ITERATIVE
     }
 
     public static boolean hasUniqueSolution(Nonogram puzzle) {
@@ -31,6 +31,8 @@ public class NonogramSolver {
         switch (algo) {
             case BRUTE_FORCE:
                 return BruteForceSolver.hasUniqueSolution(puzzle);
+            case ITERATIVE:
+                return IterativeSolver.hasUniqueSolution(puzzle);
             default:
                 throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
         }
@@ -44,6 +46,8 @@ public class NonogramSolver {
         switch (algo) {
             case BRUTE_FORCE:
                 return BruteForceSolver.findAnySolution(puzzle);
+            case ITERATIVE:
+                return IterativeSolver.findAnySolution(puzzle);
             default:
                 throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
         }
