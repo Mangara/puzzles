@@ -21,6 +21,7 @@ import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.getFirs
 import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.getSpaceRequired;
 import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.isValidPartial;
 import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.getAllSolutions;
+import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.intersectAllMatchingSolutions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -369,5 +370,56 @@ public class NonogramSolverHelperTest {
         }
         
         return true;
+    }
+    
+    @Test
+    public void testIntersectAllMatchingSolutions() {
+        System.out.println("intersectAllMatchingSolutions");
+        
+        // Empty
+        assertArrayEquals("E0", toState(""), intersectAllMatchingSolutions(Arrays.asList(), toState("")));
+        assertArrayEquals("E1", toState("---"), intersectAllMatchingSolutions(Arrays.asList(), toState("???")));
+        assertArrayEquals("E2", toState("---"), intersectAllMatchingSolutions(Arrays.asList(), toState("--?")));
+        
+        // One segment
+        assertArrayEquals("O1-0", toState("???"), intersectAllMatchingSolutions(Arrays.asList(1), toState("???")));
+        assertArrayEquals("O1-1", toState("X--"), intersectAllMatchingSolutions(Arrays.asList(1), toState("X??")));
+        assertArrayEquals("O1-2", toState("-X-"), intersectAllMatchingSolutions(Arrays.asList(1), toState("?X?")));
+        assertArrayEquals("O1-3", toState("--X"), intersectAllMatchingSolutions(Arrays.asList(1), toState("??X")));
+        assertArrayEquals("O1-4", toState("-??"), intersectAllMatchingSolutions(Arrays.asList(1), toState("-??")));
+        assertArrayEquals("O1-5", toState("?-?"), intersectAllMatchingSolutions(Arrays.asList(1), toState("?-?")));
+        assertArrayEquals("O1-6", toState("??-"), intersectAllMatchingSolutions(Arrays.asList(1), toState("??-")));
+        assertArrayEquals("O1-7", toState("--X"), intersectAllMatchingSolutions(Arrays.asList(1), toState("--?")));
+        assertArrayEquals("O1-8", toState("-X-"), intersectAllMatchingSolutions(Arrays.asList(1), toState("-?-")));
+        assertArrayEquals("O1-9", toState("X--"), intersectAllMatchingSolutions(Arrays.asList(1), toState("?--")));
+        
+        assertArrayEquals("O2-0", toState("?X?"), intersectAllMatchingSolutions(Arrays.asList(2), toState("???")));
+        assertArrayEquals("O2-1", toState("-XX"), intersectAllMatchingSolutions(Arrays.asList(2), toState("-??")));
+        assertArrayEquals("O2-2", toState("?X?"), intersectAllMatchingSolutions(Arrays.asList(2), toState("?X?")));
+        assertArrayEquals("O2-3", toState("XX-"), intersectAllMatchingSolutions(Arrays.asList(2), toState("X??")));
+        assertArrayEquals("O2-4", toState("????"), intersectAllMatchingSolutions(Arrays.asList(2), toState("????")));
+        
+        assertArrayEquals("O3-0", toState("XXX"), intersectAllMatchingSolutions(Arrays.asList(3), toState("???")));
+        assertArrayEquals("O3-1", toState("?XX?"), intersectAllMatchingSolutions(Arrays.asList(3), toState("????")));
+        assertArrayEquals("O3-2", toState("??X??"), intersectAllMatchingSolutions(Arrays.asList(3), toState("?????")));
+        
+    }
+    
+    private SolutionState[] toState(String state) {
+        SolutionState[] result = new SolutionState[state.length()];
+        
+        for (int i = 0; i < state.length(); i++) {
+            result[i] = charToSolutionState(state.charAt(i));
+        }
+        
+        return result;
+    }
+    
+    private SolutionState charToSolutionState(int c) {
+        switch (c) {
+            case '?': return SolutionState.UNKNOWN;
+            case '-': return SolutionState.EMPTY;
+            default: return SolutionState.FILLED;
+        }
     }
 }
