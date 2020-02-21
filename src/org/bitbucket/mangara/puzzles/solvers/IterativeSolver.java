@@ -22,7 +22,7 @@ import org.bitbucket.mangara.puzzles.data.Nonogram;
 
 public class IterativeSolver {
     public static boolean recordPartials = false;
-    private static List<boolean[][]> partialSolutionRecord;
+    private static List<SolutionState[][]> partialSolutionRecord;
 
     private static void clearRecord() {
         if (!recordPartials) {
@@ -32,22 +32,22 @@ public class IterativeSolver {
         partialSolutionRecord = new ArrayList<>();
     }
 
-    private static void recordPartialSolution(boolean[][] partialSolution, int upToRow) {
+    private static void recordPartialSolution(SolutionState[][] partialSolution) {
         if (!recordPartials) {
             return;
         }
 
-        boolean[][] copy = new boolean[partialSolution.length][partialSolution[0].length];
+        SolutionState[][] copy = new SolutionState[partialSolution.length][partialSolution[0].length];
 
         for (int i = 0; i < partialSolution.length; i++) {
-            copy[i] = new boolean[partialSolution[i].length];
-            System.arraycopy(partialSolution[i], 0, copy[i], 0, upToRow);
+            copy[i] = new SolutionState[partialSolution[i].length];
+            System.arraycopy(partialSolution[i], 0, copy[i], 0, partialSolution[i].length);
         }
 
         partialSolutionRecord.add(copy);
     }
     
-    public static List<boolean[][]> getPartialSolutionRecord() {
+    public static List<SolutionState[][]> getPartialSolutionRecord() {
         return partialSolutionRecord;
     }
     
@@ -74,8 +74,12 @@ public class IterativeSolver {
                 List<Integer> rowNumbers = puzzle.getSideNumbers().get(row);
                 SolutionState[] currentValues = NonogramSolverHelper.readRow(solution, row);
                 SolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(rowNumbers, currentValues);
-                progress = progress || !Arrays.equals(currentValues, intersection);
-                NonogramSolverHelper.writeRow(solution, row, intersection);
+                
+                if (!Arrays.equals(currentValues, intersection)) {
+                    progress = true;
+                    NonogramSolverHelper.writeRow(solution, row, intersection);
+                    recordPartialSolution(solution);
+                }
             }
             
             for (int col = 0; col < puzzle.getWidth(); col++) {
