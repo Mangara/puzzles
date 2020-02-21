@@ -403,6 +403,13 @@ public class NonogramSolverHelperTest {
         assertArrayEquals("O3-1", toState("?XX?"), intersectAllMatchingSolutions(Arrays.asList(3), toState("????")));
         assertArrayEquals("O3-2", toState("??X??"), intersectAllMatchingSolutions(Arrays.asList(3), toState("?????")));
         
+        // Multiple segments
+        assertArrayEquals("M1-0", toState("X-X"), intersectAllMatchingSolutions(Arrays.asList(1, 1), toState("???")));
+        assertArrayEquals("M1-1", toState("????"), intersectAllMatchingSolutions(Arrays.asList(1, 1), toState("????")));
+        assertArrayEquals("M1-2", toState("XX-X"), intersectAllMatchingSolutions(Arrays.asList(2, 1), toState("????")));
+        assertArrayEquals("M1-3", toState("X-XX"), intersectAllMatchingSolutions(Arrays.asList(1, 2), toState("????")));
+        assertArrayEquals("M1-4", toState("?X???"), intersectAllMatchingSolutions(Arrays.asList(2, 1), toState("?????")));
+        assertArrayEquals("M1-5", toState("?XX??XX?"), intersectAllMatchingSolutions(Arrays.asList(3, 3), toState("????????")));
     }
     
     private SolutionState[] toState(String state) {

@@ -17,6 +17,7 @@ package org.bitbucket.mangara.puzzles.solvers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -209,50 +210,127 @@ public class NonogramSolverHelper {
     /**
      *
      * @param numbers
-     * @param currentValues
+     * @param knownValues
      * @return
      */
-    public static SolutionState[] intersectAllMatchingSolutions(List<Integer> numbers, SolutionState[] currentValues) {
-        int width = currentValues.length;
-        SolutionState[] result = new SolutionState[width];
-
-        if (numbers.isEmpty()) {
-            for (int i = 0; i < width; i++) {
-                result[i] = SolutionState.EMPTY;
+    public static SolutionState[] intersectAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues) {
+        List<SolutionState[]> allMatchingSolutions = generateAllMatchingSolutions(numbers, knownValues);
+        
+//        System.out.println("Numbers: " + numbers + " Known values: " + solutionToString(knownValues));
+//        System.out.println("All matching solutions:");
+//        for (SolutionState[] solution : allMatchingSolutions) {
+//            System.out.println("  " + solutionToString(solution));
+//        }
+        
+        SolutionState[] result = intersection(allMatchingSolutions, knownValues.length);
+        
+//        System.out.println("Intersection: " + solutionToString(result));
+        
+        return result;
+    }
+    
+    public static String solutionToString(SolutionState[] solution) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < solution.length; i++) {
+            switch (solution[i]) {
+                case EMPTY:
+                    sb.append('-');
+                    break;
+                case FILLED:
+                    sb.append('X');
+                    break;
+                case UNKNOWN:
+                    sb.append('?');
+                    break;
             }
-        } else {
-            // Assume 1 segment
-            int length = numbers.get(0);
-            for (int i = 0; i <= width - length; i++) {
-                // Try placing at i
-                SolutionState[] placed = new SolutionState[width];
-                for (int j = 0; j < width; j++) {
-                    if (j < i || j >= i + length) {
-                        placed[j] = SolutionState.EMPTY;
-                    } else {
-                        placed[j] = SolutionState.FILLED;
-                    }
+        }
+        return sb.toString();
+    }
+    
+    private static List<SolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues) {
+        return generateAllMatchingSolutions(numbers, knownValues, 0, new SolutionState[knownValues.length], 0);
+    }
+    
+    private static List<SolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues, int segment, SolutionState[] currentSolution, int position) {
+        int width = knownValues.length;
+        
+        if (segment == numbers.size()) {
+            // We have a complete solution
+            for (int i = position; i < width; i++) {
+                if (knownValues[i] == SolutionState.FILLED) {
+                    // No match
+                    return Collections.EMPTY_LIST;
                 }
                 
-                // Does it match current values?
-                boolean match = true;
-                for (int j = 0; j < width; j++) {
-                    if (currentValues[j] != SolutionState.UNKNOWN && currentValues[j] != placed[j]) {
-                        match = false;
-                        break;
-                    }
+                currentSolution[i] = SolutionState.EMPTY;
+            }
+            
+            SolutionState[] result = new SolutionState[width];
+            System.arraycopy(currentSolution, 0, result, 0, width);
+            
+            return Collections.singletonList(result);
+        }
+        
+        int segmentLength = numbers.get(segment);
+        int restSpaceNeeded = (segment == numbers.size() - 1 ? 0 : 1 + getSpaceRequired(numbers.subList(segment + 1, numbers.size())));
+        int lastSpot = width - restSpaceNeeded - segmentLength;
+        
+        List<SolutionState[]> solutions = new ArrayList<>();
+        
+        for (int spot = position; spot <= lastSpot; spot++) {
+            // Place this segment at this spot
+            for (int i = position; i < spot + segmentLength; i++) {
+                if (i < spot) {
+                    currentSolution[i] = SolutionState.EMPTY;
+                } else {
+                    currentSolution[i] = SolutionState.FILLED;
                 }
-                
-                if (match) {
-                    // Intersect
-                    for (int j = 0; j < width; j++) {
-                        if (result[j] == null) {
-                            result[j] = placed[j];
-                        } else if (result[j] != SolutionState.UNKNOWN && result[j] != placed[j]) {
-                            result[j] = SolutionState.UNKNOWN;
-                        }
-                    }
+            }
+            
+            int newPosition = spot + segmentLength;
+            
+            if (segment < numbers.size() - 1) {
+                currentSolution[newPosition] = SolutionState.EMPTY;
+                newPosition++;
+            }
+            
+            // Does it match?
+            boolean match = true;
+            for (int i = position; i < newPosition; i++) {
+                if (knownValues[i] != SolutionState.UNKNOWN && knownValues[i] != currentSolution[i]) {
+                    match = false;
+                    break;
                 }
+            }
+            
+            if (match) {
+                solutions.addAll(generateAllMatchingSolutions(numbers, knownValues, segment + 1, currentSolution, newPosition));
+            }
+        }
+        
+        return solutions;
+    }
+    
+    private static SolutionState[] intersection(List<SolutionState[]> solutions, int width) {
+        if (solutions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+        
+        SolutionState[] result = solutions.get(0);
+        int known = width;
+        
+        for (int i = 1; i < solutions.size(); i++) {
+            SolutionState[] solution = solutions.get(i);
+            
+            for (int j = 0; j < width; j++) {
+                if (result[j] != SolutionState.UNKNOWN && result[j] != solution[j]) {
+                    result[j] = SolutionState.UNKNOWN;
+                    known--;
+                }
+            }
+            
+            if (known == 0) {
+                break;
             }
         }
         
