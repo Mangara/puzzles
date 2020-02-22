@@ -15,6 +15,7 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import org.bitbucket.mangara.puzzles.data.SolutionState;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -171,9 +172,7 @@ public class NonogramSolverHelper {
     }
 
     public static void writeColumn(SolutionState[][] solution, int col, SolutionState[] values) {
-        for (int i = 0; i < solution.length; i++) {
-            solution[col][i] = values[i];
-        }
+        System.arraycopy(values, 0, solution[col], 0, solution[col].length);
     }
 
     public static boolean isSolved(SolutionState[][] solution) {

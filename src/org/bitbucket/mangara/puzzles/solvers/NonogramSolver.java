@@ -32,7 +32,7 @@ public class NonogramSolver {
             case BRUTE_FORCE:
                 return BruteForceSolver.hasUniqueSolution(puzzle);
             case ITERATIVE:
-                return IterativeSolver.hasUniqueSolution(puzzle);
+                return (new IterativeSolver()).hasUniqueSolution(puzzle);
             default:
                 throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
         }
@@ -47,7 +47,7 @@ public class NonogramSolver {
             case BRUTE_FORCE:
                 return BruteForceSolver.findAnySolution(puzzle);
             case ITERATIVE:
-                return IterativeSolver.findAnySolution(puzzle);
+                return (new IterativeSolver()).findAnySolution(puzzle);
             default:
                 throw new IllegalArgumentException("Unrecognized algorithm: " + algo);
         }
