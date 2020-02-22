@@ -15,16 +15,25 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import org.bitbucket.mangara.puzzles.data.SolutionState;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 
 public class IterativeSolver {
-    public static boolean recordPartials = false;
-    private static List<SolutionState[][]> partialSolutionRecord;
+    private final boolean recordPartials;
+    private List<SolutionState[][]> partialSolutionRecord;
 
-    private static void clearRecord() {
+    public IterativeSolver() {
+        this(false);
+    }
+
+    public IterativeSolver(boolean recordPartials) {
+        this.recordPartials = recordPartials;
+    }
+
+    private void clearRecord() {
         if (!recordPartials) {
             return;
         }
@@ -32,7 +41,7 @@ public class IterativeSolver {
         partialSolutionRecord = new ArrayList<>();
     }
 
-    private static void recordPartialSolution(SolutionState[][] partialSolution) {
+    private void recordPartialSolution(SolutionState[][] partialSolution) {
         if (!recordPartials) {
             return;
         }
@@ -47,23 +56,27 @@ public class IterativeSolver {
         partialSolutionRecord.add(copy);
     }
     
-    public static List<SolutionState[][]> getPartialSolutionRecord() {
+    public List<SolutionState[][]> getPartialSolutionRecord() {
         return partialSolutionRecord;
     }
     
-    public static boolean[][] findAnySolution(Nonogram puzzle) {
+    public boolean[][] findAnySolution(Nonogram puzzle) {
         clearRecord();
         SolutionState[][] solution = findSolution(puzzle);
         return (NonogramSolverHelper.isSolved(solution) ? NonogramSolverHelper.convertToBooleanArray(solution) : null);
     }
     
-    public static boolean hasUniqueSolution(Nonogram puzzle) {
+    public boolean hasUniqueSolution(Nonogram puzzle) {
         clearRecord();
         return NonogramSolverHelper.isSolved(findSolution(puzzle));
     }
     
-    private static SolutionState[][] findSolution(Nonogram puzzle) {
+    private SolutionState[][] findSolution(Nonogram puzzle) {
         SolutionState[][] solution = new SolutionState[puzzle.getWidth()][puzzle.getHeight()];
+        for (int i = 0; i < puzzle.getWidth(); i++) {
+            Arrays.fill(solution[i], SolutionState.UNKNOWN);
+        }
+        
         boolean progress = true;
         
         while (progress) {
@@ -87,8 +100,12 @@ public class IterativeSolver {
                 List<Integer> colNumbers = puzzle.getTopNumbers().get(col);
                 SolutionState[] currentValues = NonogramSolverHelper.readColumn(solution, col);
                 SolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(colNumbers, currentValues);
-                progress = progress || !Arrays.equals(currentValues, intersection);
-                NonogramSolverHelper.writeColumn(solution, col, intersection);
+                
+                if (!Arrays.equals(currentValues, intersection)) {
+                    progress = true;
+                    NonogramSolverHelper.writeColumn(solution, col, intersection);
+                    recordPartialSolution(solution);
+                }
             }
         }
         

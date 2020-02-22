@@ -15,6 +15,7 @@
  */
 package org.bitbucket.mangara.puzzles.solvers;
 
+import org.bitbucket.mangara.puzzles.data.SolutionState;
 import java.util.Arrays;
 import java.util.List;
 import static org.bitbucket.mangara.puzzles.solvers.NonogramSolverHelper.getFirstSegmentLength;
