@@ -18,10 +18,13 @@ package org.bitbucket.mangara.puzzles.gui;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
+import org.bitbucket.mangara.puzzles.data.SolutionState;
+import org.bitbucket.mangara.puzzles.solvers.IterativeSolver;
 import org.bitbucket.mangara.puzzles.solvers.NonogramSolver;
 
 public class PuzzleFrame extends javax.swing.JFrame {
@@ -79,6 +82,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         solveMenuItem = new javax.swing.JMenuItem();
         checkMenuItem = new javax.swing.JMenuItem();
         bruteForceStepsMenuItem = new javax.swing.JMenuItem();
+        iterativeStepsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Puzzles");
@@ -186,7 +190,20 @@ public class PuzzleFrame extends javax.swing.JFrame {
         solveMenu.add(checkMenuItem);
 
         bruteForceStepsMenuItem.setText("Brute Force steps");
+        bruteForceStepsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bruteForceStepsMenuItemActionPerformed(evt);
+            }
+        });
         solveMenu.add(bruteForceStepsMenuItem);
+
+        iterativeStepsMenuItem.setText("Iterative steps");
+        iterativeStepsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iterativeStepsMenuItemActionPerformed(evt);
+            }
+        });
+        solveMenu.add(iterativeStepsMenuItem);
 
         menuBar.add(solveMenu);
 
@@ -253,6 +270,19 @@ public class PuzzleFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message, "Unique solution?", type);
     }//GEN-LAST:event_checkMenuItemActionPerformed
 
+    private void bruteForceStepsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bruteForceStepsMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bruteForceStepsMenuItemActionPerformed
+
+    private void iterativeStepsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterativeStepsMenuItemActionPerformed
+        IterativeSolver solver = new IterativeSolver(true);
+        Nonogram puzzle = drawPanel.getPuzzle();
+        solver.findAnySolution(puzzle);
+        List<SolutionState[][]> steps = solver.getPartialSolutionRecord();
+        SolutionStepsDialog stepsDialog = new SolutionStepsDialog(this, false, steps, drawPanel);
+        stepsDialog.setVisible(true);
+    }//GEN-LAST:event_iterativeStepsMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -297,6 +327,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem importMenuItem;
+    private javax.swing.JMenuItem iterativeStepsMenuItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.ButtonGroup modeButtonGroup;
