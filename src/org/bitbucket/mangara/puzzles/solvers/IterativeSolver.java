@@ -76,6 +76,7 @@ public class IterativeSolver {
         for (int i = 0; i < puzzle.getWidth(); i++) {
             Arrays.fill(solution[i], SolutionState.UNKNOWN);
         }
+        recordPartialSolution(solution);
         
         boolean progress = true;
         
