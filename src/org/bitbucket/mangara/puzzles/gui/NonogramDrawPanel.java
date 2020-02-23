@@ -64,8 +64,23 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         return nonogramResult[0].length;
     }
     
+    public boolean[][] getDrawing() {
+        return nonogramResult;
+    }
+    
     public Nonogram getPuzzle() {
         return NonogramGenerator.generateNonogram(nonogramResult);
+    }
+    
+    public void setPuzzle(boolean[][] drawing) {
+        int width = drawing.length;
+        int height = drawing[0].length;
+        newNonogram(width, height);
+        building = true;
+        for (int i = 0; i < drawing.length; i++) {
+            System.arraycopy(drawing[i], 0, nonogramResult[i], 0, drawing[i].length);
+        }
+        repaint();
     }
     
     public void setSolution(boolean[][] solution) {
@@ -102,11 +117,6 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
             Arrays.fill(column, SolutionState.UNKNOWN);
         }
         repaint();
-    }
-
-    public void saveNonogram(File outputFile) throws IOException {
-        Nonogram puzzle = NonogramGenerator.generateNonogram(nonogramResult);
-        NonogramPrinter.printNonogram(puzzle, outputFile.toPath());
     }
 
     public void clear() {
