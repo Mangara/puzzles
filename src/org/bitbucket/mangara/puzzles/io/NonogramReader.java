@@ -21,41 +21,48 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 import org.bitbucket.mangara.puzzles.generators.NonogramGenerator;
 
 public class NonogramReader {
-
-    private static final Set<Character> FILLED_CHARS;
-
-    static {
-        FILLED_CHARS = new HashSet<>();
-        FILLED_CHARS.add('X');
-    }
 
     public static Nonogram readNonogram(Path inputFile) throws IOException {
         boolean[][] drawing = readDrawing(inputFile);
         return NonogramGenerator.generateNonogram(drawing);
     }
 
-    private static boolean[][] readDrawing(Path inputFile) throws IOException {
+    public static boolean[][] readDrawing(Path inputFile) throws IOException {
         List<boolean[]> result = new ArrayList<>();
 
         try (BufferedReader in = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8)) {
             for (String line = in.readLine(); line != null; line = in.readLine()) {
-                boolean[] drawingLine = new boolean[line.length()];
-
-                for (int i = 0; i < line.length(); i++) {
-                    drawingLine[i] = FILLED_CHARS.contains(line.charAt(i));
-                }
-
-                result.add(drawingLine);
+                result.add(readLine(line));
             }
         }
 
-        return result.toArray(new boolean[result.size()][result.get(0).length]);
+        return toDrawing(result);
+    }
+    
+    private static boolean[] readLine(String line) {
+        boolean[] drawingLine = new boolean[line.length()];
+
+        for (int i = 0; i < line.length(); i++) {
+            drawingLine[i] = (line.charAt(i) == NonogramWriter.FILLED);
+        }
+
+        return drawingLine;
+    }
+    
+    private static boolean[][] toDrawing(List<boolean[]> lines) {
+        boolean[][] result = new boolean[lines.get(0).length][lines.size()];
+        
+        for (int i = 0; i < lines.get(0).length; i++) {
+            for (int j = 0; j < lines.size(); j++) {
+                result[i][j] = lines.get(j)[i];
+            }
+        }
+        
+        return result;
     }
 }

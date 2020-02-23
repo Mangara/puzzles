@@ -24,16 +24,23 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.bitbucket.mangara.puzzles.data.Nonogram;
 import org.bitbucket.mangara.puzzles.data.SolutionState;
+import org.bitbucket.mangara.puzzles.io.NonogramPrinter;
+import org.bitbucket.mangara.puzzles.io.NonogramReader;
+import org.bitbucket.mangara.puzzles.io.NonogramWriter;
 import org.bitbucket.mangara.puzzles.solvers.IterativeSolver;
 import org.bitbucket.mangara.puzzles.solvers.NonogramSolver;
 
 public class PuzzleFrame extends javax.swing.JFrame {
 
+    private static final String TXT_EXTENSION = "txt";
+    private static final String PNG_EXTENSION = "png";
+    
     private final NewNonogramDialog newDialog;
     private final NonogramDrawPanel drawPanel;
     private final JFileChooser saveFileChooser;
-    private final String pngExtension = "png";
-    private final FileNameExtensionFilter myFilter = new FileNameExtensionFilter("PNG Images", pngExtension);
+    private final JFileChooser exportFileChooser;
+    private final FileNameExtensionFilter saveFileFilter = new FileNameExtensionFilter("Text files", TXT_EXTENSION);
+    private final FileNameExtensionFilter exportFileFilter = new FileNameExtensionFilter("PNG Images", PNG_EXTENSION);
     
     /**
      * Creates new form PuzzleFrame
@@ -46,9 +53,13 @@ public class PuzzleFrame extends javax.swing.JFrame {
         
         newDialog = new NewNonogramDialog(this, true);
         
+        exportFileChooser = new JFileChooser(System.getProperty("user.dir"));
+        exportFileChooser.addChoosableFileFilter(exportFileFilter);
+        exportFileChooser.setFileFilter(exportFileFilter);
+        
         saveFileChooser = new JFileChooser(System.getProperty("user.dir"));
-        saveFileChooser.addChoosableFileFilter(myFilter);
-        saveFileChooser.setFileFilter(myFilter);
+        saveFileChooser.addChoosableFileFilter(saveFileFilter);
+        saveFileChooser.setFileFilter(saveFileFilter);
         
         pack();
     }
@@ -75,9 +86,9 @@ public class PuzzleFrame extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         newMenuItem = new javax.swing.JMenuItem();
-        importMenuItem = new javax.swing.JMenuItem();
+        openMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
         solveMenu = new javax.swing.JMenu();
         solveMenuItem = new javax.swing.JMenuItem();
         checkMenuItem = new javax.swing.JMenuItem();
@@ -153,11 +164,25 @@ public class PuzzleFrame extends javax.swing.JFrame {
         });
         fileMenu.add(newMenuItem);
 
-        importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        importMenuItem.setText("Import...");
-        fileMenu.add(importMenuItem);
+        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setText("Open...");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openMenuItem);
 
-        exportMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenuItem.setText("Save...");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        exportMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         exportMenuItem.setText("Export...");
         exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,9 +192,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
         fileMenu.add(exportMenuItem);
 
         menuBar.add(fileMenu);
-
-        editMenu.setText("Edit");
-        menuBar.add(editMenu);
 
         solveMenu.setText("Solve");
 
@@ -230,18 +252,19 @@ public class PuzzleFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newMenuItemActionPerformed
 
     private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
-        int saved = saveFileChooser.showSaveDialog(this);
+        int saved = exportFileChooser.showSaveDialog(this);
 
         if (saved == JFileChooser.APPROVE_OPTION) {
             try {
-                File selectedFile = saveFileChooser.getSelectedFile();
+                File selectedFile = exportFileChooser.getSelectedFile();
 
                 // Add an extension if that wasn't done already and save the current grid
-                if (!selectedFile.getName().contains("." + pngExtension)) {
-                    selectedFile = new File(selectedFile.getParent(), selectedFile.getName() + "." + pngExtension);
+                if (!selectedFile.getName().contains("." + PNG_EXTENSION)) {
+                    selectedFile = new File(selectedFile.getParent(), selectedFile.getName() + "." + PNG_EXTENSION);
                 }
 
-                drawPanel.saveNonogram(selectedFile);
+                Nonogram puzzle = drawPanel.getPuzzle();
+                NonogramPrinter.printNonogram(puzzle, selectedFile.toPath());
             } catch (IOException ioe) {
                 // Nice error
                 ioe.printStackTrace();
@@ -283,6 +306,52 @@ public class PuzzleFrame extends javax.swing.JFrame {
         stepsDialog.setVisible(true);
     }//GEN-LAST:event_iterativeStepsMenuItemActionPerformed
 
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        int saved = saveFileChooser.showOpenDialog(this);
+
+        if (saved == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = saveFileChooser.getSelectedFile();
+
+                boolean[][] drawing = NonogramReader.readDrawing(selectedFile.toPath());
+                drawPanel.setPuzzle(drawing);
+            } catch (IOException ex) {
+                // Nice error
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "An error occurred while reading the data:\n"
+                        + ex.getMessage(),
+                        "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        int saved = saveFileChooser.showSaveDialog(this);
+
+        if (saved == JFileChooser.APPROVE_OPTION) {
+            try {
+                File selectedFile = saveFileChooser.getSelectedFile();
+
+                // Add an extension if that wasn't done already and save the current grid
+                if (!selectedFile.getName().contains("." + TXT_EXTENSION)) {
+                    selectedFile = new File(selectedFile.getParent(), selectedFile.getName() + "." + TXT_EXTENSION);
+                }
+
+                boolean[][] drawing = drawPanel.getDrawing();
+                NonogramWriter writer = new NonogramWriter();
+                writer.save(drawing, selectedFile.toPath());
+            } catch (IOException ioe) {
+                // Nice error
+                ioe.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "An error occurred while saving the data:\n"
+                        + ioe.getMessage(),
+                        "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -323,16 +392,16 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton buildingModeRadioButton;
     private javax.swing.JMenuItem checkMenuItem;
     private javax.swing.JButton clearButton;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JMenuItem iterativeStepsMenuItem;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JLabel modeLabel;
     private javax.swing.JMenuItem newMenuItem;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JMenu solveMenu;
     private javax.swing.JMenuItem solveMenuItem;
     private javax.swing.JRadioButton solvingModeRadioButton;
