@@ -1,10 +1,8 @@
-#Simple Nonogram Generator#
+# Simple Nonogram Generator
 
 The input is a plain text file containing the desired image, like this:
 
-```
-#!text
-
+```text
 -------------XXX-------------
 -XXXX---XX--XXXXX--XX---XXXX-
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXX
