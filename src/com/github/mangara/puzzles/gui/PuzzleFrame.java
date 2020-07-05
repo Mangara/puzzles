@@ -35,7 +35,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private static final String TXT_EXTENSION = "txt";
     private static final String PNG_EXTENSION = "png";
     
-    private final NewNonogramDialog newDialog;
+    private final NewPuzzleDialog newDialog;
     private final NonogramDrawPanel drawPanel;
     private final JFileChooser saveFileChooser;
     private final JFileChooser exportFileChooser;
@@ -51,7 +51,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         drawPanel = new NonogramDrawPanel();
         getContentPane().add(drawPanel, java.awt.BorderLayout.CENTER);
         
-        newDialog = new NewNonogramDialog(this, true);
+        newDialog = new NewPuzzleDialog(this, true);
         
         exportFileChooser = new JFileChooser(System.getProperty("user.dir"));
         exportFileChooser.addChoosableFileFilter(exportFileFilter);
@@ -247,7 +247,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_solvingModeRadioButtonActionPerformed
 
     private void newMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuItemActionPerformed
-        newDialog.setValues(drawPanel.getNonogramWidth(), drawPanel.getNonogramHeight());
         newDialog.setVisible(true);
     }//GEN-LAST:event_newMenuItemActionPerformed
 
