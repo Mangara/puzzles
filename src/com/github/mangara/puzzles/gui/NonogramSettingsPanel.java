@@ -27,14 +27,14 @@ public class NonogramSettingsPanel extends javax.swing.JPanel {
     }
     
     public CreateNonogramSettings getSettings() {
-        return new CreateNonogramSettings(getWidth(), getHeight());
+        return new CreateNonogramSettings(getNonogramWidth(), getNonogramHeight());
     }
 
-    public int getWidth() {
+    public int getNonogramWidth() {
         return (int) widthSpinner.getValue();
     }
     
-    public int getHeight() {
+    public int getNonogramHeight() {
         return (int) heightSpinner.getValue();
     }
     
@@ -72,7 +72,7 @@ public class NonogramSettingsPanel extends javax.swing.JPanel {
                     .addComponent(heightLabel))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(heightSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(heightSpinner)
                     .addComponent(widthSpinner))
                 .addContainerGap())
         );
