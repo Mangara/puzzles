@@ -36,8 +36,8 @@ public class PuzzleSettingsPanel extends javax.swing.JPanel {
         logiquizSettings = new LogiquizSettingsPanel();
         nonogramSettings = new NonogramSettingsPanel();
         
-        layout.addLayoutComponent(logiquizSettings, PuzzleType.LOGIQUIZ.name());
-        layout.addLayoutComponent(nonogramSettings, PuzzleType.NONOGRAM.name());
+        add(logiquizSettings, PuzzleType.LOGIQUIZ.name());
+        add(nonogramSettings, PuzzleType.NONOGRAM.name());
     }
     
     public CreatePuzzleSettings getSettings(PuzzleType type) {
