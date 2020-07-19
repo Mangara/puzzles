@@ -57,6 +57,10 @@ public class LogiquizSettingsPanel extends javax.swing.JPanel {
 
         groupSizeLabel.setText("Group size:");
 
+        groupsSpinner.setModel(new javax.swing.SpinnerNumberModel(4, 1, null, 1));
+
+        groupSizeSpinner.setModel(new javax.swing.SpinnerNumberModel(3, 1, null, 1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
