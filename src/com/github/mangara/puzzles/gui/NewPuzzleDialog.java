@@ -15,17 +15,16 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.data.CreatePuzzleSettings;
 import com.github.mangara.puzzles.data.PuzzleType;
 
 public class NewPuzzleDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form NewNonogramDialog
-     * @param parent
-     * @param modal
-     */
-    public NewPuzzleDialog(java.awt.Frame parent, boolean modal) {
+    private final MainFrame puzzleFrame;
+    
+    public NewPuzzleDialog(MainFrame parent, boolean modal) {
         super(parent, modal);
+        this.puzzleFrame = parent;
         initComponents();
     }
     
@@ -149,9 +148,8 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        
-        
-        // ((PuzzleFrame) getParent()).newPuzzle((Integer) widthSpinner.getValue(), (Integer) heightSpinner.getValue());
+        CreatePuzzleSettings settings = ((PuzzleSettingsPanel) settingsPanel).getSettings(selectedType());
+        puzzleFrame.newPuzzle(settings);
         setVisible(false);
     }//GEN-LAST:event_createButtonActionPerformed
 

@@ -17,11 +17,11 @@ package com.github.mangara.puzzles.data;
 
 import java.util.List;
 
-public class Nonogram {
+public class Nonogram implements Puzzle {
 
     private final List<List<Integer>> sideNumbers;
     private final List<List<Integer>> topNumbers;
-
+    
     public Nonogram(List<List<Integer>> sideNumbers, List<List<Integer>> topNumbers) {
         if (sideNumbers == null || topNumbers == null) {
             throw new IllegalArgumentException("Numbers may not be null");
@@ -33,6 +33,11 @@ public class Nonogram {
 
         this.sideNumbers = sideNumbers;
         this.topNumbers = topNumbers;
+    }
+    
+    @Override
+    public PuzzleType getType() {
+        return PuzzleType.NONOGRAM;
     }
 
     public List<List<Integer>> getSideNumbers() {
