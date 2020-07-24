@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.data.SolvedNonogram;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,7 +29,8 @@ public class NonogramWriter {
     static final char FILLED = 'X';
     static final char EMPTY = '-';
     
-    public void save(boolean[][] drawing, Path file) throws IOException {
+    public static void save(SolvedNonogram nonogram, Path file) throws IOException {
+        boolean[][] drawing = nonogram.getDrawing();
         try (BufferedWriter out = Files.newBufferedWriter(file)) {
             for (int row = 0; row < drawing[0].length; row++) {
                 writeRow(drawing, row, out);
@@ -36,14 +38,14 @@ public class NonogramWriter {
         }
     }
 
-    private void writeRow(boolean[][] drawing, int row, BufferedWriter out) throws IOException {
+    private static void writeRow(boolean[][] drawing, int row, BufferedWriter out) throws IOException {
         for (int i = 0; i < drawing.length; i++) {
             out.write(squareToChar(drawing[i][row]));
         }
         out.newLine();
     }
 
-    private char squareToChar(boolean value) {
+    private static char squareToChar(boolean value) {
         if (value) {
             return FILLED;
         } else {

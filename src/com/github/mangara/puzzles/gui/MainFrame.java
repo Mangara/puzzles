@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import com.github.mangara.puzzles.io.NonogramPrinter;
 import com.github.mangara.puzzles.io.NonogramReader;
 import com.github.mangara.puzzles.io.NonogramWriter;
@@ -307,7 +307,7 @@ public class MainFrame extends javax.swing.JFrame {
         IterativeSolver solver = new IterativeSolver(true);
         Nonogram puzzle = drawPanel.getPuzzle();
         solver.findAnySolution(puzzle);
-        List<SolutionState[][]> steps = solver.getPartialSolutionRecord();
+        List<NonogramSolutionState[][]> steps = solver.getPartialSolutionRecord();
         SolutionStepsDialog stepsDialog = new SolutionStepsDialog(this, false, steps, drawPanel);
         stepsDialog.setVisible(true);
     }//GEN-LAST:event_iterativeStepsMenuItemActionPerformed

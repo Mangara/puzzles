@@ -27,7 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 import com.github.mangara.puzzles.data.Nonogram;
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
 import com.github.mangara.puzzles.io.NonogramPrinter;
 
@@ -39,7 +39,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
     private boolean building = true;
     private boolean[][] nonogramResult = new boolean[12][8];
-    private SolutionState[][] puzzle = new SolutionState[12][8];
+    private NonogramSolutionState[][] puzzle = new NonogramSolutionState[12][8];
     private int gridLeftX, gridTopY;
 
     public NonogramDrawPanel() {
@@ -51,8 +51,8 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         nonogramResult[3][1] = true;
         nonogramResult[2][3] = true;
         
-        for (SolutionState[] row : puzzle) {
-            Arrays.fill(row, SolutionState.UNKNOWN);
+        for (NonogramSolutionState[] row : puzzle) {
+            Arrays.fill(row, NonogramSolutionState.UNKNOWN);
         }
     }
 
@@ -87,13 +87,13 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         building = false;
         for (int i = 0; i < puzzle.length; i++) {
             for (int j = 0; j < puzzle[i].length; j++) {
-                puzzle[i][j] = solution[i][j] ? SolutionState.FILLED : SolutionState.EMPTY;
+                puzzle[i][j] = solution[i][j] ? NonogramSolutionState.FILLED : NonogramSolutionState.EMPTY;
             }
         }
         repaint();
     }
     
-    public void setSolution(SolutionState[][] solution) {
+    public void setSolution(NonogramSolutionState[][] solution) {
         building = false;
         for (int i = 0; i < puzzle.length; i++) {
             System.arraycopy(solution[i], 0, puzzle[i], 0, puzzle[i].length);
@@ -112,9 +112,9 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
     public void newNonogram(int width, int height) {
         nonogramResult = new boolean[width][height];
-        puzzle = new SolutionState[width][height];
-        for (SolutionState[] column : puzzle) {
-            Arrays.fill(column, SolutionState.UNKNOWN);
+        puzzle = new NonogramSolutionState[width][height];
+        for (NonogramSolutionState[] column : puzzle) {
+            Arrays.fill(column, NonogramSolutionState.UNKNOWN);
         }
         repaint();
     }
@@ -125,8 +125,8 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
                 Arrays.fill(col, false);
             }
         } else {
-            for (SolutionState[] col : puzzle) {
-                Arrays.fill(col, SolutionState.UNKNOWN);
+            for (NonogramSolutionState[] col : puzzle) {
+                Arrays.fill(col, NonogramSolutionState.UNKNOWN);
             }
         }
         repaint();
@@ -176,7 +176,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         }
     }
 
-    private SolutionState paintState = null;
+    private NonogramSolutionState paintState = null;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -188,20 +188,20 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         }
 
         if (building) {
-            paintState = nonogramResult[i][j] ? SolutionState.EMPTY : SolutionState.FILLED;
-            nonogramResult[i][j] = (paintState == SolutionState.FILLED);
+            paintState = nonogramResult[i][j] ? NonogramSolutionState.EMPTY : NonogramSolutionState.FILLED;
+            nonogramResult[i][j] = (paintState == NonogramSolutionState.FILLED);
         } else {
             boolean rightClick = SwingUtilities.isRightMouseButton(e);
 
             switch (puzzle[i][j]) {
                 case EMPTY:
-                    paintState = rightClick ? SolutionState.FILLED : SolutionState.UNKNOWN;
+                    paintState = rightClick ? NonogramSolutionState.FILLED : NonogramSolutionState.UNKNOWN;
                     break;
                 case UNKNOWN:
-                    paintState = rightClick ? SolutionState.EMPTY : SolutionState.FILLED;
+                    paintState = rightClick ? NonogramSolutionState.EMPTY : NonogramSolutionState.FILLED;
                     break;
                 case FILLED:
-                    paintState = rightClick ? SolutionState.UNKNOWN : SolutionState.EMPTY;
+                    paintState = rightClick ? NonogramSolutionState.UNKNOWN : NonogramSolutionState.EMPTY;
                     break;
             }
 
@@ -221,7 +221,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         }
 
         if (building) {
-            nonogramResult[i][j] = (paintState == SolutionState.FILLED);
+            nonogramResult[i][j] = (paintState == NonogramSolutionState.FILLED);
         } else {
             puzzle[i][j] = paintState;
         }

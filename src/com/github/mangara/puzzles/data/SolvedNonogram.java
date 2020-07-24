@@ -37,6 +37,10 @@ public class SolvedNonogram extends Nonogram {
         this(nonogram.getSideNumbers(), nonogram.getTopNumbers(), drawing);
     }
 
+    public boolean[][] getDrawing() {
+        return deepCopy(drawing);
+    }
+
     private boolean[][] deepCopy(boolean[][] original) {
         int n = original.length, m = original[0].length;
         boolean[][] result = new boolean[n][m];

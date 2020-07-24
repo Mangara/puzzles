@@ -20,14 +20,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class PuzzleReader {
-
+    
     public static Puzzle read(Path inputFile) throws IOException {
         // Try to detect puzzle type
+        // if (LogiquizReader.isLogiquiz(inputFile)) {
+        //   return LogiquizReader.readLogiquiz(inputFile);
+        // }
         
-        // Fall back to nonogram if unknown
-        
-        boolean[][] drawing = NonogramReader.readDrawing(inputFile);
-        
-        return null;
+        return NonogramReader.readNonogram(inputFile);
     }
 }

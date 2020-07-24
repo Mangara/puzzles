@@ -22,17 +22,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
 
 public class NonogramReader {
 
-    public static Nonogram readNonogram(Path inputFile) throws IOException {
+    public static SolvedNonogram readNonogram(Path inputFile) throws IOException {
         boolean[][] drawing = readDrawing(inputFile);
         return NonogramGenerator.generateNonogram(drawing);
     }
 
-    public static boolean[][] readDrawing(Path inputFile) throws IOException {
+    private static boolean[][] readDrawing(Path inputFile) throws IOException {
         List<boolean[]> result = new ArrayList<>();
 
         try (BufferedReader in = Files.newBufferedReader(inputFile, StandardCharsets.UTF_8)) {

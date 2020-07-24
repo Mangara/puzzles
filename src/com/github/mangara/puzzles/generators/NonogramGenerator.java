@@ -17,14 +17,14 @@ package com.github.mangara.puzzles.generators;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.SolvedNonogram;
 
 public class NonogramGenerator {
 
-    public static Nonogram generateNonogram(boolean[][] drawing) {
+    public static SolvedNonogram generateNonogram(boolean[][] drawing) {
         List<List<Integer>> side = computeSideNumbers(drawing);
         List<List<Integer>> top = computeTopNumbers(drawing);
-        return new Nonogram(side, top);
+        return new SolvedNonogram(side, top, drawing);
     }
 
     private static List<List<Integer>> computeSideNumbers(boolean[][] drawing) {

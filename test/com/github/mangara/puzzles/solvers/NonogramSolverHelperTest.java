@@ -16,7 +16,7 @@
 package com.github.mangara.puzzles.solvers;
 
 import com.github.mangara.puzzles.solvers.NonogramSolverHelper;
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import java.util.Arrays;
 import java.util.List;
 import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.getFirstSegmentLength;
@@ -414,8 +414,8 @@ public class NonogramSolverHelperTest {
         assertArrayEquals("M1-5", toState("?XX??XX?"), intersectAllMatchingSolutions(Arrays.asList(3, 3), toState("????????")));
     }
     
-    private SolutionState[] toState(String state) {
-        SolutionState[] result = new SolutionState[state.length()];
+    private NonogramSolutionState[] toState(String state) {
+        NonogramSolutionState[] result = new NonogramSolutionState[state.length()];
         
         for (int i = 0; i < state.length(); i++) {
             result[i] = charToSolutionState(state.charAt(i));
@@ -424,11 +424,11 @@ public class NonogramSolverHelperTest {
         return result;
     }
     
-    private SolutionState charToSolutionState(int c) {
+    private NonogramSolutionState charToSolutionState(int c) {
         switch (c) {
-            case '?': return SolutionState.UNKNOWN;
-            case '-': return SolutionState.EMPTY;
-            default: return SolutionState.FILLED;
+            case '?': return NonogramSolutionState.UNKNOWN;
+            case '-': return NonogramSolutionState.EMPTY;
+            default: return NonogramSolutionState.FILLED;
         }
     }
 }

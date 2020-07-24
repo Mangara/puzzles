@@ -15,6 +15,6 @@
  */
 package com.github.mangara.puzzles.data;
 
-public enum SolutionState {
+public enum NonogramSolutionState {
     UNKNOWN, EMPTY, FILLED;
 }

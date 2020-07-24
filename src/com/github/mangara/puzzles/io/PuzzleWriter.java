@@ -16,6 +16,7 @@
 package com.github.mangara.puzzles.io;
 
 import com.github.mangara.puzzles.data.Puzzle;
+import com.github.mangara.puzzles.data.SolvedNonogram;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -24,9 +25,11 @@ public class PuzzleWriter {
     public static void write(Puzzle puzzle, Path outputFile) throws IOException {
         switch (puzzle.getType()) {
             case NONOGRAM:
-                boolean[][] drawing = null; // TODO
-                NonogramWriter nonogramWriter = new NonogramWriter();
-                nonogramWriter.save(drawing, outputFile);
+                if (!(puzzle instanceof SolvedNonogram)) {
+                    throw new IllegalArgumentException("Nonograms must have a solution to write.");
+                }
+                SolvedNonogram nonogram = (SolvedNonogram) puzzle;
+                NonogramWriter.save(nonogram, outputFile);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected puzzle type: " + puzzle.getType());

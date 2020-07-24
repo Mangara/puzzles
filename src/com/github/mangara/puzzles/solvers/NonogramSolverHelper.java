@@ -15,7 +15,7 @@
  */
 package com.github.mangara.puzzles.solvers;
 
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -153,32 +153,32 @@ public class NonogramSolverHelper {
         return result;
     }
 
-    public static SolutionState[] readRow(SolutionState[][] solution, int row) {
-        SolutionState[] rowValues = new SolutionState[solution.length];
+    public static NonogramSolutionState[] readRow(NonogramSolutionState[][] solution, int row) {
+        NonogramSolutionState[] rowValues = new NonogramSolutionState[solution.length];
         for (int i = 0; i < solution.length; i++) {
             rowValues[i] = solution[i][row];
         }
         return rowValues;
     }
 
-    public static SolutionState[] readColumn(SolutionState[][] solution, int col) {
+    public static NonogramSolutionState[] readColumn(NonogramSolutionState[][] solution, int col) {
         return solution[col];
     }
 
-    public static void writeRow(SolutionState[][] solution, int row, SolutionState[] values) {
+    public static void writeRow(NonogramSolutionState[][] solution, int row, NonogramSolutionState[] values) {
         for (int i = 0; i < solution.length; i++) {
             solution[i][row] = values[i];
         }
     }
 
-    public static void writeColumn(SolutionState[][] solution, int col, SolutionState[] values) {
+    public static void writeColumn(NonogramSolutionState[][] solution, int col, NonogramSolutionState[] values) {
         System.arraycopy(values, 0, solution[col], 0, solution[col].length);
     }
 
-    public static boolean isSolved(SolutionState[][] solution) {
+    public static boolean isSolved(NonogramSolutionState[][] solution) {
         for (int i = 0; i < solution.length; i++) {
             for (int j = 0; j < solution[i].length; j++) {
-                if (solution[i][j] == SolutionState.UNKNOWN) {
+                if (solution[i][j] == NonogramSolutionState.UNKNOWN) {
                     return false;
                 }
             }
@@ -192,12 +192,12 @@ public class NonogramSolverHelper {
      * @return A boolean array of the same size that is true when the solution
      * is FILLED and false otherwise.
      */
-    static boolean[][] convertToBooleanArray(SolutionState[][] solution) {
+    static boolean[][] convertToBooleanArray(NonogramSolutionState[][] solution) {
         boolean[][] result = new boolean[solution.length][solution[0].length];
 
         for (int i = 0; i < solution.length; i++) {
             for (int j = 0; j < solution[i].length; j++) {
-                if (solution[i][j] == SolutionState.FILLED) {
+                if (solution[i][j] == NonogramSolutionState.FILLED) {
                     result[i][j] = true;
                 }
             }
@@ -212,8 +212,8 @@ public class NonogramSolverHelper {
      * @param knownValues
      * @return
      */
-    public static SolutionState[] intersectAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues) {
-        List<SolutionState[]> allMatchingSolutions = generateAllMatchingSolutions(numbers, knownValues);
+    public static NonogramSolutionState[] intersectAllMatchingSolutions(List<Integer> numbers, NonogramSolutionState[] knownValues) {
+        List<NonogramSolutionState[]> allMatchingSolutions = generateAllMatchingSolutions(numbers, knownValues);
         
 //        System.out.println("Numbers: " + numbers + " Known values: " + solutionToString(knownValues));
 //        System.out.println("All matching solutions:");
@@ -221,14 +221,14 @@ public class NonogramSolverHelper {
 //            System.out.println("  " + solutionToString(solution));
 //        }
         
-        SolutionState[] result = intersection(allMatchingSolutions, knownValues.length);
+        NonogramSolutionState[] result = intersection(allMatchingSolutions, knownValues.length);
         
 //        System.out.println("Intersection: " + solutionToString(result));
         
         return result;
     }
     
-    public static String solutionToString(SolutionState[] solution) {
+    public static String solutionToString(NonogramSolutionState[] solution) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < solution.length; i++) {
             switch (solution[i]) {
@@ -246,25 +246,25 @@ public class NonogramSolverHelper {
         return sb.toString();
     }
     
-    private static List<SolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues) {
-        return generateAllMatchingSolutions(numbers, knownValues, 0, new SolutionState[knownValues.length], 0);
+    private static List<NonogramSolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, NonogramSolutionState[] knownValues) {
+        return generateAllMatchingSolutions(numbers, knownValues, 0, new NonogramSolutionState[knownValues.length], 0);
     }
     
-    private static List<SolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, SolutionState[] knownValues, int segment, SolutionState[] currentSolution, int position) {
+    private static List<NonogramSolutionState[]> generateAllMatchingSolutions(List<Integer> numbers, NonogramSolutionState[] knownValues, int segment, NonogramSolutionState[] currentSolution, int position) {
         int width = knownValues.length;
         
         if (segment == numbers.size()) {
             // We have a complete solution
             for (int i = position; i < width; i++) {
-                if (knownValues[i] == SolutionState.FILLED) {
+                if (knownValues[i] == NonogramSolutionState.FILLED) {
                     // No match
                     return Collections.EMPTY_LIST;
                 }
                 
-                currentSolution[i] = SolutionState.EMPTY;
+                currentSolution[i] = NonogramSolutionState.EMPTY;
             }
             
-            SolutionState[] result = new SolutionState[width];
+            NonogramSolutionState[] result = new NonogramSolutionState[width];
             System.arraycopy(currentSolution, 0, result, 0, width);
             
             return Collections.singletonList(result);
@@ -274,29 +274,29 @@ public class NonogramSolverHelper {
         int restSpaceNeeded = (segment == numbers.size() - 1 ? 0 : 1 + getSpaceRequired(numbers.subList(segment + 1, numbers.size())));
         int lastSpot = width - restSpaceNeeded - segmentLength;
         
-        List<SolutionState[]> solutions = new ArrayList<>();
+        List<NonogramSolutionState[]> solutions = new ArrayList<>();
         
         for (int spot = position; spot <= lastSpot; spot++) {
             // Place this segment at this spot
             for (int i = position; i < spot + segmentLength; i++) {
                 if (i < spot) {
-                    currentSolution[i] = SolutionState.EMPTY;
+                    currentSolution[i] = NonogramSolutionState.EMPTY;
                 } else {
-                    currentSolution[i] = SolutionState.FILLED;
+                    currentSolution[i] = NonogramSolutionState.FILLED;
                 }
             }
             
             int newPosition = spot + segmentLength;
             
             if (segment < numbers.size() - 1) {
-                currentSolution[newPosition] = SolutionState.EMPTY;
+                currentSolution[newPosition] = NonogramSolutionState.EMPTY;
                 newPosition++;
             }
             
             // Does it match?
             boolean match = true;
             for (int i = position; i < newPosition; i++) {
-                if (knownValues[i] != SolutionState.UNKNOWN && knownValues[i] != currentSolution[i]) {
+                if (knownValues[i] != NonogramSolutionState.UNKNOWN && knownValues[i] != currentSolution[i]) {
                     match = false;
                     break;
                 }
@@ -310,20 +310,20 @@ public class NonogramSolverHelper {
         return solutions;
     }
     
-    private static SolutionState[] intersection(List<SolutionState[]> solutions, int width) {
+    private static NonogramSolutionState[] intersection(List<NonogramSolutionState[]> solutions, int width) {
         if (solutions.isEmpty()) {
             throw new IllegalArgumentException();
         }
         
-        SolutionState[] result = solutions.get(0);
+        NonogramSolutionState[] result = solutions.get(0);
         int known = width;
         
         for (int i = 1; i < solutions.size(); i++) {
-            SolutionState[] solution = solutions.get(i);
+            NonogramSolutionState[] solution = solutions.get(i);
             
             for (int j = 0; j < width; j++) {
-                if (result[j] != SolutionState.UNKNOWN && result[j] != solution[j]) {
-                    result[j] = SolutionState.UNKNOWN;
+                if (result[j] != NonogramSolutionState.UNKNOWN && result[j] != solution[j]) {
+                    result[j] = NonogramSolutionState.UNKNOWN;
                     known--;
                 }
             }

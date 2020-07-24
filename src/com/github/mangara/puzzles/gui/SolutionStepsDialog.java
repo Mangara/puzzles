@@ -16,16 +16,16 @@
 package com.github.mangara.puzzles.gui;
 
 import java.util.List;
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 
 public class SolutionStepsDialog extends javax.swing.JDialog {
 
     private final NonogramDrawPanel drawPanel;
-    private final List<SolutionState[][]> steps;
+    private final List<NonogramSolutionState[][]> steps;
     private int currentStep = 0;
     private boolean updateInProgress = false;
     
-    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, List<SolutionState[][]> steps, NonogramDrawPanel drawPanel) {
+    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, List<NonogramSolutionState[][]> steps, NonogramDrawPanel drawPanel) {
         super(parent, modal);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         

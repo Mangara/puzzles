@@ -15,7 +15,7 @@
  */
 package com.github.mangara.puzzles.solvers;
 
-import com.github.mangara.puzzles.data.SolutionState;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +23,7 @@ import com.github.mangara.puzzles.data.Nonogram;
 
 public class IterativeSolver {
     private final boolean recordPartials;
-    private List<SolutionState[][]> partialSolutionRecord;
+    private List<NonogramSolutionState[][]> partialSolutionRecord;
 
     public IterativeSolver() {
         this(false);
@@ -41,28 +41,28 @@ public class IterativeSolver {
         partialSolutionRecord = new ArrayList<>();
     }
 
-    private void recordPartialSolution(SolutionState[][] partialSolution) {
+    private void recordPartialSolution(NonogramSolutionState[][] partialSolution) {
         if (!recordPartials) {
             return;
         }
 
-        SolutionState[][] copy = new SolutionState[partialSolution.length][partialSolution[0].length];
+        NonogramSolutionState[][] copy = new NonogramSolutionState[partialSolution.length][partialSolution[0].length];
 
         for (int i = 0; i < partialSolution.length; i++) {
-            copy[i] = new SolutionState[partialSolution[i].length];
+            copy[i] = new NonogramSolutionState[partialSolution[i].length];
             System.arraycopy(partialSolution[i], 0, copy[i], 0, partialSolution[i].length);
         }
 
         partialSolutionRecord.add(copy);
     }
     
-    public List<SolutionState[][]> getPartialSolutionRecord() {
+    public List<NonogramSolutionState[][]> getPartialSolutionRecord() {
         return partialSolutionRecord;
     }
     
     public boolean[][] findAnySolution(Nonogram puzzle) {
         clearRecord();
-        SolutionState[][] solution = findSolution(puzzle);
+        NonogramSolutionState[][] solution = findSolution(puzzle);
         return (NonogramSolverHelper.isSolved(solution) ? NonogramSolverHelper.convertToBooleanArray(solution) : null);
     }
     
@@ -71,10 +71,10 @@ public class IterativeSolver {
         return NonogramSolverHelper.isSolved(findSolution(puzzle));
     }
     
-    private SolutionState[][] findSolution(Nonogram puzzle) {
-        SolutionState[][] solution = new SolutionState[puzzle.getWidth()][puzzle.getHeight()];
+    private NonogramSolutionState[][] findSolution(Nonogram puzzle) {
+        NonogramSolutionState[][] solution = new NonogramSolutionState[puzzle.getWidth()][puzzle.getHeight()];
         for (int i = 0; i < puzzle.getWidth(); i++) {
-            Arrays.fill(solution[i], SolutionState.UNKNOWN);
+            Arrays.fill(solution[i], NonogramSolutionState.UNKNOWN);
         }
         recordPartialSolution(solution);
         
@@ -86,8 +86,8 @@ public class IterativeSolver {
             for (int row = 0; row < puzzle.getHeight(); row++) {
                 System.out.println("Testing row " + row);
                 List<Integer> rowNumbers = puzzle.getSideNumbers().get(row);
-                SolutionState[] currentValues = NonogramSolverHelper.readRow(solution, row);
-                SolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(rowNumbers, currentValues);
+                NonogramSolutionState[] currentValues = NonogramSolverHelper.readRow(solution, row);
+                NonogramSolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(rowNumbers, currentValues);
                 
                 if (!Arrays.equals(currentValues, intersection)) {
                     progress = true;
@@ -99,8 +99,8 @@ public class IterativeSolver {
             for (int col = 0; col < puzzle.getWidth(); col++) {
                 System.out.println("Testing column " + col);
                 List<Integer> colNumbers = puzzle.getTopNumbers().get(col);
-                SolutionState[] currentValues = NonogramSolverHelper.readColumn(solution, col);
-                SolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(colNumbers, currentValues);
+                NonogramSolutionState[] currentValues = NonogramSolverHelper.readColumn(solution, col);
+                NonogramSolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(colNumbers, currentValues);
                 
                 if (!Arrays.equals(currentValues, intersection)) {
                     progress = true;
