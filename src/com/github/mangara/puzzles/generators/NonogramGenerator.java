@@ -15,12 +15,18 @@
  */
 package com.github.mangara.puzzles.generators;
 
+import com.github.mangara.puzzles.data.CreateNonogramSettings;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.mangara.puzzles.data.SolvedNonogram;
 
 public class NonogramGenerator {
 
+    public static SolvedNonogram create(CreateNonogramSettings settings) {
+        boolean[][] drawing = new boolean[settings.getWidth()][settings.getHeight()];
+        return generateNonogram(drawing);
+    }
+    
     public static SolvedNonogram generateNonogram(boolean[][] drawing) {
         List<List<Integer>> side = computeSideNumbers(drawing);
         List<List<Integer>> top = computeTopNumbers(drawing);
