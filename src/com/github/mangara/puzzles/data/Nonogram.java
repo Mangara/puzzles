@@ -61,8 +61,7 @@ public class Nonogram implements Puzzle {
     private List<List<Integer>> deepImmutableCopy(List<List<Integer>> original) {
         List<List<Integer>> result = new ArrayList<>(original.size());
         for (List<Integer> list : original) {
-            List<Integer> dup = new ArrayList<>(list.size());
-            Collections.copy(dup, list);
+            List<Integer> dup = new ArrayList<Integer>(list);
             result.add(Collections.unmodifiableList(dup));
         }
         return Collections.unmodifiableList(result);
