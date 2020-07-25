@@ -26,9 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.NonogramSolutionState;
-import com.github.mangara.puzzles.io.NonogramPrinter;
-import com.github.mangara.puzzles.io.NonogramReader;
-import com.github.mangara.puzzles.io.NonogramWriter;
+import com.github.mangara.puzzles.generators.PuzzleFactory;
 import com.github.mangara.puzzles.io.PuzzlePrinter;
 import com.github.mangara.puzzles.io.PuzzleReader;
 import com.github.mangara.puzzles.io.PuzzleWriter;
@@ -40,7 +38,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static final String TXT_EXTENSION = "txt";
     private static final String PNG_EXTENSION = "png";
     
-    private final PuzzlePanel puzzlePanel;
+    private final CenterPuzzlePanel puzzlePanel;
     
     private final NewPuzzleDialog newDialog;
     
@@ -55,7 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-        puzzlePanel = new PuzzlePanel();
+        puzzlePanel = new CenterPuzzlePanel();
         getContentPane().add(puzzlePanel, java.awt.BorderLayout.CENTER);
         
         newDialog = new NewPuzzleDialog(this, true);
@@ -72,7 +70,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     public void newPuzzle(CreatePuzzleSettings settings) {
-        puzzlePanel.newPuzzle(settings);
+        Puzzle puzzle = PuzzleFactory.create(settings);
+        puzzlePanel.setPuzzle(puzzle);
     }
     
     /**
@@ -85,7 +84,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         modeButtonGroup = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
+        bottomPanel = new javax.swing.JPanel();
         clearButton = new javax.swing.JButton();
         buildingModeRadioButton = new javax.swing.JRadioButton();
         solvingModeRadioButton = new javax.swing.JRadioButton();
@@ -131,11 +130,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         modeLabel.setText("Mode:");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
+        bottomPanel.setLayout(bottomPanelLayout);
+        bottomPanelLayout.setHorizontalGroup(
+            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bottomPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(modeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,11 +145,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(clearButton)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        bottomPanelLayout.setVerticalGroup(
+            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(bottomPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearButton)
                     .addComponent(buildingModeRadioButton)
                     .addComponent(solvingModeRadioButton)
@@ -158,7 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(bottomPanel, java.awt.BorderLayout.PAGE_END);
 
         fileMenu.setText("File");
 
@@ -283,20 +282,20 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void solveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveMenuItemActionPerformed
-        Nonogram puzzle = drawPanel.getPuzzle();
-        System.out.println("Puzzle: " + puzzle);
-        boolean[][] solution = NonogramSolver.findAnySolution(puzzle);
-        System.out.println("Solution: " + Arrays.deepToString(solution));
-        drawPanel.setSolution(solution);
+//        Nonogram puzzle = drawPanel.getPuzzle();
+//        System.out.println("Puzzle: " + puzzle);
+//        boolean[][] solution = NonogramSolver.findAnySolution(puzzle);
+//        System.out.println("Solution: " + Arrays.deepToString(solution));
+//        drawPanel.setSolution(solution);
     }//GEN-LAST:event_solveMenuItemActionPerformed
 
     private void checkMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMenuItemActionPerformed
-        Nonogram puzzle = drawPanel.getPuzzle();
-        boolean unique = NonogramSolver.hasUniqueSolution(puzzle);
-        
-        String message = unique ? "Unique solution!" : "No unique solution.";
-        int type = unique ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
-        JOptionPane.showMessageDialog(this, message, "Unique solution?", type);
+//        Nonogram puzzle = drawPanel.getPuzzle();
+//        boolean unique = NonogramSolver.hasUniqueSolution(puzzle);
+//        
+//        String message = unique ? "Unique solution!" : "No unique solution.";
+//        int type = unique ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+//        JOptionPane.showMessageDialog(this, message, "Unique solution?", type);
     }//GEN-LAST:event_checkMenuItemActionPerformed
 
     private void bruteForceStepsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bruteForceStepsMenuItemActionPerformed
@@ -304,12 +303,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bruteForceStepsMenuItemActionPerformed
 
     private void iterativeStepsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iterativeStepsMenuItemActionPerformed
-        IterativeSolver solver = new IterativeSolver(true);
-        Nonogram puzzle = drawPanel.getPuzzle();
-        solver.findAnySolution(puzzle);
-        List<NonogramSolutionState[][]> steps = solver.getPartialSolutionRecord();
-        SolutionStepsDialog stepsDialog = new SolutionStepsDialog(this, false, steps, drawPanel);
-        stepsDialog.setVisible(true);
+//        IterativeSolver solver = new IterativeSolver(true);
+//        Nonogram puzzle = drawPanel.getPuzzle();
+//        solver.findAnySolution(puzzle);
+//        List<NonogramSolutionState[][]> steps = solver.getPartialSolutionRecord();
+//        SolutionStepsDialog stepsDialog = new SolutionStepsDialog(this, false, steps, drawPanel);
+//        stepsDialog.setVisible(true);
     }//GEN-LAST:event_iterativeStepsMenuItemActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
@@ -394,6 +393,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel bottomPanel;
     private javax.swing.JMenuItem bruteForceStepsMenuItem;
     private javax.swing.JRadioButton buildingModeRadioButton;
     private javax.swing.JMenuItem checkMenuItem;
@@ -401,7 +401,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem iterativeStepsMenuItem;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.ButtonGroup modeButtonGroup;
     private javax.swing.JLabel modeLabel;
