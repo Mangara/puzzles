@@ -75,7 +75,7 @@ public class NonogramChecker {
             }
         }
 
-        if (currentBlockLength > 0) {
+        if (currentBlockLength > 0 || result.isEmpty()) {
             result.add(currentBlockLength);
         }
 
