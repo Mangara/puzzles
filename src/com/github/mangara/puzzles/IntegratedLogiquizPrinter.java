@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.generators;
+package com.github.mangara.puzzles;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -36,7 +36,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import com.github.mangara.puzzles.io.FontDimensions;
 
-public class LogiquizGenerator {
+public class IntegratedLogiquizPrinter {
     private static final String inputFile = "logiquiz.txt";
     private static final String outputFile = "logiquiz.png";
     private static final String fontName = "Roboto";
