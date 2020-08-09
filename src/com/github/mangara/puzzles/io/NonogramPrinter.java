@@ -48,11 +48,18 @@ public class NonogramPrinter {
         // Load the correct font
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Font[] fonts = ge.getAllFonts();
+        boolean found = false;
 
         for (Font f : fonts) {
             if (f.getName().equals(DEFAULT_FONT)) {
                 font = f.deriveFont(22f);
+                found = true;
+                break;
             }
+        }
+        
+        if (!found) {
+            System.err.printf("Font \"%s\" was not found.%n", DEFAULT_FONT);
         }
     }
 
