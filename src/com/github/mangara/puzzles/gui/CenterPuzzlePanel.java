@@ -26,35 +26,41 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
     private final CardLayout layout;
     private final JPanel logiquizPanel;
     private final NonogramPanel nonogramPanel;
-    
+    private PuzzlePanel activePuzzlePanel;
+
     public CenterPuzzlePanel() {
         initComponents();
-        
+
         layout = (CardLayout) getLayout();
-        
+
         nonogramPanel = new NonogramPanel();
         logiquizPanel = new JPanel(); // TODO
-        
+        activePuzzlePanel = nonogramPanel;
+
         add(nonogramPanel, PuzzleType.NONOGRAM.name());
         add(logiquizPanel, PuzzleType.LOGIQUIZ.name());
     }
-    
+
     void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        activePuzzlePanel.clear();
     }
 
-    void setBuilding(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    void setBuilding(boolean building) {
+        PuzzlePanel.InteractionMode mode = building
+                ? PuzzlePanel.InteractionMode.BUILDING
+                : PuzzlePanel.InteractionMode.SOLVING;
+        activePuzzlePanel.setMode(mode);
     }
 
     Puzzle getPuzzle() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return activePuzzlePanel.getPuzzle();
     }
 
     void setPuzzle(Puzzle puzzle) {
         switch (puzzle.getType()) {
             case NONOGRAM:
                 nonogramPanel.setPuzzle((Nonogram) puzzle);
+                activePuzzlePanel = nonogramPanel;
                 break;
             case LOGIQUIZ:
                 throw new UnsupportedOperationException("Not supported yet.");

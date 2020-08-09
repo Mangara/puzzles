@@ -17,6 +17,7 @@ package com.github.mangara.puzzles.gui;
 
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
+import com.github.mangara.puzzles.data.SolvedNonogram;
 
 public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
 
@@ -34,8 +35,28 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
         if (puzzle.getType() != PuzzleType.NONOGRAM) {
             throw new IllegalArgumentException("Puzzle must be a Nonogram");
         }
+        if (!(puzzle instanceof SolvedNonogram)) {
+            throw new IllegalArgumentException("Puzzle must be solved");
+        }
         
-        throw new UnsupportedOperationException("Not yet implemented");
+        SolvedNonogram nonogram = (SolvedNonogram) puzzle;
+        drawPanel.setPuzzle(nonogram.getDrawing());
+    }
+
+    @Override
+    public Puzzle getPuzzle() {
+        return drawPanel.getPuzzle();
+    }
+    
+    @Override
+    public void clear() {
+        drawPanel.clear();
+    }
+
+    @Override
+    public void setMode(InteractionMode mode) {
+        boolean building = mode == InteractionMode.BUILDING;
+        drawPanel.setBuilding(building);
     }
     
     /**
@@ -90,5 +111,4 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
     private javax.swing.JButton stepsButton;
     // End of variables declaration//GEN-END:variables
 
-    
 }

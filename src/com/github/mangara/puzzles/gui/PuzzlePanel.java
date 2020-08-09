@@ -18,5 +18,16 @@ package com.github.mangara.puzzles.gui;
 import com.github.mangara.puzzles.data.Puzzle;
 
 public interface PuzzlePanel {
+
+    public static enum InteractionMode {
+        BUILDING, SOLVING;
+    }
+
     public void setPuzzle(Puzzle puzzle);
+    
+    public Puzzle getPuzzle();
+
+    public void clear();
+
+    public void setMode(InteractionMode mode);
 }

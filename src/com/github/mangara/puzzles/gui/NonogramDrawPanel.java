@@ -20,14 +20,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.NonogramSolutionState;
+import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
 import com.github.mangara.puzzles.io.NonogramPrinter;
 
@@ -68,7 +67,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         return nonogramResult;
     }
     
-    public Nonogram getPuzzle() {
+    public SolvedNonogram getPuzzle() {
         return NonogramGenerator.generateNonogram(nonogramResult);
     }
     
