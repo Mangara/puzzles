@@ -17,11 +17,11 @@ package com.github.mangara.puzzles.data;
 
 public class CreateLogiquizSettings implements CreatePuzzleSettings {
     
-    private final int groups;
+    private final int groupCount;
     private final int groupSize;
 
-    public CreateLogiquizSettings(int groups, int groupSize) {
-        this.groups = groups;
+    public CreateLogiquizSettings(int groupCount, int groupSize) {
+        this.groupCount = groupCount;
         this.groupSize = groupSize;
     }
     
@@ -30,8 +30,8 @@ public class CreateLogiquizSettings implements CreatePuzzleSettings {
         return PuzzleType.LOGIQUIZ;
     }
 
-    public int getGroups() {
-        return groups;
+    public int getGroupCount() {
+        return groupCount;
     }
 
     public int getGroupSize() {
