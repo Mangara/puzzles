@@ -27,13 +27,9 @@ public class PuzzleFactory {
             case NONOGRAM:
                 return NonogramGenerator.create((CreateNonogramSettings) settings);
             case LOGIQUIZ:
-                return createLogiquiz((CreateLogiquizSettings) settings);
+                return LogiquizGenerator.create((CreateLogiquizSettings) settings);
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + settings.getType());
         }
-    }
-
-    private static Puzzle createLogiquiz(CreateLogiquizSettings createLogiquizSettings) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
