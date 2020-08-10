@@ -15,8 +15,6 @@
  */
 package com.github.mangara.puzzles.data;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Nonogram implements Puzzle {
@@ -33,8 +31,8 @@ public class Nonogram implements Puzzle {
             throw new IllegalArgumentException("Numbers may not be empty");
         }
 
-        this.sideNumbers = deepImmutableCopy(sideNumbers);
-        this.topNumbers = deepImmutableCopy(topNumbers);
+        this.sideNumbers = ListUtils.deepImmutableCopy(sideNumbers);
+        this.topNumbers = ListUtils.deepImmutableCopy(topNumbers);
     }
     
     @Override
@@ -56,14 +54,5 @@ public class Nonogram implements Puzzle {
 
     public int getHeight() {
         return sideNumbers.size();
-    }
-    
-    private List<List<Integer>> deepImmutableCopy(List<List<Integer>> original) {
-        List<List<Integer>> result = new ArrayList<>(original.size());
-        for (List<Integer> list : original) {
-            List<Integer> dup = new ArrayList<Integer>(list);
-            result.add(Collections.unmodifiableList(dup));
-        }
-        return Collections.unmodifiableList(result);
-    }
+    }    
 }
