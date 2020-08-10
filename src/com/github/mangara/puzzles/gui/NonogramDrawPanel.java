@@ -42,7 +42,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     private int gridLeftX, gridTopY;
 
     public NonogramDrawPanel() {
-        setPreferredSize(new Dimension(1200, 800));
+        setPreferredSize(new Dimension(800, 600));
         addMouseListener(this);
         addMouseMotionListener(this);
 
