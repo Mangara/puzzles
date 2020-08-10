@@ -15,16 +15,16 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import java.awt.CardLayout;
-import javax.swing.JPanel;
 
 public class CenterPuzzlePanel extends javax.swing.JPanel {
 
     private final CardLayout layout;
-    private final JPanel logiquizPanel;
+    private final LogiquizPanel logiquizPanel;
     private final NonogramPanel nonogramPanel;
     private PuzzlePanel activePuzzlePanel;
 
@@ -34,7 +34,7 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
         layout = (CardLayout) getLayout();
 
         nonogramPanel = new NonogramPanel();
-        logiquizPanel = new JPanel(); // TODO
+        logiquizPanel = new LogiquizPanel();
         activePuzzlePanel = nonogramPanel;
 
         add(nonogramPanel, PuzzleType.NONOGRAM.name());
@@ -63,7 +63,9 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
                 activePuzzlePanel = nonogramPanel;
                 break;
             case LOGIQUIZ:
-                throw new UnsupportedOperationException("Not supported yet.");
+                logiquizPanel.setPuzzle((Logiquiz) puzzle);
+                activePuzzlePanel = logiquizPanel;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + puzzle.getType());
         }
