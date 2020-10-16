@@ -28,7 +28,10 @@ import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.NonogramSolutionState;
 import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
+import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
+import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
 import com.github.mangara.puzzles.io.NonogramPrinter;
+import java.util.List;
 
 public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
@@ -36,6 +39,8 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     private static final Color EMPTY_COLOUR = Color.white;
     private static final Color UNKNOWN_COLOUR = Color.lightGray;
 
+    private List<NonogramChangeListener> changeListeners;
+    
     private boolean building = true;
     private boolean[][] nonogramResult = new boolean[12][8];
     private NonogramSolutionState[][] puzzle = new NonogramSolutionState[12][8];
@@ -126,6 +131,10 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         }
         repaint();
     }
+    
+    public void addChangeListener(NonogramChangeListener listener) {
+        changeListeners.add(listener);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -184,7 +193,9 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
         if (building) {
             paintState = nonogramResult[i][j] ? NonogramSolutionState.EMPTY : NonogramSolutionState.FILLED;
+            boolean oldState = nonogramResult[i][j];
             nonogramResult[i][j] = (paintState == NonogramSolutionState.FILLED);
+            fireChangedEvent(i, j, oldState, nonogramResult[i][j]);
         } else {
             boolean rightClick = SwingUtilities.isRightMouseButton(e);
 
@@ -216,7 +227,9 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         }
 
         if (building) {
+            boolean oldState = nonogramResult[i][j];
             nonogramResult[i][j] = (paintState == NonogramSolutionState.FILLED);
+            fireChangedEvent(i, j, oldState, nonogramResult[i][j]);
         } else {
             puzzle[i][j] = paintState;
         }
@@ -250,5 +263,16 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
 
     private int getGridCol(int x) {
         return (x - gridLeftX) / NonogramPrinter.SQUARE_SIZE;
+    }
+
+    private void fireChangedEvent(int i, int j, boolean oldState, boolean newState) {
+        if (oldState == newState) {
+            return;
+        }
+        
+        NonogramChangedEvent e = new NonogramChangedEvent(i, j, oldState, newState);
+        for (NonogramChangeListener listener : changeListeners) {
+            listener.nonogramChanged(e);
+        }
     }
 }
