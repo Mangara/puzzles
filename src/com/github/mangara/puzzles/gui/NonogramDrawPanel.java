@@ -45,10 +45,6 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         setPreferredSize(new Dimension(800, 600));
         addMouseListener(this);
         addMouseMotionListener(this);
-
-        nonogramResult[2][1] = true;
-        nonogramResult[3][1] = true;
-        nonogramResult[2][3] = true;
         
         for (NonogramSolutionState[] row : puzzle) {
             Arrays.fill(row, NonogramSolutionState.UNKNOWN);
