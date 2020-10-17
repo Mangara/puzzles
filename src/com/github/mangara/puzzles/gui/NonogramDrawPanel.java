@@ -31,6 +31,7 @@ import com.github.mangara.puzzles.generators.NonogramGenerator;
 import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
 import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
 import com.github.mangara.puzzles.io.NonogramPrinter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NonogramDrawPanel extends JPanel implements MouseInputListener {
@@ -39,7 +40,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
     private static final Color EMPTY_COLOUR = Color.white;
     private static final Color UNKNOWN_COLOUR = Color.lightGray;
 
-    private List<NonogramChangeListener> changeListeners;
+    private final List<NonogramChangeListener> changeListeners = new ArrayList<>(1);
     
     private boolean building = true;
     private boolean[][] nonogramResult = new boolean[12][8];
@@ -81,6 +82,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
             System.arraycopy(drawing[i], 0, nonogramResult[i], 0, drawing[i].length);
         }
         repaint();
+        fireGlobalChangedEvent();
     }
     
     public void setSolution(boolean[][] solution) {
@@ -117,6 +119,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
             Arrays.fill(column, NonogramSolutionState.UNKNOWN);
         }
         repaint();
+        fireGlobalChangedEvent();
     }
 
     public void clear() {
@@ -130,6 +133,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
             }
         }
         repaint();
+        fireGlobalChangedEvent();
     }
     
     public void addChangeListener(NonogramChangeListener listener) {
@@ -265,6 +269,10 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         return (x - gridLeftX) / NonogramPrinter.SQUARE_SIZE;
     }
 
+    private void fireGlobalChangedEvent() {
+        fireChangedEvent(NonogramChangedEvent.GLOBAL, NonogramChangedEvent.GLOBAL, false, true);
+    }
+    
     private void fireChangedEvent(int i, int j, boolean oldState, boolean newState) {
         if (oldState == newState) {
             return;

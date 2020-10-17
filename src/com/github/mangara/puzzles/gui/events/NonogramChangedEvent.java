@@ -18,6 +18,8 @@ package com.github.mangara.puzzles.gui.events;
 
 public class NonogramChangedEvent {
 
+    public static final int GLOBAL = -1;
+    
     private final int i;
     private final int j;
     private final boolean oldState;
