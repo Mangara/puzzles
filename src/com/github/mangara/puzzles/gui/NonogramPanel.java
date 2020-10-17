@@ -18,6 +18,9 @@ package com.github.mangara.puzzles.gui;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.SolvedNonogram;
+import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
+import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
+import com.github.mangara.puzzles.solvers.NonogramSolver;
 
 public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
 
@@ -27,6 +30,7 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
         initComponents();
         
         drawPanel = new NonogramDrawPanel();
+        drawPanel.addChangeListener((NonogramChangedEvent e) -> puzzleChanged(e));
         add(drawPanel, java.awt.BorderLayout.CENTER);
     }
 
@@ -57,6 +61,16 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
     public void setMode(InteractionMode mode) {
         boolean building = mode == InteractionMode.BUILDING;
         drawPanel.setBuilding(building);
+    }
+    
+    private void puzzleChanged(NonogramChangedEvent e) {
+        updateSolvability(drawPanel.getPuzzle());
+    }
+    
+    private void updateSolvability(SolvedNonogram puzzle) {
+        boolean isSolvable = NonogramSolver.hasUniqueSolution(puzzle);
+        String solvableText = isSolvable ? "Solvable" : "Not solvable";
+        solvableLabel.setText(solvableText);
     }
     
     /**
