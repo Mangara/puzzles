@@ -24,7 +24,7 @@ public class NonogramSolver {
     }
 
     public static boolean hasUniqueSolution(Nonogram puzzle) {
-        return hasUniqueSolution(puzzle, Algorithm.BRUTE_FORCE);
+        return hasUniqueSolution(puzzle, Algorithm.ITERATIVE);
     }
     
     public static boolean hasUniqueSolution(Nonogram puzzle, Algorithm algo) {
