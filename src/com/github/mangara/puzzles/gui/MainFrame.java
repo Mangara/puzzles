@@ -53,7 +53,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-        puzzlePanel = new CenterPuzzlePanel();
+        puzzlePanel = new CenterPuzzlePanel(this);
         getContentPane().add(puzzlePanel, java.awt.BorderLayout.CENTER);
         
         newDialog = new NewPuzzleDialog(this, true);

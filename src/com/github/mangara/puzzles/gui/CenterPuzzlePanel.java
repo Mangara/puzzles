@@ -28,12 +28,12 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
     private final NonogramPanel nonogramPanel;
     private PuzzlePanel activePuzzlePanel;
 
-    public CenterPuzzlePanel() {
+    public CenterPuzzlePanel(java.awt.Frame frame) {
         initComponents();
 
         layout = (CardLayout) getLayout();
 
-        nonogramPanel = new NonogramPanel();
+        nonogramPanel = new NonogramPanel(frame);
         logiquizPanel = new LogiquizPanel();
         activePuzzlePanel = nonogramPanel;
 

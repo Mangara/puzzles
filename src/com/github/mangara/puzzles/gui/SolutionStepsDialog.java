@@ -21,18 +21,24 @@ import com.github.mangara.puzzles.data.NonogramSolutionState;
 public class SolutionStepsDialog extends javax.swing.JDialog {
 
     private final NonogramDrawPanel drawPanel;
-    private final List<NonogramSolutionState[][]> steps;
+    
+    private List<NonogramSolutionState[][]> steps;
     private int currentStep = 0;
     private boolean updateInProgress = false;
     
-    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, List<NonogramSolutionState[][]> steps, NonogramDrawPanel drawPanel) {
+    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, NonogramDrawPanel drawPanel) {
         super(parent, modal);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
-        this.steps = steps;
         this.drawPanel = drawPanel;
         
         initComponents();
+    }
+    
+    public void setSteps(List<NonogramSolutionState[][]> steps) {
+        this.steps = steps;
+        stepSlider.setMaximum(steps.size() - 1);
+        currentStep = 0;
         update();
     }
 
@@ -68,7 +74,6 @@ public class SolutionStepsDialog extends javax.swing.JDialog {
         stepLabel.setText("Step");
 
         stepSlider.setMajorTickSpacing(5);
-        stepSlider.setMaximum(steps.size() - 1);
         stepSlider.setMinorTickSpacing(1);
         stepSlider.setPaintTicks(true);
         stepSlider.setSnapToTicks(true);

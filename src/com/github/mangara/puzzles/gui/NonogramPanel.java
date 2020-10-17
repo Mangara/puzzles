@@ -15,23 +15,29 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.NonogramSolutionState;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.SolvedNonogram;
-import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
 import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
+import com.github.mangara.puzzles.solvers.IterativeSolver;
 import com.github.mangara.puzzles.solvers.NonogramSolver;
+import java.util.List;
 
 public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
 
     private final NonogramDrawPanel drawPanel;
-    
-    public NonogramPanel() {
+    private final SolutionStepsDialog stepsDialog;
+
+    public NonogramPanel(java.awt.Frame frame) {
         initComponents();
-        
+
         drawPanel = new NonogramDrawPanel();
         drawPanel.addChangeListener((NonogramChangedEvent e) -> puzzleChanged(e));
         add(drawPanel, java.awt.BorderLayout.CENTER);
+        
+        stepsDialog = new SolutionStepsDialog(frame, false, drawPanel);
     }
 
     @Override
@@ -42,7 +48,7 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
         if (!(puzzle instanceof SolvedNonogram)) {
             throw new IllegalArgumentException("Puzzle must be solved");
         }
-        
+
         SolvedNonogram nonogram = (SolvedNonogram) puzzle;
         drawPanel.setPuzzle(nonogram.getDrawing());
     }
@@ -51,7 +57,7 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
     public Puzzle getPuzzle() {
         return drawPanel.getPuzzle();
     }
-    
+
     @Override
     public void clear() {
         drawPanel.clear();
@@ -62,17 +68,17 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
         boolean building = mode == InteractionMode.BUILDING;
         drawPanel.setBuilding(building);
     }
-    
+
     private void puzzleChanged(NonogramChangedEvent e) {
         updateSolvability(drawPanel.getPuzzle());
     }
-    
+
     private void updateSolvability(SolvedNonogram puzzle) {
         boolean isSolvable = NonogramSolver.hasUniqueSolution(puzzle);
         String solvableText = isSolvable ? "Solvable" : "Not solvable";
         solvableLabel.setText(solvableText);
     }
-    
+
     /**
      * This method is called from within the constructor to
      * initialize the form.
@@ -93,6 +99,11 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
         solvableLabel.setText("Solvable");
 
         stepsButton.setText("Show Steps");
+        stepsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stepsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
         sidePanel.setLayout(sidePanelLayout);
@@ -117,6 +128,16 @@ public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {
 
         add(sidePanel, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void stepsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepsButtonActionPerformed
+        IterativeSolver solver = new IterativeSolver(true);
+        Nonogram puzzle = drawPanel.getPuzzle();
+        solver.findAnySolution(puzzle);
+        List<NonogramSolutionState[][]> steps = solver.getPartialSolutionRecord();
+        drawPanel.setBuilding(false);
+        stepsDialog.setSteps(steps);
+        stepsDialog.setVisible(true);
+    }//GEN-LAST:event_stepsButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
