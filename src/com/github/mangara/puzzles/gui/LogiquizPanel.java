@@ -22,7 +22,7 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
     /**
      * Creates new form LogiquizPanel
      */
-    public LogiquizPanel() {
+    public LogiquizPanel(java.awt.Frame frame) {
         initComponents();
     }
 
@@ -56,28 +56,76 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSeparator2 = new javax.swing.JSeparator();
         cluesPanel = new javax.swing.JPanel();
         cluesLabel = new javax.swing.JLabel();
+        consistentLabel = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        sufficientLabel = new javax.swing.JLabel();
+        necessaryLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        jButton2 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
-        cluesLabel.setText("Clues:");
+        cluesLabel.setText("Clues");
+
+        consistentLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        consistentLabel.setText("Consistent");
+
+        sufficientLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        sufficientLabel.setText("Sufficient");
+
+        necessaryLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        necessaryLabel.setText("Necessary");
+
+        jButton1.setText("Add clue");
+
+        jButton2.setText("Edit groups");
 
         javax.swing.GroupLayout cluesPanelLayout = new javax.swing.GroupLayout(cluesPanel);
         cluesPanel.setLayout(cluesPanelLayout);
         cluesPanelLayout.setHorizontalGroup(
             cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator1)
+            .addComponent(jSeparator3)
             .addGroup(cluesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cluesLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(cluesPanelLayout.createSequentialGroup()
+                        .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(consistentLabel)
+                            .addComponent(necessaryLabel))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(cluesPanelLayout.createSequentialGroup()
+                        .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sufficientLabel)
+                            .addComponent(cluesLabel)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))
+                        .addGap(0, 143, Short.MAX_VALUE))))
         );
         cluesPanelLayout.setVerticalGroup(
             cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cluesPanelLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(consistentLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sufficientLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(necessaryLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cluesLabel)
-                .addContainerGap(276, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(cluesPanel, java.awt.BorderLayout.LINE_END);
@@ -87,6 +135,14 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel cluesLabel;
     private javax.swing.JPanel cluesPanel;
+    private javax.swing.JLabel consistentLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel necessaryLabel;
+    private javax.swing.JLabel sufficientLabel;
     // End of variables declaration//GEN-END:variables
 
 }

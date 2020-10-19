@@ -34,7 +34,7 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
         layout = (CardLayout) getLayout();
 
         nonogramPanel = new NonogramPanel(frame);
-        logiquizPanel = new LogiquizPanel();
+        logiquizPanel = new LogiquizPanel(frame);
         activePuzzlePanel = nonogramPanel;
 
         add(nonogramPanel, PuzzleType.NONOGRAM.name());
