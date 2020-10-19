@@ -84,7 +84,6 @@ public class IterativeSolver {
             progress = false;
             
             for (int row = 0; row < puzzle.getHeight(); row++) {
-                System.out.println("Testing row " + row);
                 List<Integer> rowNumbers = puzzle.getSideNumbers().get(row);
                 NonogramSolutionState[] currentValues = NonogramSolverHelper.readRow(solution, row);
                 NonogramSolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(rowNumbers, currentValues);
@@ -97,7 +96,6 @@ public class IterativeSolver {
             }
             
             for (int col = 0; col < puzzle.getWidth(); col++) {
-                System.out.println("Testing column " + col);
                 List<Integer> colNumbers = puzzle.getTopNumbers().get(col);
                 NonogramSolutionState[] currentValues = NonogramSolverHelper.readColumn(solution, col);
                 NonogramSolutionState[] intersection = NonogramSolverHelper.intersectAllMatchingSolutions(colNumbers, currentValues);
