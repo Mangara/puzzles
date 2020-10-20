@@ -17,6 +17,7 @@ package com.github.mangara.puzzles.generators;
 
 import com.github.mangara.puzzles.data.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.Logiquiz;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,8 +32,23 @@ public class LogiquizGenerator {
     }
 
     private static List<List<String>> generateGroups(CreateLogiquizSettings settings) {
-        List<String> emptyGroup = Collections.nCopies(settings.getGroupSize(), PLACEHOLDER);
-        return Collections.nCopies(settings.getGroupCount(), emptyGroup);
+        List<List<String>> groups = new ArrayList<>(settings.getGroupCount());
+        
+        for (int groupNumber = 0; groupNumber < settings.getGroupCount(); groupNumber++) {
+            groups.add(generateGroup(settings, groupNumber));
+        }
+        
+        return groups;
     }
-    
+
+    private static List<String> generateGroup(CreateLogiquizSettings settings, int groupNumber) {
+        List<String> group = new ArrayList<>(settings.getGroupSize());
+        
+        for (int entryNumber = 0; entryNumber < settings.getGroupSize(); entryNumber++) {
+            String entry = Character.toString('A' + groupNumber) + Integer.toString(entryNumber);
+            group.add(entry);
+        }
+        
+        return group;
+    }
 }

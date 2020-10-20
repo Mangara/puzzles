@@ -57,6 +57,7 @@ public class Logiquiz implements Puzzle {
     private void validate(List<List<String>> groups) {
         validateGroupCount(groups);
         validateGroupSizes(groups);
+        validateEntries(groups);
     }
 
     private void validateGroupCount(List<List<String>> groups) {
@@ -74,6 +75,20 @@ public class Logiquiz implements Puzzle {
             if (group.size() != firstSize) {
                 throw new IllegalArgumentException("All groups in a logiquiz must have the same number of entries");
             }
+        }
+    }
+
+    private void validateEntries(List<List<String>> groups) {
+        for (List<String> group : groups) {
+            for (String entry : group) {
+                validateEntry(entry);
+            }
+        }
+    }
+
+    private void validateEntry(String entry) {
+        if (entry.isEmpty()) {
+            throw new IllegalArgumentException("All entries in a logiquiz must be non-empty");
         }
     }
 }
