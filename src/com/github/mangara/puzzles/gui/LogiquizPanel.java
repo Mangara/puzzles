@@ -15,35 +15,50 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Puzzle;
+import com.github.mangara.puzzles.data.PuzzleType;
 
 public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
 
+    private final LogiquizDrawPanel drawPanel;
+    
     /**
      * Creates new form LogiquizPanel
      */
     public LogiquizPanel(java.awt.Frame frame) {
         initComponents();
+        
+        drawPanel = new LogiquizDrawPanel();
+//        drawPanel.addChangeListener((LogiquizChangedEvent e) -> puzzleChanged(e));
+        add(drawPanel, java.awt.BorderLayout.CENTER);
+        
+        // Create dialogs
     }
 
     @Override
     public void setPuzzle(Puzzle puzzle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (puzzle.getType() != PuzzleType.LOGIQUIZ) {
+            throw new IllegalArgumentException("Puzzle must be a Logiquiz");
+        }
+        
+        Logiquiz logiquiz = (Logiquiz) puzzle;
+        drawPanel.setPuzzle(logiquiz);
     }
 
     @Override
     public Puzzle getPuzzle() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return drawPanel.getPuzzle();
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        drawPanel.clear();
     }
 
     @Override
     public void setMode(InteractionMode mode) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        drawPanel.setInteractionMode(mode);
     }
     
     /**
