@@ -27,6 +27,9 @@ public class FontDimensions {
         double maxTextWidth = 0;
 
         for (String word : words) {
+            if (word.isEmpty()) {
+                continue;
+            }
             TextLayout text = new TextLayout(word, font, frc);
             maxTextHeight = Math.max(text.getBounds().getHeight(), maxTextHeight);
             maxTextWidth = Math.max(text.getBounds().getWidth(), maxTextWidth);
