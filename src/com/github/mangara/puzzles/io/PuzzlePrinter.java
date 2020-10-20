@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import java.io.IOException;
@@ -26,6 +27,9 @@ public class PuzzlePrinter {
         switch (puzzle.getType()) {
             case NONOGRAM:
                 NonogramPrinter.printNonogram((Nonogram) puzzle, outputFile);
+                break;
+            case LOGIQUIZ:
+                LogiquizPrinter.printLogiquiz((Logiquiz) puzzle, outputFile);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + puzzle.getType());
