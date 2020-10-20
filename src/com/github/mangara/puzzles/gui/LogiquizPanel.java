@@ -22,6 +22,7 @@ import com.github.mangara.puzzles.data.PuzzleType;
 public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
 
     private final LogiquizDrawPanel drawPanel;
+    private final EditGroupsDialog editGroupsDialog;
     
     /**
      * Creates new form LogiquizPanel
@@ -34,6 +35,7 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         add(drawPanel, java.awt.BorderLayout.CENTER);
         
         // Create dialogs
+        editGroupsDialog = new EditGroupsDialog(frame);
     }
 
     @Override
@@ -78,9 +80,9 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         jSeparator1 = new javax.swing.JSeparator();
         sufficientLabel = new javax.swing.JLabel();
         necessaryLabel = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addClueButton = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
+        editGroupsButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -95,9 +97,14 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         necessaryLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         necessaryLabel.setText("Necessary");
 
-        jButton1.setText("Add clue");
+        addClueButton.setText("Add clue");
 
-        jButton2.setText("Edit groups");
+        editGroupsButton.setText("Edit groups");
+        editGroupsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editGroupsButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout cluesPanelLayout = new javax.swing.GroupLayout(cluesPanel);
         cluesPanel.setLayout(cluesPanelLayout);
@@ -117,8 +124,8 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
                         .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sufficientLabel)
                             .addComponent(cluesLabel)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
+                            .addComponent(addClueButton)
+                            .addComponent(editGroupsButton))
                         .addGap(0, 143, Short.MAX_VALUE))))
         );
         cluesPanelLayout.setVerticalGroup(
@@ -135,24 +142,29 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cluesLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(addClueButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(editGroupsButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(cluesPanel, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void editGroupsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editGroupsButtonActionPerformed
+        editGroupsDialog.copyGroupsFrom(drawPanel.getPuzzle());
+        editGroupsDialog.setVisible(true);
+    }//GEN-LAST:event_editGroupsButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addClueButton;
     private javax.swing.JLabel cluesLabel;
     private javax.swing.JPanel cluesPanel;
     private javax.swing.JLabel consistentLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton editGroupsButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

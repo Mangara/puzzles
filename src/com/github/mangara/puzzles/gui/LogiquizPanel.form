@@ -46,8 +46,8 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="sufficientLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="cluesLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="addClueButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="editGroupsButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="143" max="32767" attributes="0"/>
                       </Group>
@@ -69,11 +69,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="cluesLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  <Component id="addClueButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="editGroupsButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -111,17 +111,20 @@
             <Property name="text" type="java.lang.String" value="Necessary"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="addClueButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add clue"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator3">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="editGroupsButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit groups"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editGroupsButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
