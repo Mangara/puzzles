@@ -56,7 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
         puzzlePanel = new CenterPuzzlePanel(this);
         getContentPane().add(puzzlePanel, java.awt.BorderLayout.CENTER);
         
-        newDialog = new NewPuzzleDialog(this, true);
+        newDialog = new NewPuzzleDialog(this);
         
         exportFileChooser = new JFileChooser(System.getProperty("user.dir"));
         exportFileChooser.addChoosableFileFilter(exportFileFilter);

@@ -22,8 +22,8 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
 
     private final MainFrame puzzleFrame;
     
-    public NewPuzzleDialog(MainFrame parent, boolean modal) {
-        super(parent, modal);
+    public NewPuzzleDialog(MainFrame parent) {
+        super(parent, true);
         this.puzzleFrame = parent;
         initComponents();
     }
