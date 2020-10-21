@@ -17,6 +17,7 @@ package com.github.mangara.puzzles.gui;
 
 import com.github.mangara.puzzles.data.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.data.LogiquizSolutionState;
 import com.github.mangara.puzzles.generators.LogiquizGenerator;
 import com.github.mangara.puzzles.gui.PuzzlePanel.InteractionMode;
 import com.github.mangara.puzzles.io.LogiquizPrinter;
@@ -26,18 +27,21 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.swing.JPanel;
 
 public class LogiquizDrawPanel extends JPanel implements MouseListener {
 
     private InteractionMode interactionMode;
     private Logiquiz puzzle;
+    private LogiquizSolutionState[][] solution;
     
     public LogiquizDrawPanel() {
         setPreferredSize(new Dimension(800, 600));
         addMouseListener(this);
         
         puzzle = LogiquizGenerator.create(new CreateLogiquizSettings(3, 2));
+        clearSolution();
     }
 
     public InteractionMode getInteractionMode() {
@@ -54,12 +58,14 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
 
     public void setPuzzle(Logiquiz puzzle) {
         this.puzzle = puzzle;
+        clearSolution();
         repaint();
     }
     
     public void clear() {
         CreateLogiquizSettings settings = new CreateLogiquizSettings(puzzle.getGroupCount(), puzzle.getGroupSize());
         puzzle = LogiquizGenerator.create(settings);
+        clearSolution();
         repaint();
     }
     
@@ -74,6 +80,15 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
         int x = getWidth() - drawing.getWidth();
         int y = getHeight() - drawing.getHeight();
         g.drawImage(drawing, x, y, this);
+    }
+    
+    private void clearSolution() {
+        int totalGridSize = (puzzle.getGroupCount() - 1) * puzzle.getGroupSize();
+        solution = new LogiquizSolutionState[totalGridSize][totalGridSize];
+        
+        for (LogiquizSolutionState[] row : solution) {
+            Arrays.fill(row, LogiquizSolutionState.UNKNOWN);
+        }
     }
     
     @Override
