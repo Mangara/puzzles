@@ -75,29 +75,9 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
 
         jSeparator2 = new javax.swing.JSeparator();
         cluesPanel = new javax.swing.JPanel();
-        cluesLabel = new javax.swing.JLabel();
-        consistentLabel = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        sufficientLabel = new javax.swing.JLabel();
-        necessaryLabel = new javax.swing.JLabel();
-        addClueButton = new javax.swing.JButton();
-        jSeparator3 = new javax.swing.JSeparator();
         editGroupsButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
-
-        cluesLabel.setText("Clues");
-
-        consistentLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        consistentLabel.setText("Consistent");
-
-        sufficientLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        sufficientLabel.setText("Sufficient");
-
-        necessaryLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        necessaryLabel.setText("Necessary");
-
-        addClueButton.setText("Add clue");
 
         editGroupsButton.setText("Edit groups");
         editGroupsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -110,44 +90,17 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         cluesPanel.setLayout(cluesPanelLayout);
         cluesPanelLayout.setHorizontalGroup(
             cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
-            .addComponent(jSeparator3)
             .addGroup(cluesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(cluesPanelLayout.createSequentialGroup()
-                        .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(consistentLabel)
-                            .addComponent(necessaryLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(cluesPanelLayout.createSequentialGroup()
-                        .addGroup(cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sufficientLabel)
-                            .addComponent(cluesLabel)
-                            .addComponent(addClueButton)
-                            .addComponent(editGroupsButton))
-                        .addGap(0, 143, Short.MAX_VALUE))))
+                .addComponent(editGroupsButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         cluesPanelLayout.setVerticalGroup(
             cluesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cluesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(consistentLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sufficientLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(necessaryLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cluesLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(addClueButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(editGroupsButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         add(cluesPanel, java.awt.BorderLayout.LINE_END);
@@ -160,16 +113,9 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addClueButton;
-    private javax.swing.JLabel cluesLabel;
     private javax.swing.JPanel cluesPanel;
-    private javax.swing.JLabel consistentLabel;
     private javax.swing.JButton editGroupsButton;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JLabel necessaryLabel;
-    private javax.swing.JLabel sufficientLabel;
     // End of variables declaration//GEN-END:variables
 
 }
