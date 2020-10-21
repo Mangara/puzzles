@@ -15,7 +15,9 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.data.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.generators.LogiquizGenerator;
 import com.github.mangara.puzzles.gui.PuzzlePanel.InteractionMode;
 import com.github.mangara.puzzles.io.LogiquizPrinter;
 import java.awt.Color;
@@ -34,6 +36,8 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     public LogiquizDrawPanel() {
         setPreferredSize(new Dimension(800, 600));
         addMouseListener(this);
+        
+        puzzle = LogiquizGenerator.create(new CreateLogiquizSettings(3, 2));
     }
 
     public InteractionMode getInteractionMode() {
@@ -54,7 +58,8 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     }
     
     public void clear() {
-        
+        CreateLogiquizSettings settings = new CreateLogiquizSettings(puzzle.getGroupCount(), puzzle.getGroupSize());
+        puzzle = LogiquizGenerator.create(settings);
     }
     
     @Override
