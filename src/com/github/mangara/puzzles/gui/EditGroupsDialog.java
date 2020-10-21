@@ -18,9 +18,12 @@ package com.github.mangara.puzzles.gui;
 import com.github.mangara.puzzles.data.Logiquiz;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -52,7 +55,6 @@ public class EditGroupsDialog extends javax.swing.JDialog {
     private JTabbedPane groupTabPane;
     
     private void initComponents() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Edit groups");
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -68,8 +70,20 @@ public class EditGroupsDialog extends javax.swing.JDialog {
     }
     
     private void initButtonPanel() {
-        // TODO: Save button
-        // TODO: Cancel button
+        JButton saveButton = new JButton("Save groups");
+        saveButton.addActionListener((e) -> saveButtonActionPerformed(e));
+        
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener((e) -> cancelButtonActionPerformed(e));
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(Box.createHorizontalStrut(5));
+        buttonPanel.add(saveButton);
+        getContentPane().add(buttonPanel);
     }
 
     private void updateGroupTabs() {
