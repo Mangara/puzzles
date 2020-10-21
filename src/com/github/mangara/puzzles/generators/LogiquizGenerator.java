@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class LogiquizGenerator {
-
-    public static final String PLACEHOLDER = "";
     
     public static Logiquiz create(CreateLogiquizSettings settings) {
         List<List<String>> groups = generateGroups(settings);
