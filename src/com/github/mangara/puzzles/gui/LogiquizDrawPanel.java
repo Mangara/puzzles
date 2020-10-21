@@ -60,6 +60,7 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     public void clear() {
         CreateLogiquizSettings settings = new CreateLogiquizSettings(puzzle.getGroupCount(), puzzle.getGroupSize());
         puzzle = LogiquizGenerator.create(settings);
+        repaint();
     }
     
     @Override
