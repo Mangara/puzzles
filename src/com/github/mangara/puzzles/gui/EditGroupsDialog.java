@@ -18,7 +18,7 @@ package com.github.mangara.puzzles.gui;
 import com.github.mangara.puzzles.data.Logiquiz;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,23 +28,40 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 public class EditGroupsDialog extends javax.swing.JDialog {
 
-    private List<List<String>> groups = null;
+    private final LogiquizDrawPanel drawPanel;
+    private List<List<String>> groups;
 
-    public EditGroupsDialog(java.awt.Frame parent) {
+    public EditGroupsDialog(java.awt.Frame parent, LogiquizDrawPanel drawPanel) {
         super(parent, true);
+        this.drawPanel = drawPanel;
+        this.groups = new ArrayList<>();
         initComponents();
     }
 
     public void copyGroupsFrom(Logiquiz puzzle) {
-        this.groups = puzzle.getGroups();
+        groups = modifiableCopy(puzzle.getGroups());
         updateGroupTabs();
+    }
+    
+    private List<List<String>> modifiableCopy(List<List<String>> groups) {
+        List<List<String>> result = new ArrayList<>(groups.size());
+        
+        for (List<String> group : groups) {
+            result.add(new ArrayList<>(group));
+        }
+        
+        return result;
     }
 
     private void saveButtonActionPerformed(ActionEvent evt) {
-        // TODO: actually save
+        drawPanel.setPuzzle(new Logiquiz(groups, drawPanel.getPuzzle().getClues()));
         setVisible(false);
     }
 
@@ -53,7 +70,7 @@ public class EditGroupsDialog extends javax.swing.JDialog {
     }
 
     private JTabbedPane groupTabPane;
-    
+
     private void initComponents() {
         setTitle("Edit groups");
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
@@ -68,14 +85,14 @@ public class EditGroupsDialog extends javax.swing.JDialog {
         groupTabPane = new JTabbedPane();
         getContentPane().add(groupTabPane);
     }
-    
+
     private void initButtonPanel() {
         JButton saveButton = new JButton("Save groups");
         saveButton.addActionListener((e) -> saveButtonActionPerformed(e));
-        
+
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener((e) -> cancelButtonActionPerformed(e));
-        
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -88,28 +105,70 @@ public class EditGroupsDialog extends javax.swing.JDialog {
 
     private void updateGroupTabs() {
         groupTabPane.removeAll();
-        
+
         for (int i = 0; i < groups.size(); i++) {
             List<String> group = groups.get(i);
-            groupTabPane.addTab(String.format("Group %d", i + 1), generateGroupPanel(group));
+            groupTabPane.addTab(String.format("Group %d", i + 1), generateGroupPanel(group, i));
         }
-        
+
         groupTabPane.setSelectedIndex(0);
         pack();
     }
 
-    private Component generateGroupPanel(List<String> group) {
+    private Component generateGroupPanel(List<String> group, int groupIndex) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        
-        for (String entry : group) {
+
+        for (int entryIndex = 0; entryIndex < group.size(); entryIndex++) {
+            String entry = group.get(entryIndex);
             JTextField textField = new JTextField(entry, 25);
             textField.setMaximumSize(textField.getPreferredSize());
+            textField.getDocument().addDocumentListener(new EntryDocumentListener(groups, groupIndex, entryIndex));
             panel.add(textField);
         }
-        
+
         panel.add(Box.createVerticalGlue());
         return new JScrollPane(panel);
     }
 
+    
+
+    private class EntryDocumentListener implements DocumentListener {
+
+        private final List<List<String>> groups;
+        private final int groupIndex;
+        private final int entryIndex;
+
+        public EntryDocumentListener(List<List<String>> groups, int groupIndex, int entryIndex) {
+            this.groups = groups;
+            this.groupIndex = groupIndex;
+            this.entryIndex = entryIndex;
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            update(e);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            update(e);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            update(e);
+        }
+
+        private void update(DocumentEvent e) {
+            try {
+                Document doc = e.getDocument();
+                String newEntry = doc.getText(0, doc.getLength());
+                groups.get(groupIndex).set(entryIndex, newEntry);
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
 }

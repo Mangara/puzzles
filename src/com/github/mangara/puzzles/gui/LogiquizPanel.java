@@ -35,7 +35,7 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         add(drawPanel, java.awt.BorderLayout.CENTER);
         
         // Create dialogs
-        editGroupsDialog = new EditGroupsDialog(frame);
+        editGroupsDialog = new EditGroupsDialog(frame, drawPanel);
     }
 
     @Override
