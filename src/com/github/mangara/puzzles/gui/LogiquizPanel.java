@@ -31,10 +31,8 @@ public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
         initComponents();
         
         drawPanel = new LogiquizDrawPanel();
-//        drawPanel.addChangeListener((LogiquizChangedEvent e) -> puzzleChanged(e));
         add(drawPanel, java.awt.BorderLayout.CENTER);
         
-        // Create dialogs
         editGroupsDialog = new EditGroupsDialog(frame, drawPanel);
     }
 
