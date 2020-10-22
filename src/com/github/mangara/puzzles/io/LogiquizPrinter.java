@@ -34,10 +34,10 @@ import javax.imageio.ImageIO;
 
 public class LogiquizPrinter {
 
-    private static final int SQUARE_SIZE = 28;
-    private static final int PADDING = 5;
-    private static final float FONT_SIZE = 18f;
-    private static final String DEFAULT_FONT = "Roboto";
+    public static final int SQUARE_SIZE = 28;
+    public static final int PADDING = 5;
+    public static final float FONT_SIZE = 18f;
+    public static final String DEFAULT_FONT = "Roboto";
     
     private static Font font = null;
     
@@ -61,11 +61,11 @@ public class LogiquizPrinter {
     }
     
     public static void printLogiquiz(Logiquiz puzzle, Path outputFile) throws IOException {
-        BufferedImage image = drawLogiquiz(puzzle);
+        BufferedImage image = drawLogiquiz(puzzle, true);
         ImageIO.write(image, "png", outputFile.toFile());
     }
 
-    public static BufferedImage drawLogiquiz(Logiquiz puzzle) {
+    public static BufferedImage drawLogiquiz(Logiquiz puzzle, boolean fillBackground) {
         List<List<String>> groups = puzzle.getGroups();
         int groupSize = groups.get(0).size();
         List<List<String>> leftGroups = groups.subList(0, groups.size() - 1);
@@ -92,8 +92,10 @@ public class LogiquizPrinter {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // Fill background
-        g.setColor(Color.white);
-        g.fillRect(0, 0, result.getWidth(), result.getHeight());
+        if (fillBackground) {
+            g.setColor(Color.white);
+            g.fillRect(0, 0, result.getWidth(), result.getHeight());
+        }
 
         // Draw grid lines
         g.setColor(Color.black);
