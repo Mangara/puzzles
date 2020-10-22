@@ -29,12 +29,14 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class LogiquizDrawPanel extends JPanel implements MouseListener {
 
     private InteractionMode interactionMode;
     private Logiquiz puzzle;
     private LogiquizSolutionState[][] solution;
+    private int totalGridSize;
 
     public LogiquizDrawPanel() {
         setPreferredSize(new Dimension(800, 600));
@@ -82,7 +84,6 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     }
 
     private void drawSolution(Graphics g) {
-        int totalGridSize = (puzzle.getGroupCount() - 1) * puzzle.getGroupSize();
         int gridLeftX = getWidth() - 2 * LogiquizPrinter.PADDING - totalGridSize * LogiquizPrinter.SQUARE_SIZE;
         int gridTopY = getHeight() - 2 * LogiquizPrinter.PADDING - totalGridSize * LogiquizPrinter.SQUARE_SIZE;
 
@@ -119,22 +120,39 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     }
 
     private void drawUnknownSolutionSquare(Graphics g, int gridX, int gridY) {
-        g.setColor(Color.GRAY);
-        g.fillRect(gridX, gridY, LogiquizPrinter.SQUARE_SIZE, LogiquizPrinter.SQUARE_SIZE);
+        // Draw nothing
     }
 
     private void drawNegativeSolutionSquare(Graphics g, int gridX, int gridY) {
         g.setColor(Color.RED);
-        g.fillRect(gridX, gridY, LogiquizPrinter.SQUARE_SIZE, LogiquizPrinter.SQUARE_SIZE);
+        
+        int BAR_WIDTH = 5;
+        int leftX = gridX + 1 + BAR_WIDTH;
+        int topY = gridY + 1 + ((LogiquizPrinter.SQUARE_SIZE - BAR_WIDTH) / 2);
+        
+        g.fillRect(leftX, topY, LogiquizPrinter.SQUARE_SIZE - 1 - 2 * BAR_WIDTH, BAR_WIDTH);
     }
 
     private void drawPositiveSolutionSquare(Graphics g, int gridX, int gridY) {
         g.setColor(Color.GREEN);
-        g.fillRect(gridX, gridY, LogiquizPrinter.SQUARE_SIZE, LogiquizPrinter.SQUARE_SIZE);
+        
+        int BAR_WIDTH = 5;
+        
+        // Horizontal bar
+        int horLeftX = gridX + 1 + BAR_WIDTH;
+        int horTopY = gridY + 1 + ((LogiquizPrinter.SQUARE_SIZE - BAR_WIDTH) / 2);
+        
+        g.fillRect(horLeftX, horTopY, LogiquizPrinter.SQUARE_SIZE - 1 - 2 * BAR_WIDTH, BAR_WIDTH);
+        
+        // Vertical bar
+        int vertLeftX = gridX + 1 + ((LogiquizPrinter.SQUARE_SIZE - BAR_WIDTH) / 2);
+        int vertTopY = gridY + 1 + BAR_WIDTH;
+        
+        g.fillRect(vertLeftX, vertTopY, BAR_WIDTH, LogiquizPrinter.SQUARE_SIZE - 1 - 2 * BAR_WIDTH);
     }
 
     private void clearSolution() {
-        int totalGridSize = (puzzle.getGroupCount() - 1) * puzzle.getGroupSize();
+        totalGridSize = (puzzle.getGroupCount() - 1) * puzzle.getGroupSize();
         solution = new LogiquizSolutionState[totalGridSize][totalGridSize];
 
         for (LogiquizSolutionState[] row : solution) {
@@ -144,8 +162,37 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO
-        solution[0][0] = (solution[0][0] == LogiquizSolutionState.UNKNOWN) ? LogiquizSolutionState.POSITIVE : LogiquizSolutionState.UNKNOWN;
+        if (interactionMode == InteractionMode.BUILDING) {
+            return;
+        }
+        
+        int i = getGridCol(e.getX());
+        int j = getGridRow(e.getY());
+
+        if (i < 0 || i > totalGridSize || j < 0 || j > totalGridSize) {
+            return;
+        }
+        // TODO: Return for out of staircase clicks
+
+        boolean rightClick = SwingUtilities.isRightMouseButton(e);
+        LogiquizSolutionState paintState;
+
+        switch (solution[i][j]) {
+            case UNKNOWN:
+                paintState = rightClick ? LogiquizSolutionState.POSITIVE : LogiquizSolutionState.NEGATIVE;
+                break;
+            case NEGATIVE:
+                paintState = rightClick ? LogiquizSolutionState.UNKNOWN : LogiquizSolutionState.POSITIVE;
+                break;
+            case POSITIVE:
+                paintState = rightClick ? LogiquizSolutionState.NEGATIVE : LogiquizSolutionState.UNKNOWN;
+                break;
+            default:
+                throw new InternalError("Illegal logiquiz solution state: " + solution[i][j]);
+        }
+
+        solution[i][j] = paintState;
+
         repaint();
     }
 
@@ -165,4 +212,13 @@ public class LogiquizDrawPanel extends JPanel implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
+    private int getGridCol(int x) {
+        int gridLeftX = getWidth() - 2 * LogiquizPrinter.PADDING - totalGridSize * LogiquizPrinter.SQUARE_SIZE;
+        return (x - gridLeftX) / LogiquizPrinter.SQUARE_SIZE;
+    }
+    
+    private int getGridRow(int y) {
+        int gridTopY = getHeight() - 2 * LogiquizPrinter.PADDING - totalGridSize * LogiquizPrinter.SQUARE_SIZE;
+        return (y - gridTopY) / LogiquizPrinter.SQUARE_SIZE;
+    }
 }
