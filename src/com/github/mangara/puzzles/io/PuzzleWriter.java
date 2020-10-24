@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.SolvedNonogram;
 import java.io.IOException;
@@ -30,6 +31,13 @@ public class PuzzleWriter {
                 }
                 SolvedNonogram nonogram = (SolvedNonogram) puzzle;
                 NonogramWriter.save(nonogram, outputFile);
+                break;
+            case LOGIQUIZ:
+                if (!(puzzle instanceof Logiquiz)) {
+                    throw new IllegalArgumentException("Incorrect Logiquiz type.");
+                }
+                Logiquiz logiquiz = (Logiquiz) puzzle;
+                LogiquizWriter.save(logiquiz, outputFile);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected puzzle type: " + puzzle.getType());
