@@ -22,11 +22,12 @@ import java.nio.file.Path;
 public class PuzzleReader {
     
     public static Puzzle read(Path inputFile) throws IOException {
-        // Try to detect puzzle type
-        // if (LogiquizReader.isLogiquiz(inputFile)) {
-        //   return LogiquizReader.readLogiquiz(inputFile);
-        // }
-        
-        return NonogramReader.readNonogram(inputFile);
+        if (NonogramReader.isNonogram(inputFile)) { // Nonograms are easier to recognize, so check those first
+            return NonogramReader.readNonogram(inputFile);
+        } else if (LogiquizReader.isLogiquiz(inputFile)) {
+            return LogiquizReader.readLogiquiz(inputFile);
+        } else {
+            throw new IOException("Puzzle could not be read.");
+        }
     }
 }

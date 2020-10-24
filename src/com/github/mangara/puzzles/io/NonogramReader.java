@@ -24,9 +24,45 @@ import java.util.ArrayList;
 import java.util.List;
 import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NonogramReader {
 
+    /**
+     * Checks whether the given file is likely to be a Nonogram.
+     * 
+     * It uses two key features: nonogram files have no blank lines, and they
+     * only contain two non-whitespace characters (empty and filled squares).
+     * 
+     * @param file
+     * @return
+     * @throws IOException 
+     */
+    public static boolean isNonogram(Path file) throws IOException {
+        try (BufferedReader in = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+            Set<Character> characters = new HashSet<>();
+            int blankLines = 0;
+            
+            for (String line = in.readLine(); line != null; line = in.readLine()) {
+                if (line.isBlank()) {
+                    blankLines++;
+                }
+                
+                for (char c : line.toCharArray()) {
+                    if (!Character.isWhitespace(c)) {
+                        characters.add(c);
+                    }
+                }
+            }
+            
+            characters.remove(NonogramWriter.FILLED);
+            characters.remove(NonogramWriter.EMPTY);
+            
+            return blankLines == 0 && characters.isEmpty();
+        }
+    }
+    
     public static SolvedNonogram readNonogram(Path inputFile) throws IOException {
         boolean[][] drawing = readDrawing(inputFile);
         return NonogramGenerator.generateNonogram(drawing);
