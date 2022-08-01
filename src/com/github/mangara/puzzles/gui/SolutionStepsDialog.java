@@ -20,13 +20,13 @@ import com.github.mangara.puzzles.data.NonogramSolutionState;
 
 public class SolutionStepsDialog extends javax.swing.JDialog {
 
-    private final NonogramDrawPanel drawPanel;
+    private final NonogramSolutionDrawer drawPanel;
     
     private List<NonogramSolutionState[][]> steps;
     private int currentStep = 0;
     private boolean updateInProgress = false;
     
-    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, NonogramDrawPanel drawPanel) {
+    public SolutionStepsDialog(java.awt.Frame parent, boolean modal, NonogramSolutionDrawer drawPanel) {
         super(parent, modal);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         

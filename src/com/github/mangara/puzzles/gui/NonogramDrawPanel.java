@@ -34,7 +34,7 @@ import com.github.mangara.puzzles.io.NonogramPrinter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NonogramDrawPanel extends JPanel implements MouseInputListener {
+public class NonogramDrawPanel extends JPanel implements MouseInputListener, NonogramSolutionDrawer{
 
     private static final Color FILLED_COLOUR = new Color(16, 16, 16);
     private static final Color EMPTY_COLOUR = Color.white;
@@ -95,6 +95,7 @@ public class NonogramDrawPanel extends JPanel implements MouseInputListener {
         repaint();
     }
     
+    @Override
     public void setSolution(NonogramSolutionState[][] solution) {
         building = false;
         for (int i = 0; i < puzzle.length; i++) {
