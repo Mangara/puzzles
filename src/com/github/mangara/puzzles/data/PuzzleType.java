@@ -16,5 +16,5 @@
 package com.github.mangara.puzzles.data;
 
 public enum PuzzleType {
-    NONOGRAM, LOGIQUIZ
+    NONOGRAM, LOGIQUIZ, SUDOKU
 }
