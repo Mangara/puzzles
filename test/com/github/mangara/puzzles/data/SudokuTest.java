@@ -47,50 +47,11 @@ public class SudokuTest {
         assertThrows(IllegalArgumentException.class, () -> { new Sudoku(grid); });
     }
     
-    @Test
-    public void testValidateRows() {
-        int[][] grid = blankGrid();
-        
-        grid[0][0] = 1;
-        grid[2][5] = 7;
-        
-        new Sudoku(grid); // succeeds
-        
-        grid[0][4] = 1;
-        assertThrows(IllegalArgumentException.class, () -> { new Sudoku(grid); });
-    }
-    
-    @Test
-    public void testValidateColumns() {
-        int[][] grid = blankGrid();
-        
-        grid[0][0] = 1;
-        grid[2][5] = 7;
-        
-        new Sudoku(grid); // succeeds
-        
-        grid[4][5] = 7;
-        assertThrows(IllegalArgumentException.class, () -> { new Sudoku(grid); });
-    }
-    
-    @Test
-    public void testValidateBoxes() {
-        int[][] grid = blankGrid();
-        
-        grid[0][0] = 1;
-        grid[2][5] = 7;
-        
-        new Sudoku(grid); // succeeds
-        
-        grid[1][1] = 1;
-        assertThrows(IllegalArgumentException.class, () -> { new Sudoku(grid); });
-    }
-    
     private int[][] blankGrid() {
         int[][] result = new int[9][9];
         
         for (int i = 0; i < 9; i++) {
-            Arrays.fill(result[i], Sudoku.BLANK);
+            Arrays.fill(result[i], SudokuSolutionState.BLANK);
         }
         
         return result;

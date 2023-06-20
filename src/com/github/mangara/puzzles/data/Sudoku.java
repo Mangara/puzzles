@@ -15,9 +15,9 @@
  */
 package com.github.mangara.puzzles.data;
 
+import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
+
 public class Sudoku implements Puzzle {
-    
-    public static final int BLANK = 0;
 
     // A 9 x 9 size with default regions is assumed
     private final int[][] givenDigits;
@@ -49,9 +49,6 @@ public class Sudoku implements Puzzle {
     private void validateGivenDigits(int[][] givenDigits) {
         validateSize(givenDigits);
         validateDigits(givenDigits);
-        validateRows(givenDigits);
-        validateColumns(givenDigits);
-        validateBoxes(givenDigits);
     }
 
     private void validateSize(int[][] givenDigits) {
@@ -71,61 +68,6 @@ public class Sudoku implements Puzzle {
             for (int j = 0; j < 9; j++) {
                 if (givenDigits[i][j] != BLANK && (givenDigits[i][j] < 1 || givenDigits[i][j] > 9)) {
                     throw new IllegalArgumentException("Given digits must be between 1 and 9, inclusive");
-                }
-            }
-        }
-    }
-
-    private void validateRows(int[][] givenDigits) {
-        for (int i = 0; i < 9; i++) {
-            int[] digitCount = new int[10];
-            
-            for (int j = 0; j < 9; j++) {
-                int digit = givenDigits[i][j];
-                
-                if (digit != BLANK) {
-                    digitCount[digit]++;
-                    if (digitCount[digit] > 1) {
-                        throw new IllegalArgumentException("Rows must not contain the same digit twice");
-                    }
-                }
-            }
-        }
-    }
-    
-    private void validateColumns(int[][] givenDigits) {
-        for (int col = 0; col < 9; col++) {
-            int[] digitCount = new int[10];
-            
-            for (int row = 0; row < 9; row++) {
-                int digit = givenDigits[row][col];
-                
-                if (digit != BLANK) {
-                    digitCount[digit]++;
-                    if (digitCount[digit] > 1) {
-                        throw new IllegalArgumentException("Columns must not contain the same digit twice");
-                    }
-                }
-            }
-        }
-    }
-    
-    private void validateBoxes(int[][] givenDigits) {
-        for (int box = 0; box < 9; box++) {
-            int[] digitCount = new int[10];
-            int boxRow = 3 * (box / 3);
-            int boxCol = 3 * (box % 3);
-            
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 3; col++) {
-                    int digit = givenDigits[boxRow + row][boxCol + col];
-
-                    if (digit != BLANK) {
-                        digitCount[digit]++;
-                        if (digitCount[digit] > 1) {
-                            throw new IllegalArgumentException("Boxes must not contain the same digit twice");
-                        }
-                    }
                 }
             }
         }

@@ -19,6 +19,7 @@ import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
+import com.github.mangara.puzzles.data.Sudoku;
 import java.awt.CardLayout;
 
 public class CenterPuzzlePanel extends javax.swing.JPanel {
@@ -26,6 +27,7 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
     private final CardLayout layout;
     private final LogiquizPanel logiquizPanel;
     private final NonogramPanel nonogramPanel;
+    private final SudokuPanel sudokuPanel;
     private PuzzlePanel activePuzzlePanel;
 
     public CenterPuzzlePanel(java.awt.Frame frame) {
@@ -35,10 +37,20 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
 
         nonogramPanel = new NonogramPanel(frame);
         logiquizPanel = new LogiquizPanel(frame);
+        sudokuPanel = new SudokuPanel(frame);
         activePuzzlePanel = nonogramPanel;
 
         add(nonogramPanel, PuzzleType.NONOGRAM.name());
         add(logiquizPanel, PuzzleType.LOGIQUIZ.name());
+        add(sudokuPanel, PuzzleType.SUDOKU.name());
+        
+        // TODO - testing
+        int[][] digits = new int[9][9];
+        digits[0][0] = 9;
+        digits[8][8] = 8;
+        digits[8][0] = 7;
+        digits[0][8] = 6;
+        setPuzzle(new Sudoku(digits));
     }
 
     void clear() {
@@ -65,6 +77,10 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
             case LOGIQUIZ:
                 logiquizPanel.setPuzzle((Logiquiz) puzzle);
                 activePuzzlePanel = logiquizPanel;
+                break;
+            case SUDOKU:
+                sudokuPanel.setPuzzle((Sudoku) puzzle);
+                activePuzzlePanel = sudokuPanel;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + puzzle.getType());

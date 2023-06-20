@@ -37,6 +37,16 @@ public class FontDimensions {
 
         return new Rectangle2D.Double(0, 0, maxTextWidth, maxTextHeight);
     }
+    
+    public static int getHeight(String word, FontRenderContext frc, Font font) {
+        TextLayout text = new TextLayout(word, font, frc);
+        return (int) Math.ceil(text.getBounds().getHeight());
+    }
+    
+    public static int getWidth(String word, FontRenderContext frc, Font font) {
+        TextLayout text = new TextLayout(word, font, frc);
+        return (int) Math.ceil(text.getBounds().getWidth());
+    }
 
     private FontDimensions() {
     }

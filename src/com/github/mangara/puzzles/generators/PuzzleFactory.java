@@ -18,6 +18,7 @@ package com.github.mangara.puzzles.generators;
 import com.github.mangara.puzzles.data.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.CreateNonogramSettings;
 import com.github.mangara.puzzles.data.CreatePuzzleSettings;
+import com.github.mangara.puzzles.data.CreateSudokuSettings;
 import com.github.mangara.puzzles.data.Puzzle;
 
 public class PuzzleFactory {
@@ -28,6 +29,8 @@ public class PuzzleFactory {
                 return NonogramGenerator.create((CreateNonogramSettings) settings);
             case LOGIQUIZ:
                 return LogiquizGenerator.create((CreateLogiquizSettings) settings);
+            case SUDOKU:
+                return SudokuGenerator.create((CreateSudokuSettings) settings);
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + settings.getType());
         }

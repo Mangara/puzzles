@@ -18,6 +18,7 @@ package com.github.mangara.puzzles.io;
 import com.github.mangara.puzzles.data.Logiquiz;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
+import com.github.mangara.puzzles.data.Sudoku;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -30,6 +31,9 @@ public class PuzzlePrinter {
                 break;
             case LOGIQUIZ:
                 LogiquizPrinter.printLogiquiz((Logiquiz) puzzle, outputFile);
+                break;
+            case SUDOKU:
+                SudokuPrinter.printSudoku((Sudoku) puzzle, outputFile);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown puzzle type: " + puzzle.getType());

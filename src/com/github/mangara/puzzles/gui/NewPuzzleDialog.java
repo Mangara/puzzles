@@ -38,6 +38,8 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
             return PuzzleType.LOGIQUIZ;
         } else if (nonogramRadioButton.isSelected()) {
             return PuzzleType.NONOGRAM;
+        } else if (sudokuRadioButton.isSelected()) {
+            return PuzzleType.SUDOKU;
         }
         throw new InternalError("No puzzle type selected");
     }
@@ -55,6 +57,7 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
         typePanel = new javax.swing.JPanel();
         logiquizRadioButton = new javax.swing.JRadioButton();
         nonogramRadioButton = new javax.swing.JRadioButton();
+        sudokuRadioButton = new javax.swing.JRadioButton();
         settingsPanel = new PuzzleSettingsPanel();
         buttonPanel = new javax.swing.JPanel();
         createButton = new javax.swing.JButton();
@@ -83,6 +86,14 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
             }
         });
 
+        typeButtonGroup.add(sudokuRadioButton);
+        sudokuRadioButton.setText("Sudoku");
+        sudokuRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sudokuRadioButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout typePanelLayout = new javax.swing.GroupLayout(typePanel);
         typePanel.setLayout(typePanelLayout);
         typePanelLayout.setHorizontalGroup(
@@ -91,8 +102,9 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logiquizRadioButton)
-                    .addComponent(nonogramRadioButton))
-                .addContainerGap(212, Short.MAX_VALUE))
+                    .addComponent(nonogramRadioButton)
+                    .addComponent(sudokuRadioButton))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
         typePanelLayout.setVerticalGroup(
             typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,7 +113,9 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
                 .addComponent(logiquizRadioButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nonogramRadioButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sudokuRadioButton)
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         getContentPane().add(typePanel);
@@ -165,6 +179,10 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
         updatePuzzleType();
     }//GEN-LAST:event_nonogramRadioButtonActionPerformed
 
+    private void sudokuRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sudokuRadioButtonActionPerformed
+        updatePuzzleType();
+    }//GEN-LAST:event_sudokuRadioButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cancelButton;
@@ -172,6 +190,7 @@ public class NewPuzzleDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton logiquizRadioButton;
     private javax.swing.JRadioButton nonogramRadioButton;
     private javax.swing.JPanel settingsPanel;
+    private javax.swing.JRadioButton sudokuRadioButton;
     private javax.swing.ButtonGroup typeButtonGroup;
     private javax.swing.JPanel typePanel;
     // End of variables declaration//GEN-END:variables

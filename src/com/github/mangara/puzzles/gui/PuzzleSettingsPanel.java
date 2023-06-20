@@ -24,6 +24,7 @@ public class PuzzleSettingsPanel extends javax.swing.JPanel {
     private final CardLayout layout;
     private final LogiquizSettingsPanel logiquizSettings;
     private final NonogramSettingsPanel nonogramSettings;
+    private final SudokuSettingsPanel sudokuSettings;
     
     /**
      * Creates new form PuzzleSettingsPanel
@@ -35,15 +36,18 @@ public class PuzzleSettingsPanel extends javax.swing.JPanel {
  
         logiquizSettings = new LogiquizSettingsPanel();
         nonogramSettings = new NonogramSettingsPanel();
+        sudokuSettings = new SudokuSettingsPanel();
         
         add(logiquizSettings, PuzzleType.LOGIQUIZ.name());
         add(nonogramSettings, PuzzleType.NONOGRAM.name());
+        add(sudokuSettings, PuzzleType.SUDOKU.name());
     }
     
     public CreatePuzzleSettings getSettings(PuzzleType type) {
         switch (type) {
             case LOGIQUIZ: return logiquizSettings.getSettings();
             case NONOGRAM: return nonogramSettings.getSettings();
+            case SUDOKU: return sudokuSettings.getSettings();
             default: throw new IllegalArgumentException("Unrecognized puzzle type");
         }
     }
