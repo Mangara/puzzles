@@ -82,26 +82,28 @@ public class SudokuPrinter {
         g.setColor(BACKGROUND_COLOR);
         g.fillRect(0, 0, size, size);
 
-        // Draw grid lines
         g.setColor(color);
-
-        for (int i = 0; i < 10; i++) {
-            g.drawLine(OUTER_PADDING + i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            g.drawLine(OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE);
-        }
         
-        // Emphasize box grid lines
-        g.setStroke(new BasicStroke(3));
+        if (drawGrid) {
+            // Draw grid lines
+            for (int i = 0; i < 10; i++) {
+                g.drawLine(OUTER_PADDING + i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING);
+            }
 
-        for (int i = 0; i < 4; i++) {
-            g.drawLine(OUTER_PADDING + 3 * i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING);
-        }
+            for (int i = 0; i < 10; i++) {
+                g.drawLine(OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE);
+            }
 
-        for (int i = 0; i < 4; i++) {
-            g.drawLine(OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE);
+            // Emphasize box grid lines
+            g.setStroke(new BasicStroke(3));
+
+            for (int i = 0; i < 4; i++) {
+                g.drawLine(OUTER_PADDING + 3 * i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING);
+            }
+
+            for (int i = 0; i < 4; i++) {
+                g.drawLine(OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE);
+            }
         }
         
         // Draw numbers
