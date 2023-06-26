@@ -26,20 +26,24 @@ import javax.swing.event.MouseInputListener;
 import com.github.mangara.puzzles.data.Sudoku;
 import com.github.mangara.puzzles.data.SudokuSolutionState;
 import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
+import com.github.mangara.puzzles.gui.events.SudokuChangeListener;
+import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
 import com.github.mangara.puzzles.io.SudokuPrinter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyListener {
 
-//    private final List<NonogramChangeListener> changeListeners = new ArrayList<>(1);
+    private final List<SudokuChangeListener> changeListeners = new ArrayList<>(1);
     
     private static final int NO_SELECTION = -1;
     
     private boolean building = true;
     private int[][] puzzle;
     private SudokuSolutionState[][] solution;
-    private int selectedSquareRow = NO_SELECTION, selectedSquareCol = NO_SELECTION;
+    private int selectedRow = NO_SELECTION, selectedCol = NO_SELECTION;
     private int leftX = 0, topY = 0;
 
     public SudokuDrawPanel() {
@@ -83,6 +87,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
 
     public void setBuilding(boolean building) {
         this.building = building;
+        resetSolution();
         repaint();
     }
 
@@ -110,11 +115,11 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         }
     }
     
-//    public void addChangeListener(NonogramChangeListener listener) {
-//        changeListeners.add(listener);
-//    }
+    public void addChangeListener(SudokuChangeListener listener) {
+        changeListeners.add(listener);
+    }
 
-    private static final Color GUESS_COLOR = Color.DARK_GRAY;
+    private static final Color GUESS_COLOR = Color.BLUE;
     private static final Color GIVEN_COLOR = Color.BLACK;
     
     @Override
@@ -125,25 +130,23 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         int sudokuSize = 9 * SudokuPrinter.SQUARE_SIZE + 2 * SudokuPrinter.OUTER_PADDING;
         leftX = getWidth() - sudokuSize;
         topY = getHeight() - sudokuSize;
-        
-        System.out.println("sudokuSize: " + sudokuSize + " leftX: " + leftX + " topY: " + topY);
 
         // Highlight squares seen from selected square
         
         // Highlight selected square
-        if (selectedSquareRow != NO_SELECTION && selectedSquareCol != NO_SELECTION) {
-            int selectedX = leftX + SudokuPrinter.OUTER_PADDING + selectedSquareCol * SudokuPrinter.SQUARE_SIZE;
-            int selectedY = topY + SudokuPrinter.OUTER_PADDING + selectedSquareRow * SudokuPrinter.SQUARE_SIZE;
+        if (selectedRow != NO_SELECTION && selectedCol != NO_SELECTION) {
+            int selectedX = leftX + SudokuPrinter.OUTER_PADDING + selectedCol * SudokuPrinter.SQUARE_SIZE;
+            int selectedY = topY + SudokuPrinter.OUTER_PADDING + selectedRow * SudokuPrinter.SQUARE_SIZE;
             g.setColor(Color.red);
             g.fillRect(selectedX, selectedY, SudokuPrinter.SQUARE_SIZE, SudokuPrinter.SQUARE_SIZE);
-            
-            System.out.println("selectedX: " + selectedX + " selectedY: " + selectedY);
         }
         
-        // Draw guessed numbers
-        Sudoku guesses = new Sudoku(getGuesses());
-        BufferedImage guessesDrawing = SudokuPrinter.drawSudoku(guesses, false, GUESS_COLOR);
-        g.drawImage(guessesDrawing, leftX, topY, this);
+        if (!building) {
+            // Draw guessed numbers
+            Sudoku guesses = new Sudoku(getGuesses());
+            BufferedImage guessesDrawing = SudokuPrinter.drawSudoku(guesses, false, GUESS_COLOR);
+            g.drawImage(guessesDrawing, leftX, topY, this);
+        }
         
         // Draw grid and given numbers
         Sudoku given = new Sudoku(puzzle);
@@ -183,45 +186,21 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         int col = getGridCol(e.getX());
 
         if (col < 0 || col > 9 || row < 0 || row > 9) {
-            selectedSquareRow = NO_SELECTION;
-            selectedSquareCol = NO_SELECTION;
+            selectedRow = NO_SELECTION;
+            selectedCol = NO_SELECTION;
             repaint();
             return;
         }
         
-        selectedSquareRow = row;
-        selectedSquareCol = col;
-
-        if (building) {
-//            boolean oldState = nonogramResult[i][j];
-//            nonogramResult[i][j] = (paintState == NonogramSolutionState.FILLED);
-//            fireChangedEvent(i, j, oldState, nonogramResult[i][j]);
-        } else {
-//            boolean rightClick = SwingUtilities.isRightMouseButton(e);
-//
-//            switch (puzzle[i][j]) {
-//                case EMPTY:
-//                    paintState = rightClick ? NonogramSolutionState.FILLED : NonogramSolutionState.UNKNOWN;
-//                    break;
-//                case UNKNOWN:
-//                    paintState = rightClick ? NonogramSolutionState.EMPTY : NonogramSolutionState.FILLED;
-//                    break;
-//                case FILLED:
-//                    paintState = rightClick ? NonogramSolutionState.UNKNOWN : NonogramSolutionState.EMPTY;
-//                    break;
-//            }
-//
-//            puzzle[i][j] = paintState;
-        }
+        selectedRow = row;
+        selectedCol = col;
 
         repaint();
     }
     
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Key typed: " + e.getKeyChar());
-        
-        if (selectedSquareCol == NO_SELECTION || selectedSquareRow == NO_SELECTION) {
+        if (selectedCol == NO_SELECTION || selectedRow == NO_SELECTION) {
             return;
         }
         
@@ -234,9 +213,11 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         int digit = key - '1' + 1;
         
         if (building) {
-            puzzle[selectedSquareRow][selectedSquareCol] = digit;
+            int oldDigit = puzzle[selectedRow][selectedCol];
+            puzzle[selectedRow][selectedCol] = digit;
+            fireSelectedSquareChangedEvent(oldDigit, digit);
         } else {
-            solution[selectedSquareRow][selectedSquareCol].number = digit;
+            solution[selectedRow][selectedCol].number = digit;
         }
         
         repaint();
@@ -275,17 +256,21 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
     }
 
     private void fireGlobalChangedEvent() {
-//        fireChangedEvent(NonogramChangedEvent.GLOBAL, NonogramChangedEvent.GLOBAL, false, true);
+        fireChangedEvent(SudokuChangedEvent.GLOBAL);
     }
     
-    private void fireChangedEvent(int i, int j, boolean oldState, boolean newState) {
-//        if (oldState == newState) {
-//            return;
-//        }
-//        
-//        NonogramChangedEvent e = new NonogramChangedEvent(i, j, oldState, newState);
-//        for (NonogramChangeListener listener : changeListeners) {
-//            listener.nonogramChanged(e);
-//        }
+    private void fireSelectedSquareChangedEvent(int oldDigit, int newDigit) {
+        if (oldDigit == newDigit) {
+            return;
+        }
+        
+        SudokuChangedEvent e = new SudokuChangedEvent(selectedRow, selectedCol, oldDigit, newDigit);
+        fireChangedEvent(e);
+    }
+    
+    private void fireChangedEvent(SudokuChangedEvent e) {
+        for (SudokuChangeListener listener : changeListeners) {
+            listener.sudokuChanged(e);
+        }
     }
 }
