@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.mangara.puzzles.io;
+package com.github.mangara.puzzles.io.sudoku;
 
-import com.github.mangara.puzzles.data.Sudoku;
-import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.io.FontDimensions;
+import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;

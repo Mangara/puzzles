@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.generators;
+package com.github.mangara.puzzles.generators.sudoku;
 
-import com.github.mangara.puzzles.data.CreateSudokuSettings;
-import com.github.mangara.puzzles.data.Sudoku;
-import com.github.mangara.puzzles.data.SudokuSolutionState;
+import com.github.mangara.puzzles.data.sudoku.CreateSudokuSettings;
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import java.util.Arrays;
 
 public class SudokuGenerator {

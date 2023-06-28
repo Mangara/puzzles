@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.mangara.puzzles.data;
+package com.github.mangara.puzzles.data.sudoku;
 
 import java.util.Arrays;
 

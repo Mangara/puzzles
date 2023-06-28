@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.data;
+package com.github.mangara.puzzles.data.sudoku;
 
-import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
+import com.github.mangara.puzzles.data.Puzzle;
+import com.github.mangara.puzzles.data.PuzzleType;
+import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 
 public class Sudoku implements Puzzle {
 

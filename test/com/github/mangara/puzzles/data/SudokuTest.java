@@ -15,6 +15,8 @@
  */
 package com.github.mangara.puzzles.data;
 
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;

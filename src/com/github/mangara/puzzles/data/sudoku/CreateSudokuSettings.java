@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.data;
+package com.github.mangara.puzzles.data.sudoku;
+
+import com.github.mangara.puzzles.data.CreatePuzzleSettings;
+import com.github.mangara.puzzles.data.PuzzleType;
 
 public class CreateSudokuSettings implements CreatePuzzleSettings {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.sudoku;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,12 +23,12 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
-import com.github.mangara.puzzles.data.Sudoku;
-import com.github.mangara.puzzles.data.SudokuSolutionState;
-import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
+import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 import com.github.mangara.puzzles.gui.events.SudokuChangeListener;
 import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
-import com.github.mangara.puzzles.io.SudokuPrinter;
+import com.github.mangara.puzzles.io.sudoku.SudokuPrinter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;

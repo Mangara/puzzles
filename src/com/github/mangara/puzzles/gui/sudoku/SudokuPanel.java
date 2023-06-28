@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.sudoku;
 
-import com.github.mangara.puzzles.checkers.SudokuChecker;
+import com.github.mangara.puzzles.checkers.sudoku.SudokuChecker;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
-import com.github.mangara.puzzles.data.Sudoku;
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.gui.PuzzlePanel;
 import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
 
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {

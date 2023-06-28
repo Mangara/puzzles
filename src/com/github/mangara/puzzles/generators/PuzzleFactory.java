@@ -15,11 +15,12 @@
  */
 package com.github.mangara.puzzles.generators;
 
+import com.github.mangara.puzzles.generators.sudoku.SudokuGenerator;
 import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
 import com.github.mangara.puzzles.data.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.nonogram.CreateNonogramSettings;
 import com.github.mangara.puzzles.data.CreatePuzzleSettings;
-import com.github.mangara.puzzles.data.CreateSudokuSettings;
+import com.github.mangara.puzzles.data.sudoku.CreateSudokuSettings;
 import com.github.mangara.puzzles.data.Puzzle;
 
 public class PuzzleFactory {
