@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.mangara.puzzles.gui.events;
+package com.github.mangara.puzzles.gui.nonogram;
 
 public class NonogramChangedEvent {
 

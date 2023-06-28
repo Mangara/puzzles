@@ -20,7 +20,6 @@ import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import com.github.mangara.puzzles.gui.PuzzlePanel;
-import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
 
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 

@@ -26,8 +26,6 @@ import javax.swing.event.MouseInputListener;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
-import com.github.mangara.puzzles.gui.events.SudokuChangeListener;
-import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
 import com.github.mangara.puzzles.io.sudoku.SudokuPrinter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

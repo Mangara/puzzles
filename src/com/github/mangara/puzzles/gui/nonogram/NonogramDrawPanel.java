@@ -28,8 +28,6 @@ import com.github.mangara.puzzles.data.nonogram.Nonogram;
 import com.github.mangara.puzzles.data.nonogram.NonogramSolutionState;
 import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
 import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
-import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
-import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
 import com.github.mangara.puzzles.io.nonogram.NonogramPrinter;
 import java.util.ArrayList;
 import java.util.List;

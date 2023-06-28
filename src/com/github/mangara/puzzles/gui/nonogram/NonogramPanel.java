@@ -21,7 +21,6 @@ import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
 import com.github.mangara.puzzles.gui.PuzzlePanel;
-import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
 import com.github.mangara.puzzles.solvers.nonogram.IterativeSolver;
 import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;
 import java.util.List;

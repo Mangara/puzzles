@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.mangara.puzzles.gui.events;
+package com.github.mangara.puzzles.gui.sudoku;
 
-public interface NonogramChangeListener {
-    public void nonogramChanged(NonogramChangedEvent e);
+public interface SudokuChangeListener {
+    public void sudokuChanged(SudokuChangedEvent e);
 }
