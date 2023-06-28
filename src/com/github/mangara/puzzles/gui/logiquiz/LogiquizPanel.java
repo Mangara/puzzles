@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.logiquiz;
 
-import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
+import com.github.mangara.puzzles.gui.PuzzlePanel;
 
 public class LogiquizPanel extends javax.swing.JPanel implements PuzzlePanel {
 

@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.io.logiquiz.LogiquizReader;
 import com.github.mangara.puzzles.io.nonogram.NonogramReader;
 import com.github.mangara.puzzles.data.Puzzle;
 import java.io.IOException;

@@ -15,9 +15,10 @@
  */
 package com.github.mangara.puzzles.generators;
 
+import com.github.mangara.puzzles.generators.logiquiz.LogiquizGenerator;
 import com.github.mangara.puzzles.generators.sudoku.SudokuGenerator;
 import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
-import com.github.mangara.puzzles.data.CreateLogiquizSettings;
+import com.github.mangara.puzzles.data.logiquiz.CreateLogiquizSettings;
 import com.github.mangara.puzzles.data.nonogram.CreateNonogramSettings;
 import com.github.mangara.puzzles.data.CreatePuzzleSettings;
 import com.github.mangara.puzzles.data.sudoku.CreateSudokuSettings;

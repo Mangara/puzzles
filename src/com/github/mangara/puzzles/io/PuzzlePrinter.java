@@ -15,9 +15,10 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.io.logiquiz.LogiquizPrinter;
 import com.github.mangara.puzzles.io.sudoku.SudokuPrinter;
 import com.github.mangara.puzzles.io.nonogram.NonogramPrinter;
-import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
 import com.github.mangara.puzzles.data.nonogram.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;

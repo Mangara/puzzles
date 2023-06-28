@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.logiquiz;
 
-import com.github.mangara.puzzles.data.CreateLogiquizSettings;
-import com.github.mangara.puzzles.data.Logiquiz;
-import com.github.mangara.puzzles.data.LogiquizSolutionState;
-import com.github.mangara.puzzles.generators.LogiquizGenerator;
+import com.github.mangara.puzzles.data.logiquiz.CreateLogiquizSettings;
+import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
+import com.github.mangara.puzzles.data.logiquiz.LogiquizSolutionState;
+import com.github.mangara.puzzles.generators.logiquiz.LogiquizGenerator;
 import com.github.mangara.puzzles.gui.PuzzlePanel.InteractionMode;
-import com.github.mangara.puzzles.io.LogiquizPrinter;
+import com.github.mangara.puzzles.io.logiquiz.LogiquizPrinter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

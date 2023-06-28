@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.generators;
+package com.github.mangara.puzzles.generators.logiquiz;
 
-import com.github.mangara.puzzles.data.CreateLogiquizSettings;
-import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.data.logiquiz.CreateLogiquizSettings;
+import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

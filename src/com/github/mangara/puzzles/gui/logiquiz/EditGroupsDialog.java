@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.logiquiz;
 
-import com.github.mangara.puzzles.data.Logiquiz;
+import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
