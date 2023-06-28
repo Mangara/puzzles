@@ -19,7 +19,9 @@ import com.github.mangara.puzzles.checkers.sudoku.SudokuChecker;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 import com.github.mangara.puzzles.gui.PuzzlePanel;
+import com.github.mangara.puzzles.solvers.sudoku.BruteForceSolver;
 
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 
@@ -62,13 +64,40 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
     }
 
     private void puzzleChanged(SudokuChangedEvent e) {
-        updateValidity(drawPanel.getPuzzle());
+        Sudoku puzzle = drawPanel.getPuzzle();
+        updateValidity(puzzle);
+        updateUniqueness(puzzle);
     }
 
     private void updateValidity(Sudoku puzzle) {
         boolean isValid = SudokuChecker.isValidPuzzle(puzzle);
         String text = isValid ? "Valid: YES" : "Valid: NO";
         validLabel.setText(text);
+    }
+    
+    private void updateUniqueness(Sudoku puzzle) {
+        // count given digits, if too few, don't check
+        int givenDigitCount = 0;
+        int[][] digits = puzzle.getGivenDigits();
+        
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (digits[row][col] != BLANK) {
+                    givenDigitCount++;
+                }
+            }
+        }
+        
+        String text;
+        
+        if (givenDigitCount < 78) {
+            text = "Unique: ?";
+        } else {
+            boolean isUnique = BruteForceSolver.hasUniqueSolution(puzzle);
+            text = isUnique ? "Unique: YES" : "Unique: NO";
+        }
+        
+        uniqueLabel.setText(text);
     }
 
     /**
@@ -84,6 +113,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         sidePanel = new javax.swing.JPanel();
         validLabel = new javax.swing.JLabel();
         stepsButton = new javax.swing.JButton();
+        uniqueLabel = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -98,6 +128,9 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
             }
         });
 
+        uniqueLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        uniqueLabel.setText("Unique?");
+
         javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
         sidePanel.setLayout(sidePanelLayout);
         sidePanelLayout.setHorizontalGroup(
@@ -106,7 +139,8 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
                 .addContainerGap()
                 .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(validLabel)
-                    .addComponent(stepsButton))
+                    .addComponent(stepsButton)
+                    .addComponent(uniqueLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sidePanelLayout.setVerticalGroup(
@@ -114,9 +148,11 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
             .addGroup(sidePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(validLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(uniqueLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
                 .addComponent(stepsButton)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         add(sidePanel, java.awt.BorderLayout.LINE_END);
@@ -136,6 +172,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel sidePanel;
     private javax.swing.JButton stepsButton;
+    private javax.swing.JLabel uniqueLabel;
     private javax.swing.JLabel validLabel;
     // End of variables declaration//GEN-END:variables
 
