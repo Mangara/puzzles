@@ -17,8 +17,8 @@ package com.github.mangara.puzzles.solvers.nonogram;
 
 import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;
 import java.util.Arrays;
-import com.github.mangara.puzzles.data.Nonogram;
-import com.github.mangara.puzzles.generators.NonogramGenerator;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
+import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

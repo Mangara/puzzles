@@ -15,8 +15,9 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.gui.nonogram.NonogramPanel;
 import com.github.mangara.puzzles.data.Logiquiz;
-import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.Sudoku;

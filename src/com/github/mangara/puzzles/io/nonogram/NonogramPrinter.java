@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.io;
+package com.github.mangara.puzzles.io.nonogram;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -30,7 +30,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
+import com.github.mangara.puzzles.io.FontDimensions;
 
 public class NonogramPrinter {
 

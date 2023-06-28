@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.gui.nonogram.NonogramSettingsPanel;
 import com.github.mangara.puzzles.data.CreatePuzzleSettings;
 import com.github.mangara.puzzles.data.PuzzleType;
 import java.awt.CardLayout;

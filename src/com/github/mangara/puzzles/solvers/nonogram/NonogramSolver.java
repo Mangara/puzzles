@@ -15,7 +15,7 @@
  */
 package com.github.mangara.puzzles.solvers.nonogram;
 
-import com.github.mangara.puzzles.data.Nonogram;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
 
 public class NonogramSolver {
 

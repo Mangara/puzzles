@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.nonogram;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,13 +24,13 @@ import java.util.Arrays;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
-import com.github.mangara.puzzles.data.Nonogram;
-import com.github.mangara.puzzles.data.NonogramSolutionState;
-import com.github.mangara.puzzles.data.SolvedNonogram;
-import com.github.mangara.puzzles.generators.NonogramGenerator;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
+import com.github.mangara.puzzles.data.nonogram.NonogramSolutionState;
+import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
+import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
 import com.github.mangara.puzzles.gui.events.NonogramChangeListener;
 import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
-import com.github.mangara.puzzles.io.NonogramPrinter;
+import com.github.mangara.puzzles.io.nonogram.NonogramPrinter;
 import java.util.ArrayList;
 import java.util.List;
 

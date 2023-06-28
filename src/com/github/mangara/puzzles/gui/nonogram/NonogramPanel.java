@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.gui;
+package com.github.mangara.puzzles.gui.nonogram;
 
-import com.github.mangara.puzzles.data.Nonogram;
-import com.github.mangara.puzzles.data.NonogramSolutionState;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
+import com.github.mangara.puzzles.data.nonogram.NonogramSolutionState;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
-import com.github.mangara.puzzles.data.SolvedNonogram;
+import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
+import com.github.mangara.puzzles.gui.PuzzlePanel;
 import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
 import com.github.mangara.puzzles.solvers.nonogram.IterativeSolver;
 import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;

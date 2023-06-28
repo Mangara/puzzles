@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Sander Verdonschot.
+ * Copyright 2022 Sander Verdonschot <sander.verdonschot at gmail.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.data;
+package com.github.mangara.puzzles.gui.nonogram;
 
-public enum NonogramSolutionState {
-    UNKNOWN, EMPTY, FILLED;
+import com.github.mangara.puzzles.data.nonogram.NonogramSolutionState;
+
+public interface NonogramSolutionDrawer {
+    public abstract void setSolution(NonogramSolutionState[][] solution);
 }

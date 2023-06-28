@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.io;
+package com.github.mangara.puzzles.io.nonogram;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,8 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import com.github.mangara.puzzles.data.SolvedNonogram;
-import com.github.mangara.puzzles.generators.NonogramGenerator;
+import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
+import com.github.mangara.puzzles.generators.nonogram.NonogramGenerator;
 import java.util.HashSet;
 import java.util.Set;
 

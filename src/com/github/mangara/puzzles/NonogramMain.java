@@ -17,9 +17,9 @@ package com.github.mangara.puzzles;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import com.github.mangara.puzzles.data.Nonogram;
-import com.github.mangara.puzzles.io.NonogramPrinter;
-import com.github.mangara.puzzles.io.NonogramReader;
+import com.github.mangara.puzzles.data.nonogram.Nonogram;
+import com.github.mangara.puzzles.io.nonogram.NonogramPrinter;
+import com.github.mangara.puzzles.io.nonogram.NonogramReader;
 
 public class NonogramMain {
 

@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.data;
+package com.github.mangara.puzzles.data.nonogram;
+
+import com.github.mangara.puzzles.data.CreatePuzzleSettings;
+import com.github.mangara.puzzles.data.PuzzleType;
 
 public class CreateNonogramSettings implements CreatePuzzleSettings {
 

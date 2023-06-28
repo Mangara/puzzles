@@ -16,7 +16,7 @@
 package com.github.mangara.puzzles.solvers.nonogram;
 
 import com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper;
-import com.github.mangara.puzzles.data.NonogramSolutionState;
+import com.github.mangara.puzzles.data.nonogram.NonogramSolutionState;
 import java.util.Arrays;
 import java.util.List;
 import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.getFirstSegmentLength;
