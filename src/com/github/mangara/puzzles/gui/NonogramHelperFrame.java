@@ -17,7 +17,7 @@ package com.github.mangara.puzzles.gui;
 
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.data.NonogramSolutionState;
-import com.github.mangara.puzzles.solvers.IterativeSolver;
+import com.github.mangara.puzzles.solvers.nonogram.IterativeSolver;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

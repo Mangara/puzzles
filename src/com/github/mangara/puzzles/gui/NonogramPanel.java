@@ -21,8 +21,8 @@ import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
-import com.github.mangara.puzzles.solvers.IterativeSolver;
-import com.github.mangara.puzzles.solvers.NonogramSolver;
+import com.github.mangara.puzzles.solvers.nonogram.IterativeSolver;
+import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;
 import java.util.List;
 
 public class NonogramPanel extends javax.swing.JPanel implements PuzzlePanel {

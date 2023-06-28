@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.solvers;
+package com.github.mangara.puzzles.solvers.nonogram;
 
-import com.github.mangara.puzzles.solvers.NonogramSolverHelper;
+import com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper;
 import com.github.mangara.puzzles.data.NonogramSolutionState;
 import java.util.Arrays;
 import java.util.List;
-import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.getFirstSegmentLength;
-import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.getSpaceRequired;
-import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.isValidPartial;
-import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.getAllSolutions;
-import static com.github.mangara.puzzles.solvers.NonogramSolverHelper.intersectAllMatchingSolutions;
+import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.getFirstSegmentLength;
+import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.getSpaceRequired;
+import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.isValidPartial;
+import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.getAllSolutions;
+import static com.github.mangara.puzzles.solvers.nonogram.NonogramSolverHelper.intersectAllMatchingSolutions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

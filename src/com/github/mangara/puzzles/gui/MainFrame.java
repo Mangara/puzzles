@@ -30,8 +30,8 @@ import com.github.mangara.puzzles.generators.PuzzleFactory;
 import com.github.mangara.puzzles.io.PuzzlePrinter;
 import com.github.mangara.puzzles.io.PuzzleReader;
 import com.github.mangara.puzzles.io.PuzzleWriter;
-import com.github.mangara.puzzles.solvers.IterativeSolver;
-import com.github.mangara.puzzles.solvers.NonogramSolver;
+import com.github.mangara.puzzles.solvers.nonogram.IterativeSolver;
+import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;
 
 public class MainFrame extends javax.swing.JFrame {
 

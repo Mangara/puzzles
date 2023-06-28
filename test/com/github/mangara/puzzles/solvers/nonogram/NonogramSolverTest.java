@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.mangara.puzzles.solvers;
+package com.github.mangara.puzzles.solvers.nonogram;
 
-import com.github.mangara.puzzles.solvers.NonogramSolver;
+import com.github.mangara.puzzles.solvers.nonogram.NonogramSolver;
 import java.util.Arrays;
 import com.github.mangara.puzzles.data.Nonogram;
 import com.github.mangara.puzzles.generators.NonogramGenerator;
