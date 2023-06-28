@@ -15,11 +15,11 @@
  */
 package com.github.mangara.puzzles.gui;
 
+import com.github.mangara.puzzles.checkers.SudokuChecker;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
-import com.github.mangara.puzzles.data.SolvedNonogram;
 import com.github.mangara.puzzles.data.Sudoku;
-import com.github.mangara.puzzles.gui.events.NonogramChangedEvent;
+import com.github.mangara.puzzles.gui.events.SudokuChangedEvent;
 
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 
@@ -30,7 +30,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         initComponents();
 
         drawPanel = new SudokuDrawPanel();
-//        drawPanel.addChangeListener((SudokuChangedEvent e) -> puzzleChanged(e));
+        drawPanel.addChangeListener((SudokuChangedEvent e) -> puzzleChanged(e));
         add(drawPanel, java.awt.BorderLayout.CENTER);
         
 //        stepsDialog = new SolutionStepsDialog(frame, false, drawPanel);
@@ -61,14 +61,14 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         drawPanel.setBuilding(building);
     }
 
-    private void puzzleChanged(NonogramChangedEvent e) {
-        updateSolvability(drawPanel.getPuzzle());
+    private void puzzleChanged(SudokuChangedEvent e) {
+        updateValidity(drawPanel.getPuzzle());
     }
 
-    private void updateSolvability(Sudoku puzzle) {
-//        boolean isSolvable = NonogramSolver.hasUniqueSolution(puzzle);
-//        String solvableText = isSolvable ? "Solvable" : "Not solvable";
-//        solvableLabel.setText(solvableText);
+    private void updateValidity(Sudoku puzzle) {
+        boolean isValid = SudokuChecker.isValidPuzzle(puzzle);
+        String text = isValid ? "Valid: YES" : "Valid: NO";
+        validLabel.setText(text);
     }
 
     /**
@@ -82,13 +82,13 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
     private void initComponents() {
 
         sidePanel = new javax.swing.JPanel();
-        solvableLabel = new javax.swing.JLabel();
+        validLabel = new javax.swing.JLabel();
         stepsButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
-        solvableLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        solvableLabel.setText("Solvable");
+        validLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        validLabel.setText("Solvable");
 
         stepsButton.setText("Show Steps");
         stepsButton.setEnabled(false);
@@ -105,7 +105,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
             .addGroup(sidePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(solvableLabel)
+                    .addComponent(validLabel)
                     .addComponent(stepsButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -113,7 +113,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
             sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(solvableLabel)
+                .addComponent(validLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(stepsButton)
                 .addContainerGap(241, Short.MAX_VALUE))
@@ -135,8 +135,8 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel sidePanel;
-    private javax.swing.JLabel solvableLabel;
     private javax.swing.JButton stepsButton;
+    private javax.swing.JLabel validLabel;
     // End of variables declaration//GEN-END:variables
 
 }

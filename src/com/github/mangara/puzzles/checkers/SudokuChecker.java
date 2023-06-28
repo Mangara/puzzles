@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.github.mangara.puzzles.checkers;
 
 import com.github.mangara.puzzles.data.Sudoku;
@@ -22,14 +21,25 @@ import static com.github.mangara.puzzles.data.SudokuSolutionState.BLANK;
 
 public class SudokuChecker {
 
+    /**
+     * Checks whether the given digits satisfy the rules of Sudoku. Does not
+     * check whether it has a unique solution.
+     *
+     * @param puzzle
+     * @return
+     */
+    public static boolean isValidPuzzle(Sudoku puzzle) {
+        return isValidPartialSolution(puzzle, partialSolutionStateFromPuzzle(puzzle));
+    }
+
     public static boolean isValidSolution(Sudoku puzzle, int[][] solution) {
         return isValidSolution(puzzle, solutionStateFromSolution(solution));
     }
-    
+
     public static boolean isValidSolution(Sudoku puzzle, SudokuSolutionState[][] solution) {
         return fullySolved(solution) && isValidPartialSolution(puzzle, solution);
     }
-    
+
     public static boolean isValidPartialSolution(Sudoku puzzle, SudokuSolutionState[][] solution) {
         return matchesGiven(puzzle, solution) && validRows(solution) && validColumns(solution) && validBoxes(solution);
     }
@@ -43,26 +53,26 @@ public class SudokuChecker {
                 }
             }
         }
-        
+
         return true;
     }
-    
+
     private static boolean matchesGiven(Sudoku puzzle, SudokuSolutionState[][] solution) {
         int[][] given = puzzle.getGivenDigits();
-        
+
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 int givenDigit = given[row][col];
-                
+
                 if (givenDigit != BLANK && solution[row][col].number != givenDigit) {
                     return false;
                 }
             }
         }
-        
+
         return true;
     }
-    
+
     private static boolean validRows(SudokuSolutionState[][] solution) {
         for (int row = 0; row < 9; row++) {
             int[] digitCount = new int[10];
@@ -78,7 +88,7 @@ public class SudokuChecker {
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -97,7 +107,7 @@ public class SudokuChecker {
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -120,19 +130,32 @@ public class SudokuChecker {
                 }
             }
         }
-        
+
         return true;
     }
 
     private static SudokuSolutionState[][] solutionStateFromSolution(int[][] solution) {
         SudokuSolutionState[][] result = new SudokuSolutionState[9][9];
-        
+
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 result[row][col] = new SudokuSolutionState(solution[row][col]);
             }
         }
-        
+
         return result;
-    }    
+    }
+
+    private static SudokuSolutionState[][] partialSolutionStateFromPuzzle(Sudoku puzzle) {
+        SudokuSolutionState[][] result = new SudokuSolutionState[9][9];
+        int[][] digits = puzzle.getGivenDigits();
+
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                result[row][col] = new SudokuSolutionState(digits[row][col]);
+            }
+        }
+
+        return result;
+    }
 }
