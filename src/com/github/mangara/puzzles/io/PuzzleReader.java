@@ -18,13 +18,16 @@ package com.github.mangara.puzzles.io;
 import com.github.mangara.puzzles.io.logiquiz.LogiquizReader;
 import com.github.mangara.puzzles.io.nonogram.NonogramReader;
 import com.github.mangara.puzzles.data.Puzzle;
+import com.github.mangara.puzzles.io.sudoku.SudokuReader;
 import java.io.IOException;
 import java.nio.file.Path;
 
 public class PuzzleReader {
     
     public static Puzzle read(Path inputFile) throws IOException {
-        if (NonogramReader.isNonogram(inputFile)) { // Nonograms are easier to recognize, so check those first
+        if (SudokuReader.isSudoku(inputFile)) {
+            return SudokuReader.readSudoku(inputFile);
+        } else if (NonogramReader.isNonogram(inputFile)) { // Nonograms are easier to recognize, so check those first
             return NonogramReader.readNonogram(inputFile);
         } else if (LogiquizReader.isLogiquiz(inputFile)) {
             return LogiquizReader.readLogiquiz(inputFile);

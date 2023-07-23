@@ -15,11 +15,13 @@
  */
 package com.github.mangara.puzzles.io;
 
+import com.github.mangara.puzzles.io.sudoku.SudokuWriter;
 import com.github.mangara.puzzles.io.logiquiz.LogiquizWriter;
 import com.github.mangara.puzzles.io.nonogram.NonogramWriter;
 import com.github.mangara.puzzles.data.logiquiz.Logiquiz;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.nonogram.SolvedNonogram;
+import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -40,6 +42,13 @@ public class PuzzleWriter {
                 }
                 Logiquiz logiquiz = (Logiquiz) puzzle;
                 LogiquizWriter.save(logiquiz, outputFile);
+                break;
+            case SUDOKU:
+                if (!(puzzle instanceof Sudoku)) {
+                    throw new IllegalArgumentException("Incorrect Logiquiz type.");
+                }
+                Sudoku sudoku = (Sudoku) puzzle;
+                SudokuWriter.save(sudoku, outputFile);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected puzzle type: " + puzzle.getType());
