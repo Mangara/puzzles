@@ -213,18 +213,22 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
                 break;
 
             case KeyEvent.VK_UP:
+            case KeyEvent.VK_W:
                 selectedRow = Math.max(0, selectedRow - 1);
                 break;
 
             case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_S:
                 selectedRow = Math.min(8, selectedRow + 1);
                 break;
 
             case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_A:
                 selectedCol = Math.max(0, selectedCol - 1);
                 break;
 
             case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_D:
                 selectedCol = Math.min(8, selectedCol + 1);
                 break;
         }
