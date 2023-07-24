@@ -60,6 +60,7 @@ public class SudokuPrinter {
         
         if (!found) {
             System.err.printf("Font \"%s\" was not found.%n", DEFAULT_FONT);
+            font = new Font("SansSerif", Font.PLAIN, Math.round(DEFAULT_FONT_SIZE));
         }
     }
     
