@@ -248,9 +248,22 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
 
         if (building) {
             int oldDigit = puzzle[selectedRow][selectedCol];
+            
+            if (oldDigit == digit) {
+                // Remove the digit instead of overwriting with itself
+                digit = BLANK;
+            }
+            
             puzzle[selectedRow][selectedCol] = digit;
             fireSelectedSquareChangedEvent(oldDigit, digit);
         } else {
+            int oldDigit = solution[selectedRow][selectedCol].number;
+            
+            if (oldDigit == digit) {
+                // Remove the digit instead of overwriting with itself
+                digit = BLANK;
+            }
+            
             solution[selectedRow][selectedCol].number = digit;
         }
 
