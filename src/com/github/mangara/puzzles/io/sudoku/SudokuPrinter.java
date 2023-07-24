@@ -118,7 +118,7 @@ public class SudokuPrinter {
                 if (digit != BLANK) {
                     String text = Integer.toString(digit);
                     int width = FontDimensions.getWidth(text, frc, font);
-                    int height = FontDimensions.getWidth(text, frc, font);
+                    int height = FontDimensions.getHeight(text, frc, font);
                     
                     int x = OUTER_PADDING + col * SQUARE_SIZE + (SQUARE_SIZE - width) / 2;
                     int y = OUTER_PADDING + row * SQUARE_SIZE + SQUARE_SIZE - (SQUARE_SIZE - height) / 2;
