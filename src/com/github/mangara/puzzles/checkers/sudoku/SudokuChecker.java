@@ -47,7 +47,7 @@ public class SudokuChecker {
     private static boolean fullySolved(SudokuSolutionState[][] solution) {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                int digit = solution[row][col].number;
+                int digit = solution[row][col].digit;
                 if (digit < 1 || digit > 9) {
                     return false;
                 }
@@ -64,7 +64,7 @@ public class SudokuChecker {
             for (int col = 0; col < 9; col++) {
                 int givenDigit = given[row][col];
 
-                if (givenDigit != BLANK && solution[row][col].number != givenDigit) {
+                if (givenDigit != BLANK && solution[row][col].digit != givenDigit) {
                     return false;
                 }
             }
@@ -78,7 +78,7 @@ public class SudokuChecker {
             int[] digitCount = new int[10];
 
             for (int col = 0; col < 9; col++) {
-                int digit = solution[row][col].number;
+                int digit = solution[row][col].digit;
 
                 if (digit != BLANK) {
                     digitCount[digit]++;
@@ -97,7 +97,7 @@ public class SudokuChecker {
             int[] digitCount = new int[10];
 
             for (int row = 0; row < 9; row++) {
-                int digit = solution[row][col].number;
+                int digit = solution[row][col].digit;
 
                 if (digit != BLANK) {
                     digitCount[digit]++;
@@ -119,7 +119,7 @@ public class SudokuChecker {
 
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
-                    int digit = solution[boxRow + row][boxCol + col].number;
+                    int digit = solution[boxRow + row][boxCol + col].digit;
 
                     if (digit != BLANK) {
                         digitCount[digit]++;

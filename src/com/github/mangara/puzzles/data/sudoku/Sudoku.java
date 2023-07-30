@@ -66,12 +66,12 @@ public class Sudoku implements Puzzle {
     }
 
     private void validateDigits(int[][] givenDigits) {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (givenDigits[i][j] != BLANK && (givenDigits[i][j] < 1 || givenDigits[i][j] > 9)) {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (givenDigits[row][col] != BLANK && (givenDigits[row][col] < 1 || givenDigits[row][col] > 9)) {
                     throw new IllegalArgumentException("Given digits must be between 1 and 9, inclusive");
                 }
             }
         }
-    }
+    }    
 }

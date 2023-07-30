@@ -21,7 +21,7 @@ import java.util.Arrays;
 public class SudokuSolutionState {
     public static int BLANK = 0;
     
-    public int number;
+    public int digit;
     public boolean[] possible; // possible[3] = true => this square can contain a 4
     public boolean[] pencilmark;
 
@@ -30,7 +30,7 @@ public class SudokuSolutionState {
     }
     
     public SudokuSolutionState(int number) {
-        this.number = number;
+        this.digit = number;
        
         possible = new boolean[9];
         if (number == BLANK) {
@@ -42,5 +42,19 @@ public class SudokuSolutionState {
         
         pencilmark = new boolean[9];
         Arrays.fill(pencilmark, false);
+    }
+
+    public boolean isPossible(int digit) {
+        return possible[digit - 1];
+    }
+    
+    public void setPossible(int digit, boolean possible) {
+        this.possible[digit - 1] = possible;
+    }
+    
+    public void removePossible(int digit) {
+        if (this.digit != digit) {
+            setPossible(digit, false);
+        }
     }
 }

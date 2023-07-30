@@ -25,7 +25,7 @@ public class BruteForceSolver {
         return findUniqueBruteForceSolution(puzzle, false, puzzle.getGivenDigits(), 0);
     }
 
-    public static int[][] findUAnySolution(Sudoku puzzle) {
+    public static int[][] findAnySolution(Sudoku puzzle) {
         int[][] solution = puzzle.getGivenDigits();
         return findBruteForceSolution(puzzle, solution, 0);
     }

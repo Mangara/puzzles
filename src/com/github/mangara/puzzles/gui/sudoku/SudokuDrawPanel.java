@@ -107,7 +107,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
                 solution[row][col] = new SudokuSolutionState();
 
                 if (puzzle[row][col] != BLANK) {
-                    solution[row][col].number = puzzle[row][col];
+                    solution[row][col].digit = puzzle[row][col];
                 }
             }
         }
@@ -157,7 +157,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
                 if (puzzle[row][col] == BLANK) {
-                    guesses[row][col] = solution[row][col].number;
+                    guesses[row][col] = solution[row][col].digit;
                 } else {
                     guesses[row][col] = BLANK;
                 }
@@ -208,7 +208,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
                     puzzle[selectedRow][selectedCol] = BLANK;
                     fireSelectedSquareChangedEvent(oldDigit, BLANK);
                 } else {
-                    solution[selectedRow][selectedCol].number = BLANK;
+                    solution[selectedRow][selectedCol].digit = BLANK;
                 }
                 break;
 
@@ -261,14 +261,14 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
             puzzle[selectedRow][selectedCol] = digit;
             fireSelectedSquareChangedEvent(oldDigit, digit);
         } else {
-            int oldDigit = solution[selectedRow][selectedCol].number;
+            int oldDigit = solution[selectedRow][selectedCol].digit;
             
             if (oldDigit == digit) {
                 // Remove the digit instead of overwriting with itself
                 digit = BLANK;
             }
             
-            solution[selectedRow][selectedCol].number = digit;
+            solution[selectedRow][selectedCol].digit = digit;
         }
 
         repaint();

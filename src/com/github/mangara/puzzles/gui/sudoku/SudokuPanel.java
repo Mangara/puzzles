@@ -16,12 +16,17 @@
 package com.github.mangara.puzzles.gui.sudoku;
 
 import com.github.mangara.puzzles.checkers.sudoku.SudokuChecker;
+import com.github.mangara.puzzles.data.Pair;
 import com.github.mangara.puzzles.data.Puzzle;
 import com.github.mangara.puzzles.data.PuzzleType;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 import com.github.mangara.puzzles.gui.PuzzlePanel;
 import com.github.mangara.puzzles.solvers.sudoku.BruteForceSolver;
+import com.github.mangara.puzzles.solvers.sudoku.LogicalSolver;
+import com.github.mangara.puzzles.solvers.sudoku.SolveStep;
+import com.github.mangara.puzzles.solvers.sudoku.SolvingSudoku;
+import java.util.List;
 
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 
@@ -114,6 +119,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         validLabel = new javax.swing.JLabel();
         stepsButton = new javax.swing.JButton();
         uniqueLabel = new javax.swing.JLabel();
+        solveButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -131,16 +137,24 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         uniqueLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         uniqueLabel.setText("Unique?");
 
+        solveButton.setText("Solve");
+        solveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                solveButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
         sidePanel.setLayout(sidePanelLayout);
         sidePanelLayout.setHorizontalGroup(
             sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(validLabel)
-                    .addComponent(stepsButton)
-                    .addComponent(uniqueLabel))
+                    .addComponent(stepsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uniqueLabel)
+                    .addComponent(solveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sidePanelLayout.setVerticalGroup(
@@ -150,7 +164,9 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
                 .addComponent(validLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(uniqueLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
+                .addComponent(solveButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(stepsButton)
                 .addContainerGap())
         );
@@ -168,9 +184,20 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 //        stepsDialog.setVisible(true);
     }//GEN-LAST:event_stepsButtonActionPerformed
 
+    private void solveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveButtonActionPerformed
+        Pair<SolvingSudoku, List<SolveStep>> solution = LogicalSolver.solve(drawPanel.getPuzzle());
+        
+        System.out.println("Next steps:");
+        for (SolveStep step : solution.getSecond()) {
+            System.out.println(step.description());
+        }
+        System.out.println("     ------      ");
+    }//GEN-LAST:event_solveButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel sidePanel;
+    private javax.swing.JButton solveButton;
     private javax.swing.JButton stepsButton;
     private javax.swing.JLabel uniqueLabel;
     private javax.swing.JLabel validLabel;
