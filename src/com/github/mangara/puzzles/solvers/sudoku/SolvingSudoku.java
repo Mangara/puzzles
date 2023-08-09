@@ -19,21 +19,30 @@ import com.github.mangara.puzzles.data.sudoku.Cell;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
+import java.util.Arrays;
 
 public class SolvingSudoku {
     public final SudokuSolutionState[][] state;
 
-    public SolvingSudoku(Sudoku sudoku) {
+    public SolvingSudoku() {
         state = initState();
-        int[][] digits = sudoku.getGivenDigits();
+    }
+
+    public SolvingSudoku(int[][] givenDigits) {
+        state = initState();
         
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                if (digits[row][col] != BLANK) {
-                    placeDigit(row, col, digits[row][col]);
+                if (givenDigits[row][col] != BLANK) {
+                    placeDigit(row, col, givenDigits[row][col]);
+                    state[row][col].given = true;
                 }
             }
         }
+    }
+    
+    public SolvingSudoku(Sudoku sudoku) {
+        this(sudoku.getGivenDigits());
     }
     
     public SolvingSudoku(SolvingSudoku sudoku) {
@@ -44,11 +53,45 @@ public class SolvingSudoku {
         this.state = copyState(state);
     }
     
+    public int[][] getGivenDigits() {
+        int[][] digits = new int[9][9];
+        
+        for (int row = 0; row < 9; row++) {
+            Arrays.fill(digits[row], BLANK);
+            
+            for (int col = 0; col < 9; col++) {
+                if (state[row][col].given) {
+                    digits[row][col] = state[row][col].digit;
+                }
+            }
+        }
+        
+        return digits;
+    }
+    
+    public int[][] getGuessedDigits() {
+        int[][] digits = new int[9][9];
+        
+        for (int row = 0; row < 9; row++) {
+            Arrays.fill(digits[row], BLANK);
+            
+            for (int col = 0; col < 9; col++) {
+                if (!state[row][col].given && state[row][col].digit != BLANK) {
+                    digits[row][col] = state[row][col].digit;
+                }
+            }
+        }
+        
+        return digits;
+    }
+    
     public void placeDigit(Cell cell, int digit) {
         placeDigit(cell.row, cell.col, digit);
     }
     
     public void placeDigit(int row, int col, int digit) {
+        state[row][col].setDigit(digit);
+        
         // Eliminate digit from row
         for (int c = 0; c < 9; c++) {
             state[row][c].removePossible(digit);
@@ -70,6 +113,11 @@ public class SolvingSudoku {
         }
     }
     
+    public void removeDigit(int row, int col) {
+        state[row][col].digit = BLANK;
+        // TODO: update possible of (row, col) and all other affected places
+    }
+    
     private SudokuSolutionState[][] initState() {
         SudokuSolutionState[][] result = new SudokuSolutionState[9][9];
         
@@ -87,13 +135,7 @@ public class SolvingSudoku {
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                SudokuSolutionState state = sudoku[row][col];
-                result[row][col] = new SudokuSolutionState(state.digit);
-
-                if (state.digit == BLANK) {
-                    // Copy possible
-                    System.arraycopy(state.possible, 0, result[row][col].possible, 0, 9);
-                }
+                result[row][col] = new SudokuSolutionState(sudoku[row][col]);
             }
         }
 

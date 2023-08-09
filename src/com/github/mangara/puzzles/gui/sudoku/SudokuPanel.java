@@ -31,7 +31,7 @@ import java.util.List;
 public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
 
     private final SudokuDrawPanel drawPanel;
-//    private final SolutionStepsDialog stepsDialog;
+    private final SolutionStepsDialog stepsDialog;
 
     public SudokuPanel(java.awt.Frame frame) {
         initComponents();
@@ -40,7 +40,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         drawPanel.addChangeListener((SudokuChangedEvent e) -> puzzleChanged(e));
         add(drawPanel, java.awt.BorderLayout.CENTER);
         
-//        stepsDialog = new SolutionStepsDialog(frame, false, drawPanel);
+        stepsDialog = new SolutionStepsDialog(frame, false, drawPanel);
     }
 
     @Override
@@ -127,7 +127,6 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
         validLabel.setText("Solvable");
 
         stepsButton.setText("Show Steps");
-        stepsButton.setEnabled(false);
         stepsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stepsButtonActionPerformed(evt);
@@ -175,13 +174,10 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void stepsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stepsButtonActionPerformed
-//        IterativeSolver solver = new IterativeSolver(true);
-//        Nonogram puzzle = drawPanel.getPuzzle();
-//        solver.findAnySolution(puzzle);
-//        List<NonogramSolutionState[][]> steps = solver.getPartialSolutionRecord();
-//        drawPanel.setBuilding(false);
-//        stepsDialog.setSteps(steps);
-//        stepsDialog.setVisible(true);
+        Pair<SolvingSudoku, List<SolveStep>> solution = LogicalSolver.solve(drawPanel.getPuzzle());
+        drawPanel.setBuilding(false);
+        stepsDialog.setSteps(new SolvingSudoku(drawPanel.getPuzzle()), solution.getSecond());
+        stepsDialog.setVisible(true);
     }//GEN-LAST:event_stepsButtonActionPerformed
 
     private void solveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solveButtonActionPerformed

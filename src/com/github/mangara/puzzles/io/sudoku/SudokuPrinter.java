@@ -17,8 +17,10 @@
 package com.github.mangara.puzzles.io.sudoku;
 
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
+import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import com.github.mangara.puzzles.io.FontDimensions;
 import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
+import com.github.mangara.puzzles.solvers.sudoku.SolvingSudoku;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -42,6 +44,8 @@ public class SudokuPrinter {
     private static final String DEFAULT_FONT = "Roboto";
     private static final float DEFAULT_FONT_SIZE = 36f;
     
+    // Derived values
+    private static final int SIZE = 9 * SQUARE_SIZE + 2 * OUTER_PADDING;
     private static Font font = null;
     
     static {
@@ -74,43 +78,83 @@ public class SudokuPrinter {
     }
     
     public static BufferedImage drawSudoku(Sudoku puzzle, boolean drawGrid, Color color) {
-        int size = 9 * SQUARE_SIZE + 2 * OUTER_PADDING;
-        BufferedImage result = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = result.createGraphics();
-        g.setFont(font);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        BufferedImage result = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = initGraphics(result);
 
-        // Fill background
-        g.setColor(BACKGROUND_COLOR);
-        g.fillRect(0, 0, size, size);
+        fillBackground(g);
 
-        g.setColor(color);
-        
         if (drawGrid) {
-            // Draw grid lines
-            for (int i = 0; i < 10; i++) {
-                g.drawLine(OUTER_PADDING + i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING);
-            }
-
-            for (int i = 0; i < 10; i++) {
-                g.drawLine(OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE);
-            }
-
-            // Emphasize box grid lines
-            g.setStroke(new BasicStroke(3));
-
-            for (int i = 0; i < 4; i++) {
-                g.drawLine(OUTER_PADDING + 3 * i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING);
-            }
-
-            for (int i = 0; i < 4; i++) {
-                g.drawLine(OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, size - OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE);
-            }
+            drawGrid(g, color);
         }
         
-        // Draw numbers
+        drawDigits(g, puzzle.getGivenDigits(), color);
+        
+        return result;
+    }
+
+    public static BufferedImage drawSolvingSudoku(SolvingSudoku puzzle, boolean drawGrid, Color baseColor, Color guessColor, Color possibleColor) {
+        BufferedImage result = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = initGraphics(result);
+        
+        fillBackground(g);
+        
+        if (drawGrid) {
+            drawGrid(g, baseColor);
+        }
+        
+        drawDigits(g, puzzle.getGivenDigits(), baseColor);
+        drawDigits(g, puzzle.getGuessedDigits(), guessColor);
+        
+        drawPossibleDigits(g, puzzle.state, possibleColor);
+        
+        // TODO: draw pencilmarks
+        
+        return result;
+    }
+
+    private static Graphics2D initGraphics(BufferedImage result) {
+        Graphics2D g = result.createGraphics();
+        
+        g.setFont(font);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        
+        return g;
+    }
+    
+    private static void fillBackground(Graphics2D g) {
+        g.setColor(BACKGROUND_COLOR);
+        g.fillRect(0, 0, SIZE, SIZE);
+    }
+    
+    private static void drawGrid(Graphics2D g, Color color) {
+        g.setColor(color);
+        
+        // Draw grid lines
+        for (int i = 0; i < 10; i++) {
+            g.drawLine(OUTER_PADDING + i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, SIZE - OUTER_PADDING);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            g.drawLine(OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE, SIZE - OUTER_PADDING, OUTER_PADDING + i * SQUARE_SIZE);
+        }
+
+        // Emphasize box grid lines
+        g.setStroke(new BasicStroke(3));
+
+        for (int i = 0; i < 4; i++) {
+            g.drawLine(OUTER_PADDING + 3 * i * SQUARE_SIZE, OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, SIZE - OUTER_PADDING);
+        }
+
+        for (int i = 0; i < 4; i++) {
+            g.drawLine(OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE, SIZE - OUTER_PADDING, OUTER_PADDING + 3 * i * SQUARE_SIZE);
+        }
+    }
+    
+    private static void drawDigits(Graphics2D g, int[][] digits, Color color) {
+        g.setFont(font);
         FontRenderContext frc = g.getFontRenderContext();
-        int[][] digits = puzzle.getGivenDigits();
+        
+        g.setColor(color);
         
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -128,8 +172,57 @@ public class SudokuPrinter {
                 }
             }
         }
-        
-        return result;
     }
 
+    private static void drawPossibleDigits(Graphics2D g, SudokuSolutionState[][] fullState, Color color) {
+        FontRenderContext frc = g.getFontRenderContext();
+        
+        g.setColor(color);
+        
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                SudokuSolutionState state = fullState[row][col];
+                
+                if (state.digit == BLANK) {
+                    String text = possibleString(state);
+                    if (text.isBlank()) {
+                        // Sudoku is broken, but trying to draw this would crash
+                        continue;
+                    }
+                    
+                    float fontSize = DEFAULT_FONT_SIZE * 0.6f;
+                    Font f = font.deriveFont(fontSize);
+                    
+                    int width = FontDimensions.getWidth(text, frc, font);
+                    
+                    while (width > SQUARE_SIZE - 3) {
+                        fontSize -= 1.0f;
+                        f = font.deriveFont(fontSize);
+                        
+                        width = FontDimensions.getWidth(text, frc, f);
+                    }
+                    
+                    int height = FontDimensions.getHeight(text, frc, font);
+
+                    int x = OUTER_PADDING + col * SQUARE_SIZE + (SQUARE_SIZE - width) / 2;
+                    int y = OUTER_PADDING + row * SQUARE_SIZE + SQUARE_SIZE - (SQUARE_SIZE - height) / 2;
+
+                    g.setFont(f);
+                    g.drawString(text, x, y);
+                }
+            }
+        }
+    }
+
+    private static String possibleString(SudokuSolutionState state) {
+        StringBuilder sb = new StringBuilder();
+        
+        for (int d = 1; d <= 9; d++) {
+            if (state.isPossible(d)) {
+                sb.append(Integer.toString(d));
+            }
+        }
+        
+        return sb.toString();
+    }
 }

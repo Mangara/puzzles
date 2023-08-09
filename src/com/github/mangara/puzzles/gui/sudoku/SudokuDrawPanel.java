@@ -15,6 +15,7 @@
  */
 package com.github.mangara.puzzles.gui.sudoku;
 
+import com.github.mangara.puzzles.data.sudoku.Cell;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,9 +28,13 @@ import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
 import static com.github.mangara.puzzles.data.sudoku.SudokuSolutionState.BLANK;
 import com.github.mangara.puzzles.io.sudoku.SudokuPrinter;
+import com.github.mangara.puzzles.solvers.sudoku.SolvingSudoku;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyListener {
@@ -37,12 +42,18 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
     private final List<SudokuChangeListener> changeListeners = new ArrayList<>(1);
 
     private static final int NO_SELECTION = -1;
+    private static final Color SELECTED_COLOR = new Color(194, 222, 252);
+    private static final Color SELECTED_BORDER = new Color(96, 110, 124);
+    private static final Color PRIMARY_HIGHLIGHT = new Color(194, 222, 252);
+    private static final Color SECONDARY_HIGHLIGHT = new Color(252, 224, 194);
 
     private boolean building = true;
     private int[][] puzzle;
-    private SudokuSolutionState[][] solution;
+    private SolvingSudoku solution;
     private int selectedRow = NO_SELECTION, selectedCol = NO_SELECTION;
     private int leftX = 0, topY = 0;
+    private List<Cell> primaryHighlightCells = Collections.emptyList();
+    private List<Cell> secondaryHighlightCells = Collections.emptyList();
 
     public SudokuDrawPanel() {
         setPreferredSize(new Dimension(800, 600));
@@ -50,12 +61,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         addMouseMotionListener(this);
         addKeyListener(this);
 
-        solution = new SudokuSolutionState[9][9];
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                solution[row][col] = new SudokuSolutionState();
-            }
-        }
+        solution = new SolvingSudoku();
     }
 
     public Sudoku getPuzzle() {
@@ -73,9 +79,13 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
 
     public void setSolution(SudokuSolutionState[][] newSolution) {
         building = false;
-        for (int row = 0; row < 9; row++) {
-            System.arraycopy(newSolution[row], 0, solution[row], 0, 9);
-        }
+        solution = new SolvingSudoku(newSolution);
+        repaint();
+    }
+    
+    public void setSolution(SolvingSudoku newSolution) {
+        building = false;
+        solution = newSolution;
         repaint();
     }
 
@@ -102,15 +112,15 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
     }
 
     private void resetSolution() {
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                solution[row][col] = new SudokuSolutionState();
+        solution = new SolvingSudoku(puzzle);
+    }
+    
+    public void setPrimaryHighlight(List<Cell> cells) {
+        primaryHighlightCells = cells;
+    }
 
-                if (puzzle[row][col] != BLANK) {
-                    solution[row][col].digit = puzzle[row][col];
-                }
-            }
-        }
+    public void setSecondaryHighlight(List<Cell> cells) {
+        secondaryHighlightCells = cells;
     }
 
     public void addChangeListener(SudokuChangeListener listener) {
@@ -119,6 +129,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
 
     private static final Color GUESS_COLOR = Color.BLUE;
     private static final Color GIVEN_COLOR = Color.BLACK;
+    private static final Color POSSIBLE_COLOR = Color.GRAY;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -130,41 +141,59 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         topY = getHeight() - sudokuSize;
 
         // Highlight squares seen from selected square
+        // TODO
+        
+        // Highlights
+        if (primaryHighlightCells != null) {
+            g.setColor(PRIMARY_HIGHLIGHT);
+            for (Cell cell : primaryHighlightCells) {
+                fillCell(g, cell, leftX, topY);
+            }
+        }
+        
+        if (secondaryHighlightCells != null) {
+            g.setColor(SECONDARY_HIGHLIGHT);
+            for (Cell cell : secondaryHighlightCells) {
+                fillCell(g, cell, leftX, topY);
+            }
+        }
+        
         // Highlight selected square
+//        if (selectedRow != NO_SELECTION && selectedCol != NO_SELECTION) {
+//            g.setColor(SELECTED_COLOR);
+//            fillCell(g, selectedRow, selectedCol, leftX, topY);
+//        }
+
+        if (building) {
+            // Draw grid and given numbers
+            Sudoku given = new Sudoku(puzzle);
+            BufferedImage drawing = SudokuPrinter.drawSudoku(given, true, GIVEN_COLOR);
+            g.drawImage(drawing, leftX, topY, this);
+        } else {
+            // Draw guessed numbers
+            BufferedImage drawing = SudokuPrinter.drawSolvingSudoku(solution, true, GIVEN_COLOR, GUESS_COLOR, POSSIBLE_COLOR);
+            g.drawImage(drawing, leftX, topY, this);
+        }
+        
+        // Highlight selected square border
         if (selectedRow != NO_SELECTION && selectedCol != NO_SELECTION) {
             int selectedX = leftX + SudokuPrinter.OUTER_PADDING + selectedCol * SudokuPrinter.SQUARE_SIZE;
             int selectedY = topY + SudokuPrinter.OUTER_PADDING + selectedRow * SudokuPrinter.SQUARE_SIZE;
-            g.setColor(Color.red);
-            g.fillRect(selectedX, selectedY, SudokuPrinter.SQUARE_SIZE, SudokuPrinter.SQUARE_SIZE);
+            g.setColor(SELECTED_BORDER);
+            ((Graphics2D) g).setStroke(new BasicStroke(6f));
+//            g.drawRect(selectedX, selectedY, SudokuPrinter.SQUARE_SIZE, SudokuPrinter.SQUARE_SIZE);
+            g.drawRoundRect(selectedX, selectedY, SudokuPrinter.SQUARE_SIZE, SudokuPrinter.SQUARE_SIZE, 4, 4);
         }
-
-        if (!building) {
-            // Draw guessed numbers
-            Sudoku guesses = new Sudoku(getGuesses());
-            BufferedImage guessesDrawing = SudokuPrinter.drawSudoku(guesses, false, GUESS_COLOR);
-            g.drawImage(guessesDrawing, leftX, topY, this);
-        }
-
-        // Draw grid and given numbers
-        Sudoku given = new Sudoku(puzzle);
-        BufferedImage givenDrawing = SudokuPrinter.drawSudoku(given, true, GIVEN_COLOR);
-        g.drawImage(givenDrawing, leftX, topY, this);
     }
-
-    private int[][] getGuesses() {
-        int[][] guesses = new int[9][9];
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                if (puzzle[row][col] == BLANK) {
-                    guesses[row][col] = solution[row][col].digit;
-                } else {
-                    guesses[row][col] = BLANK;
-                }
-            }
-        }
-
-        return guesses;
+    
+    private void fillCell(Graphics g, Cell cell, int leftX, int topY) {
+        fillCell(g, cell.row, cell.col, leftX, topY);
+    }
+    
+    private void fillCell(Graphics g, int row, int col, int leftX, int topY) {
+        int selectedX = leftX + SudokuPrinter.OUTER_PADDING + col * SudokuPrinter.SQUARE_SIZE;
+        int selectedY = topY + SudokuPrinter.OUTER_PADDING + row * SudokuPrinter.SQUARE_SIZE;
+        g.fillRect(selectedX, selectedY, SudokuPrinter.SQUARE_SIZE, SudokuPrinter.SQUARE_SIZE);
     }
 
     @Override
@@ -208,7 +237,7 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
                     puzzle[selectedRow][selectedCol] = BLANK;
                     fireSelectedSquareChangedEvent(oldDigit, BLANK);
                 } else {
-                    solution[selectedRow][selectedCol].digit = BLANK;
+                    solution.removeDigit(selectedRow, selectedCol);
                 }
                 break;
 
@@ -261,14 +290,14 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
             puzzle[selectedRow][selectedCol] = digit;
             fireSelectedSquareChangedEvent(oldDigit, digit);
         } else {
-            int oldDigit = solution[selectedRow][selectedCol].digit;
+            int oldDigit = solution.state[selectedRow][selectedCol].digit;
             
             if (oldDigit == digit) {
                 // Remove the digit instead of overwriting with itself
-                digit = BLANK;
+                solution.removeDigit(selectedRow, selectedCol);
+            } else {
+                solution.placeDigit(selectedRow, selectedCol, digit);
             }
-            
-            solution[selectedRow][selectedCol].digit = digit;
         }
 
         repaint();
