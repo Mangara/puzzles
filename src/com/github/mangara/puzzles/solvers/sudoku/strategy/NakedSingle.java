@@ -42,6 +42,10 @@ public class NakedSingle implements SolveStrategy {
     }
 
     private int checkNakedSingle(SudokuSolutionState state) {
+        if (state.digit != BLANK) {
+            return BLANK;
+        }
+        
         int singleOption = BLANK;
         
         for (int d = 1; d <= 9; d++) {
