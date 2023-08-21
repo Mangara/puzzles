@@ -18,10 +18,7 @@ package com.github.mangara.puzzles.solvers.sudoku;
 import com.github.mangara.puzzles.data.Pair;
 import com.github.mangara.puzzles.data.sudoku.Sudoku;
 import com.github.mangara.puzzles.data.sudoku.SudokuSolutionState;
-import com.github.mangara.puzzles.solvers.sudoku.strategy.NakedSingle;
-import com.github.mangara.puzzles.solvers.sudoku.strategy.OnlyInBox;
-import com.github.mangara.puzzles.solvers.sudoku.strategy.OnlyInColumn;
-import com.github.mangara.puzzles.solvers.sudoku.strategy.OnlyInRow;
+import com.github.mangara.puzzles.solvers.sudoku.strategy.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +27,8 @@ import java.util.Optional;
 public class LogicalSolver {
 
     private static List<SolveStrategy> strategies = Arrays.asList(
-            new NakedSingle(), new OnlyInBox(), new OnlyInRow(), new OnlyInColumn()
+            new OnlyInBox(), new OnlyInRow(), new OnlyInColumn(), new NakedSingle(),
+            new NakedPair(), new AllSeen()
     );
 
     public static Pair<SolvingSudoku, List<SolveStep>> solve(Sudoku sudoku) {

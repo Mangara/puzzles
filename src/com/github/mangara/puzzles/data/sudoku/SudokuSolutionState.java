@@ -16,14 +16,17 @@
 
 package com.github.mangara.puzzles.data.sudoku;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SudokuSolutionState {
     public static int BLANK = 0;
     
     public boolean given;
     public int digit;
-    public boolean[] possible; // possible[3] = true => this square can contain a 4
+    private boolean[] possible; // possible[3] = true => this square can contain a 4
+    private int possibleCount;
     public boolean[] pencilmark;
 
     public SudokuSolutionState() {
@@ -41,9 +44,11 @@ public class SudokuSolutionState {
         possible = new boolean[9];
         if (number == BLANK) {
             Arrays.fill(possible, true);
+            possibleCount = 9;
         } else {
             Arrays.fill(possible, false);
             possible[number - 1] = true;
+            possibleCount = 1;
         }
         
         pencilmark = new boolean[9];
@@ -56,6 +61,7 @@ public class SudokuSolutionState {
        
         possible = new boolean[9];
         System.arraycopy(state.possible, 0, possible, 0, 9);
+        possibleCount = state.possibleCount;
         
         pencilmark = new boolean[9];
         System.arraycopy(state.pencilmark, 0, pencilmark, 0, 9);
@@ -66,7 +72,14 @@ public class SudokuSolutionState {
     }
     
     public void setPossible(int digit, boolean possible) {
+        boolean prevPossible = this.possible[digit - 1];
         this.possible[digit - 1] = possible;
+        
+        if (prevPossible && !possible) {
+            possibleCount--;
+        } else if (!prevPossible && possible) {
+            possibleCount++;
+        }
     }
     
     public void removePossible(int digit) {
@@ -74,11 +87,28 @@ public class SudokuSolutionState {
             setPossible(digit, false);
         }
     }
+
+    public int getPossibleCount() {
+        return possibleCount;
+    }
+    
+    public List<Integer> allPossible() {
+        List<Integer> result = new ArrayList<>();
+        
+        for (int d = 1; d <= 9; d++) {
+            if (isPossible(d)) {
+                result.add(d);
+            }
+        }
+        
+        return result;
+    }
     
     public void setDigit(int digit) {
         this.digit = digit;
         
         Arrays.fill(possible, false);
         setPossible(digit, true);
+        possibleCount = 1;
     }
 }

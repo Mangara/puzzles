@@ -24,6 +24,10 @@ public class Sudoku implements Puzzle {
     // A 9 x 9 size with default regions is assumed
     private final int[][] givenDigits;
 
+    public Sudoku() {
+        this.givenDigits = new int[9][9];
+    }
+    
     public Sudoku(int[][] givenDigits) {
         validateGivenDigits(givenDigits);
         this.givenDigits = copy(givenDigits);

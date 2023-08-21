@@ -28,11 +28,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="validLabel" min="-2" max="-2" attributes="0"/>
-                      <Component id="stepsButton" alignment="0" max="32767" attributes="0"/>
+                      <Component id="solveButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="uniqueLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="solveButton" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -45,10 +44,8 @@
                   <Component id="validLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="uniqueLabel" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="351" max="32767" attributes="0"/>
+                  <EmptySpace pref="380" max="32767" attributes="0"/>
                   <Component id="solveButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="stepsButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -63,12 +60,12 @@
             <Property name="text" type="java.lang.String" value="Solvable"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="stepsButton">
+        <Component class="javax.swing.JButton" name="solveButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Show Steps"/>
+            <Property name="text" type="java.lang.String" value="Solve"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stepsButtonActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="solveButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="uniqueLabel">
@@ -78,14 +75,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Unique?"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="solveButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Solve"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="solveButtonActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

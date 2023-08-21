@@ -47,13 +47,8 @@ public class CenterPuzzlePanel extends javax.swing.JPanel {
         add(logiquizPanel, PuzzleType.LOGIQUIZ.name());
         add(sudokuPanel, PuzzleType.SUDOKU.name());
         
-        // TODO - testing
-        int[][] digits = new int[9][9];
-        digits[0][0] = 9;
-        digits[8][8] = 8;
-        digits[8][0] = 7;
-        digits[0][8] = 6;
-        setPuzzle(new Sudoku(digits));
+        setPuzzle(new Sudoku());
+        setBuilding(true);
     }
 
     void clear() {

@@ -88,15 +88,21 @@ public class SudokuDrawPanel extends JPanel implements MouseInputListener, KeyLi
         solution = newSolution;
         repaint();
     }
+    
+    public SolvingSudoku getSolution() {
+        return solution;
+    }
 
     public boolean isBuilding() {
         return building;
     }
 
     public void setBuilding(boolean building) {
-        this.building = building;
-        resetSolution();
-        repaint();
+        if (this.building != building) {
+            this.building = building;
+            resetSolution();
+            repaint();
+        }
     }
 
     public void clear() {

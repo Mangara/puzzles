@@ -15,6 +15,9 @@
  */
 package com.github.mangara.puzzles.data.sudoku;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 public class Cell {
     public final int row, col;
 
@@ -42,5 +45,59 @@ public class Cell {
     @Override
     public String toString() {
         return "r" + displayRow() + "c" + displayCol();
+    }
+    
+    public static String toString(Collection<Cell> cells) {
+        StringBuilder sb = new StringBuilder();
+        
+        if (cells.size() == 1) {
+            sb.append(cells.iterator().next().toString());
+        } else {
+            sb.append("cells ");
+
+            int i = 0;
+            for (Cell cell : cells) {
+                sb.append(cell.toString());
+                
+                if (i == cells.size() - 2) {
+                    if (cells.size() > 2) {
+                        sb.append(",");
+                    }
+                    sb.append(" and ");
+                } else if (i < cells.size() - 2) {
+                    sb.append(", ");
+                }
+                
+                i++;
+            }
+        }
+        
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + this.row;
+        hash = 17 * hash + this.col;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cell other = (Cell) obj;
+        if (this.row != other.row) {
+            return false;
+        }
+        return this.col == other.col;
     }
 }
