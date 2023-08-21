@@ -17,6 +17,7 @@ package com.github.mangara.puzzles.solvers.sudoku;
 
 import com.github.mangara.puzzles.data.sudoku.Cell;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,7 @@ public class Region {
     public Region(Type type, int index, List<Cell> cells) {
         this.type = type;
         this.index = index;
-        this.cells = cells;
+        this.cells = Collections.unmodifiableList(cells);
     }
 
     public static Region row(int row) {

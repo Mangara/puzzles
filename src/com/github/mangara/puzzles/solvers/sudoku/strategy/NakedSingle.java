@@ -31,36 +31,16 @@ public class NakedSingle implements SolveStrategy {
     public Optional<SolveStep> findStep(SolvingSudoku sudoku) {
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
-                int digit = checkNakedSingle(sudoku.state[row][col]);
-                if (digit != BLANK) {
+                SudokuSolutionState state = sudoku.state[row][col];
+                
+                if (state.digit == BLANK && state.getPossibleCount() == 1) {
+                    int digit = state.allPossible().get(0);
                     return Optional.of(new Step(new Cell(row, col), digit));
                 }
             }
         }
         
         return Optional.empty();
-    }
-
-    private int checkNakedSingle(SudokuSolutionState state) {
-        if (state.digit != BLANK) {
-            return BLANK;
-        }
-        
-        int singleOption = BLANK;
-        
-        for (int d = 1; d <= 9; d++) {
-            if (state.isPossible(d)) {
-                if (singleOption == BLANK) {
-                    // First option
-                    singleOption = d;
-                } else {
-                    // Second option
-                    return BLANK;
-                }
-            }
-        }
-        
-        return singleOption;
     }
     
     public class Step implements SolveStep {

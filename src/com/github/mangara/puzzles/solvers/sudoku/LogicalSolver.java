@@ -27,7 +27,7 @@ import java.util.Optional;
 public class LogicalSolver {
 
     private static List<SolveStrategy> strategies = Arrays.asList(
-            new OnlyInBox(), new OnlyInRow(), new OnlyInColumn(), new NakedSingle(),
+            new OnlyInRegion(), new NakedSingle(),
             new NakedPair(), new AllSeen()
     );
 

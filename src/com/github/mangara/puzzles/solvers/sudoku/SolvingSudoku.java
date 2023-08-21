@@ -89,6 +89,10 @@ public class SolvingSudoku {
 
         return digits;
     }
+    
+    public SudokuSolutionState getState(Cell cell) {
+        return state[cell.row][cell.col];
+    }
 
     public void placeDigit(Cell cell, int digit) {
         placeDigit(cell.row, cell.col, digit);
