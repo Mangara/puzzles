@@ -28,7 +28,8 @@ public class LogicalSolver {
 
     private static List<SolveStrategy> strategies = Arrays.asList(
             new OnlyInRegion(), new NakedSingle(),
-            new NakedPair(), new AllSeen()
+            new NakedPair(), new HiddenPair(),
+            new AllSeen()
     );
 
     public static Pair<SolvingSudoku, List<SolveStep>> solve(Sudoku sudoku) {

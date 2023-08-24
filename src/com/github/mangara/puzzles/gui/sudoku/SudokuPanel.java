@@ -66,7 +66,7 @@ public class SudokuPanel extends javax.swing.JPanel implements PuzzlePanel {
     public void setMode(InteractionMode mode) {
         boolean building = mode == InteractionMode.BUILDING;
         drawPanel.setBuilding(building);
-        solveButton.setEnabled(building);
+        solveButton.setEnabled(!building);
     }
 
     private void puzzleChanged(SudokuChangedEvent e) {

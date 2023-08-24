@@ -57,7 +57,6 @@ public class NakedPair implements SolveStrategy {
         List<Cell> blank = region.cells.stream().filter(c -> sudoku.state[c.row][c.col].digit == BLANK).toList();
         
         if (blank.size() <= 2) {
-            System.out.printf("[ForcedSet] Only %d blank cells in %s. Skipping.%n", blank.size(), region.toString());
             return Optional.empty();
         }
         
